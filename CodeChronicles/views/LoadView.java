@@ -122,10 +122,9 @@ public class LoadView {
         String filename = "OtherFiles" + separator + "Saved" + separator + GameList.getSelectionModel().getSelectedItem();
         try {
             CodeChroniclesGame loadedGame = this.loadGame(filename);
-            this.codeChroniclesGameView.model = loadedGame;
-            selectGameLabel.setText(loadedGame.getDirectoryName());
+            this.codeChroniclesGameView.game = loadedGame;
         } catch (IOException | ClassNotFoundException e) {
-            this.codeChroniclesGameView.model = new CodeChroniclesGame();
+            this.codeChroniclesGameView.game = new CodeChroniclesGame();
             selectGameLabel.setText("Unable To Load Game, Game Restarts");
             throw new IOException(e);
         } finally {

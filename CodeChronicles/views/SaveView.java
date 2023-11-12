@@ -107,7 +107,7 @@ public class SaveView {
                     File myGame = new File(filepath);
                     FileOutputStream fileOutput = new FileOutputStream(myGame);
                     ObjectOutputStream objOutput = new ObjectOutputStream(fileOutput);
-                    objOutput.writeObject(this.codeChroniclesGameView.model);
+                    objOutput.writeObject(this.codeChroniclesGameView.game);
                     this.saveFileErrorLabel.setText(saveFileSuccess);
                 } else {
                     this.saveFileErrorLabel.setText(saveFileNotSerError);

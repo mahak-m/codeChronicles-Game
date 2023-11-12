@@ -35,7 +35,7 @@ import static javafx.scene.layout.GridPane.getRowIndex;
  */
 public class CodeChroniclesGameView {
 
-    CodeChroniclesGame model; //model of the game
+    CodeChroniclesGame game; //model of the game
     Stage stage; //stage on which all is rendered
     Button saveButton, loadButton, helpButton; //buttons
     Boolean helpToggle = false; //is help on display?
@@ -55,8 +55,8 @@ public class CodeChroniclesGameView {
      * __________________________
      * Initializes attributes
      */
-    public CodeChroniclesGameView(CodeChroniclesGame model, Stage stage) {
-        this.model = model;
+    public CodeChroniclesGameView(CodeChroniclesGame game, Stage stage) {
+        this.game = game;
         this.stage = stage;
         intiUI();
     }
@@ -252,8 +252,8 @@ public class CodeChroniclesGameView {
         stopArticulation(); //if speaking, stop
 
         if (text.equalsIgnoreCase("LOOK") || text.equalsIgnoreCase("L")) {
-            String roomDesc = this.model.getPlayer().getCurrentRoom().getRoomDescription();
-            String objectString = this.model.getPlayer().getCurrentRoom().getObjectString();
+            String roomDesc = this.game.getPlayer().getCurrentRoom().getRoomDescription();
+            String objectString = this.game.getPlayer().getCurrentRoom().getObjectString();
             if (!objectString.isEmpty()) roomDescLabel.setText(roomDesc + "\n\nObjects in this room:\n" + objectString);
             articulateRoomDescription(); //all we want, if we are looking, is to repeat description.
             return;
@@ -266,7 +266,7 @@ public class CodeChroniclesGameView {
         }
 
         //try to move!
-        String output = this.model.interpretAction(text); //process the command!
+        String output = this.game.interpretAction(text); //process the command!
 
         if (output == null || (!output.equals("GAME OVER") && !output.equals("FORCED") && !output.equals("HELP"))) {
             updateScene(output);
@@ -284,7 +284,7 @@ public class CodeChroniclesGameView {
             //Your code will need to display the image in the
             //current room and pause, then transition to
             //the forced room.
-            updateScene(this.model.player.getCurrentRoom().getRoomDescription());
+            updateScene(this.game.player.getCurrentRoom().getRoomDescription());
             updateItems();
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
             pause.setOnFinished(event -> {
@@ -304,7 +304,7 @@ public class CodeChroniclesGameView {
      * current room.
      */
     private void showCommands() {
-        String commands = this.model.getPlayer().getCurrentRoom().getCommands();
+        String commands = this.game.getPlayer().getCurrentRoom().getCommands();
         this.roomDescLabel.setText("You can move in these directions:\n" + commands);
     }
 
@@ -351,8 +351,8 @@ public class CodeChroniclesGameView {
      */
     private void formatText(String textToDisplay) {
         if (textToDisplay == null || textToDisplay.isBlank()) {
-            String roomDesc = this.model.getPlayer().getCurrentRoom().getRoomDescription() + "\n";
-            String objectString = this.model.getPlayer().getCurrentRoom().getObjectString();
+            String roomDesc = this.game.getPlayer().getCurrentRoom().getRoomDescription() + "\n";
+            String objectString = this.game.getPlayer().getCurrentRoom().getObjectString();
             if (objectString != null && !objectString.isEmpty()) roomDescLabel.setText(roomDesc + "\n\nObjects in this room:\n" + objectString);
             else roomDescLabel.setText(roomDesc);
         } else roomDescLabel.setText(textToDisplay);
@@ -370,7 +370,7 @@ public class CodeChroniclesGameView {
      */
     private void getRoomImage() {
 
-        int roomNumber = this.model.getPlayer().getCurrentRoom().getRoomNumber();
+        int roomNumber = this.game.getPlayer().getCurrentRoom().getRoomNumber();
         String roomImage = "OtherFiles/room-images/" + roomNumber + ".png";
 
         Image roomImageFile = new Image(roomImage);
@@ -381,7 +381,7 @@ public class CodeChroniclesGameView {
 
         //set accessible text
         roomImageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        roomImageView.setAccessibleText(this.model.getPlayer().getCurrentRoom().getRoomDescription());
+        roomImageView.setAccessibleText(this.game.getPlayer().getCurrentRoom().getRoomDescription());
         roomImageView.setFocusTraversable(true);
     }
 
@@ -405,9 +405,9 @@ public class CodeChroniclesGameView {
         this.objectsInRoom.getChildren().clear();
         this.objectsInInventory.getChildren().clear();
         //write some code here to add images of objects in a given room to the objectsInRoom Vbox
-        for (AdventureObject obj : this.model.getPlayer().getCurrentRoom().objectsInRoom) {
+        for (AdventureObject obj : this.game.getPlayer().getCurrentRoom().objectsInRoom) {
             // Creating the image
-            Image objIm = new Image(this.model.getDirectoryName() + "/objectImages/" + obj.getName() + ".jpg");
+            Image objIm = new Image("OtherFiles/objectImages/" + obj.getName() + ".jpg");
             ImageView objView = new ImageView(objIm);
             objView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
             objView.setAccessibleText(obj.getDescription());
@@ -423,19 +423,19 @@ public class CodeChroniclesGameView {
             // Action
             objButton.setOnAction(e -> {
                 if (this.objectsInRoom.getChildren().contains(objButton)) {
-                    this.model.player.takeObject(obj.getName());
+                    this.game.player.takeObject(obj.getName());
                     this.updateItems();
                 } else if (this.objectsInInventory.getChildren().contains(objButton)) {
-                    this.model.player.dropObject(obj.getName());
+                    this.game.player.dropObject(obj.getName());
                     this.updateItems();
                 }
             });
             this.objectsInRoom.getChildren().add(objButton);
         }
         //write some code here to add images of objects in a player's inventory room to the objectsInInventory Vbox
-        for (AdventureObject obj : this.model.getPlayer().inventory) {
+        for (AdventureObject obj : this.game.getPlayer().inventory) {
             // Creating the image
-            Image objIm = new Image(this.model.getDirectoryName() + "/objectImages/" + obj.getName() + ".jpg");
+            Image objIm = new Image("OtherFiles/objectImages/" + obj.getName() + ".jpg");
             ImageView objView = new ImageView(objIm);
             objView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
             objView.setAccessibleText(obj.getDescription());
@@ -451,10 +451,10 @@ public class CodeChroniclesGameView {
             // Action
             objButton.setOnAction(e -> {
                 if (this.objectsInRoom.getChildren().contains(objButton)) {
-                    this.model.player.takeObject(obj.getName());
+                    this.game.player.takeObject(obj.getName());
                     this.updateItems();
                 } else if (this.objectsInInventory.getChildren().contains(objButton)) {
-                    this.model.player.dropObject(obj.getName());
+                    this.game.player.dropObject(obj.getName());
                     this.updateItems();
                 }
             });
@@ -498,7 +498,7 @@ public class CodeChroniclesGameView {
         }
         // If helpToggle is false
         if (!this.helpToggle) {
-            Label instrLabel =  new Label(this.model.getInstructions());
+            Label instrLabel =  new Label(this.game.getInstructions());
             instrLabel.setAlignment(Pos.CENTER);
             instrLabel.setFont(new Font("Arial", 16));
             instrLabel.setStyle("-fx-text-fill: white;");
@@ -557,11 +557,10 @@ public class CodeChroniclesGameView {
      */
     public void articulateRoomDescription() {
         String musicFile;
-        String adventureName = this.model.getDirectoryName();
-        String roomName = this.model.getPlayer().getCurrentRoom().getRoomName();
+        String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
 
-        if (!this.model.getPlayer().getCurrentRoom().getVisited()) musicFile = "./" + adventureName + "/sounds/" + roomName.toLowerCase() + "-long.mp3" ;
-        else musicFile = "./" + adventureName + "/sounds/" + roomName.toLowerCase() + "-short.mp3" ;
+        if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-long.mp3" ;
+        else musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-short.mp3" ;
         musicFile = musicFile.replace(" ","-");
 
         Media sound = new Media(new File(musicFile).toURI().toString());
