@@ -1,7 +1,7 @@
 import GameModel.CodeChroniclesGame;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import views.CodeChroniclesGameView;
+import View.CodeChroniclesGameView;
 
 import java.io.IOException;
 

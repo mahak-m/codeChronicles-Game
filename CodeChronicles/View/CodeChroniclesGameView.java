@@ -1,4 +1,4 @@
-package views;
+package View;
 
 import GameModel.CodeChroniclesGame;
 import GameModel.AdventureObject;
@@ -36,8 +36,10 @@ import static javafx.scene.layout.GridPane.getRowIndex;
 public class CodeChroniclesGameView {
 
     CodeChroniclesGame game; //model of the game
+
+    ColourScheme colourScheme;
     Stage stage; //stage on which all is rendered
-    Button menuButton, helpButton; //buttons
+    Button menuButton, helpButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
 
     GridPane gridPane = new GridPane(); //to hold images and buttons
@@ -58,6 +60,7 @@ public class CodeChroniclesGameView {
     public CodeChroniclesGameView(CodeChroniclesGame game, Stage stage) {
         this.game = game;
         this.stage = stage;
+        this.colourScheme = new ColourScheme("Game Theme");
         intiUI();
     }
 
@@ -78,7 +81,7 @@ public class CodeChroniclesGameView {
         // GridPane, anyone?
         gridPane.setPadding(new Insets(20));
         gridPane.setBackground(new Background(new BackgroundFill(
-                Color.valueOf("#000000"),
+                Color.valueOf(this.colourScheme.backgroundColour1),
                 new CornerRadii(0),
                 new Insets(0)
         )));
@@ -103,7 +106,7 @@ public class CodeChroniclesGameView {
         // Buttons
         menuButton = new Button("Menu");
         menuButton.setId("Save");
-        customizeButton(menuButton, 100, 50);
+        customizeButton(menuButton, 200, 50);
         makeButtonAccessible(menuButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
         addMenuEvent();
 
@@ -112,6 +115,12 @@ public class CodeChroniclesGameView {
         customizeButton(helpButton, 200, 50);
         makeButtonAccessible(helpButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
+
+        mapButton = new Button("Map");
+        menuButton.setId("Map");
+        customizeButton(menuButton, 200, 50);
+        makeButtonAccessible(menuButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
+        addMenuEvent();
 
         HBox topButtons = new HBox();
         topButtons.getChildren().addAll(menuButton, helpButton);
@@ -153,24 +162,29 @@ public class CodeChroniclesGameView {
 
         // adding the text area and submit button to a VBox
         VBox textEntry = new VBox();
-        textEntry.setStyle("-fx-background-color: #000000;");
+        textEntry.setStyle("-fx-background-color: " + this.colourScheme.backgroundColour1 + ";");
         textEntry.setPadding(new Insets(20, 20, 20, 20));
         textEntry.getChildren().addAll(commandLabel, inputTextField);
         textEntry.setSpacing(10);
         textEntry.setAlignment(Pos.CENTER);
         gridPane.add( textEntry, 0, 2, 3, 1 );
 
-        // Render everything
-        var scene = new Scene( gridPane ,  1000, 800);
-        scene.setFill(Color.BLACK);
-        this.stage.setScene(scene);
+        GridPane gamePane = new GridPane();
+        gamePane.setStyle("-fx-background-image: url('OtherFiles/StartScreen.jpg');");
+        var scene1 = new Scene( gamePane ,  1000, 800);
+        this.stage.setScene(scene1);
         this.stage.setResizable(false);
         this.stage.show();
 
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        pause.setOnFinished(event -> {
+            var scene = new Scene( gridPane ,  1000, 800);
+            scene.setFill(Color.valueOf(this.colourScheme.backgroundColour1));
+            this.stage.setScene(scene);
+        });
+        pause.play();
     }
-
-
-
+    
 
     /**
      * makeButtonAccessible
