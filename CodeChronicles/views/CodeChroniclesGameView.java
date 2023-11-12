@@ -37,7 +37,7 @@ public class CodeChroniclesGameView {
 
     CodeChroniclesGame game; //model of the game
     Stage stage; //stage on which all is rendered
-    Button saveButton, loadButton, helpButton; //buttons
+    Button menuButton, helpButton; //buttons
     Boolean helpToggle = false; //is help on display?
 
     GridPane gridPane = new GridPane(); //to hold images and buttons
@@ -101,17 +101,11 @@ public class CodeChroniclesGameView {
         gridPane.getRowConstraints().addAll( row1 , row2 , row1 );
 
         // Buttons
-        saveButton = new Button("Save");
-        saveButton.setId("Save");
-        customizeButton(saveButton, 100, 50);
-        makeButtonAccessible(saveButton, "Save Button", "This button saves the game.", "This button saves the game. Click it in order to save your current progress, so you can play more later.");
-        addSaveEvent();
-
-        loadButton = new Button("Load");
-        loadButton.setId("Load");
-        customizeButton(loadButton, 100, 50);
-        makeButtonAccessible(loadButton, "Load Button", "This button loads a game from a file.", "This button loads the game from a file. Click it in order to load a game that you saved at a prior date.");
-        addLoadEvent();
+        menuButton = new Button("Menu");
+        menuButton.setId("Save");
+        customizeButton(menuButton, 100, 50);
+        makeButtonAccessible(menuButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
+        addMenuEvent();
 
         helpButton = new Button("Instructions");
         helpButton.setId("Instructions");
@@ -120,7 +114,7 @@ public class CodeChroniclesGameView {
         addInstructionEvent();
 
         HBox topButtons = new HBox();
-        topButtons.getChildren().addAll(saveButton, helpButton, loadButton);
+        topButtons.getChildren().addAll(menuButton, helpButton);
         topButtons.setSpacing(10);
         topButtons.setAlignment(Pos.CENTER);
 
@@ -174,6 +168,8 @@ public class CodeChroniclesGameView {
         this.stage.show();
 
     }
+
+
 
 
     /**
@@ -518,36 +514,52 @@ public class CodeChroniclesGameView {
         }
     }
 
+    public void showMenu() {
+        // First remove nodes in the cell beforehand
+        for (Node node: this.gridPane.getChildren()) {
+            if ((getRowIndex(node) == 1) && (getColumnIndex(node) == 1)) {
+                this.gridPane.getChildren().remove(node);
+                break;
+            }
+        }
+        // If helpToggle is false
+        if (!this.helpToggle) {
+            Label instrLabel =  new Label(this.game.getInstructions());
+            instrLabel.setAlignment(Pos.CENTER);
+            instrLabel.setFont(new Font("Arial", 16));
+            instrLabel.setStyle("-fx-text-fill: white;");
+            instrLabel.setWrapText(true);
+            ScrollPane sp = new ScrollPane();
+            sp.setContent(instrLabel);
+            sp.setPadding(new Insets(25));
+            sp.setStyle("-fx-background: #000000; -fx-background-color:transparent; -fx-border-color:royalblue;");
+            sp.setFitToWidth(true);
+            gridPane.add(sp, 1, 1, 1, 1 );  // Add label
+            this.helpToggle = true;
+        }
+        // If helpToggle is true
+        else {
+            updateScene("");
+            this.helpToggle = false;
+        }
+    }
+
     /**
      * This method handles the event related to the
      * help button.
      */
     public void addInstructionEvent() {
         helpButton.setOnAction(e -> {
-            stopArticulation(); //if speaking, stop
+            stopArticulation();
             showInstructions();
         });
     }
 
-    /**
-     * This method handles the event related to the
-     * save button.
-     */
-    public void addSaveEvent() {
-        saveButton.setOnAction(e -> {
+    private void addMenuEvent() {
+        menuButton.setOnAction(e -> {
+            stopArticulation();
             gridPane.requestFocus();
-            SaveView saveView = new SaveView(this);
-        });
-    }
-
-    /**
-     * This method handles the event related to the
-     * load button.
-     */
-    public void addLoadEvent() {
-        loadButton.setOnAction(e -> {
-            gridPane.requestFocus();
-            LoadView loadView = new LoadView(this);
+            GameMenu menu = new GameMenu(this);
         });
     }
 
