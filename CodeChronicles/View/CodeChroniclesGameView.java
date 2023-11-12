@@ -117,13 +117,13 @@ public class CodeChroniclesGameView {
         addInstructionEvent();
 
         mapButton = new Button("Map");
-        menuButton.setId("Map");
-        customizeButton(menuButton, 200, 50);
-        makeButtonAccessible(menuButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
-        addMenuEvent();
+        mapButton.setId("Map");
+        customizeButton(mapButton, 200, 50);
+        makeButtonAccessible(mapButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
+        addMapEvent();
 
         HBox topButtons = new HBox();
-        topButtons.getChildren().addAll(menuButton, helpButton);
+        topButtons.getChildren().addAll(menuButton, helpButton, mapButton);
         topButtons.setSpacing(10);
         topButtons.setAlignment(Pos.CENTER);
 
@@ -181,10 +181,11 @@ public class CodeChroniclesGameView {
             var scene = new Scene( gridPane ,  1000, 800);
             scene.setFill(Color.valueOf(this.colourScheme.backgroundColour1));
             this.stage.setScene(scene);
+            GameMenu menu = new GameMenu(this);
         });
         pause.play();
     }
-    
+
 
     /**
      * makeButtonAccessible
@@ -574,6 +575,14 @@ public class CodeChroniclesGameView {
             stopArticulation();
             gridPane.requestFocus();
             GameMenu menu = new GameMenu(this);
+        });
+    }
+
+    private void addMapEvent() {
+        mapButton.setOnAction(e -> {
+            stopArticulation();
+            gridPane.requestFocus();
+            GameMap map = new GameMap(this);
         });
     }
 
