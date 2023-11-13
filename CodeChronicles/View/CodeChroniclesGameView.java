@@ -36,19 +36,17 @@ import static javafx.scene.layout.GridPane.getRowIndex;
 public class CodeChroniclesGameView {
 
     CodeChroniclesGame game; //model of the game
-
+    Integer fontSize;
     ColourScheme colourScheme;
     Stage stage; //stage on which all is rendered
     Button menuButton, helpButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
-
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
     VBox objectsInRoom = new VBox(); //to hold room items
     VBox objectsInInventory = new VBox(); //to hold inventory items
     ImageView roomImageView; //to hold room image
     TextField inputTextField; //for user input
-
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
 
@@ -61,6 +59,7 @@ public class CodeChroniclesGameView {
         this.game = game;
         this.stage = stage;
         this.colourScheme = new ColourScheme("Game Theme");
+        this.fontSize = 16;
         intiUI();
     }
 
@@ -78,7 +77,7 @@ public class CodeChroniclesGameView {
         objectsInRoom.setSpacing(10);
         objectsInRoom.setAlignment(Pos.TOP_CENTER);
 
-        // GridPane, anyone?
+        // GridPane
         gridPane.setPadding(new Insets(20));
         gridPane.setBackground(new Background(new BackgroundFill(
                 Color.valueOf(this.colourScheme.backgroundColour1),
@@ -128,7 +127,7 @@ public class CodeChroniclesGameView {
         topButtons.setAlignment(Pos.CENTER);
 
         inputTextField = new TextField();
-        inputTextField.setFont(new Font("Arial", 16));
+        inputTextField.setFont(new Font("Arial", this.fontSize));
         inputTextField.setFocusTraversable(true);
 
         inputTextField.setAccessibleRole(AccessibleRole.TEXT_AREA);
@@ -141,12 +140,12 @@ public class CodeChroniclesGameView {
         Label objLabel =  new Label("Objects in Room");
         objLabel.setAlignment(Pos.CENTER);
         objLabel.setStyle("-fx-text-fill: white;");
-        objLabel.setFont(new Font("Arial", 16));
+        objLabel.setFont(new Font("Arial", this.fontSize));
 
         Label invLabel =  new Label("Your Inventory");
         invLabel.setAlignment(Pos.CENTER);
         invLabel.setStyle("-fx-text-fill: white;");
-        invLabel.setFont(new Font("Arial", 16));
+        invLabel.setFont(new Font("Arial", this.fontSize));
 
         //add all the widgets to the GridPane
         gridPane.add( objLabel, 0, 0, 1, 1 );  // Add label
@@ -155,7 +154,7 @@ public class CodeChroniclesGameView {
 
         Label commandLabel = new Label("What would you like to do?");
         commandLabel.setStyle("-fx-text-fill: white;");
-        commandLabel.setFont(new Font("Arial", 16));
+        commandLabel.setFont(new Font("Arial", this.fontSize));
 
         updateScene(""); //method displays an image and whatever text is supplied
         updateItems(); //update items shows inventory and objects in rooms
@@ -171,10 +170,11 @@ public class CodeChroniclesGameView {
 
         GridPane gamePane = new GridPane();
         gamePane.setStyle("-fx-background-image: url('OtherFiles/StartScreen.jpg');");
-        var scene1 = new Scene( gamePane ,  1000, 800);
+        var scene1 = new Scene(gamePane ,  1000, 800);
         this.stage.setScene(scene1);
         this.stage.setResizable(false);
         this.stage.show();
+
 
         PauseTransition pause = new PauseTransition(Duration.seconds(3));
         pause.setOnFinished(event -> {
@@ -216,7 +216,7 @@ public class CodeChroniclesGameView {
      */
     private void customizeButton(Button inputButton, int w, int h) {
         inputButton.setPrefSize(w, h);
-        inputButton.setFont(new Font("Arial", 16));
+        inputButton.setFont(new Font("Arial", this.fontSize));
         inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
     }
 
@@ -266,7 +266,7 @@ public class CodeChroniclesGameView {
             String roomDesc = this.game.getPlayer().getCurrentRoom().getRoomDescription();
             String objectString = this.game.getPlayer().getCurrentRoom().getObjectString();
             if (!objectString.isEmpty()) roomDescLabel.setText(roomDesc + "\n\nObjects in this room:\n" + objectString);
-            articulateRoomDescription(); //all we want, if we are looking, is to repeat description.
+            articulateRoomDescription(); //all we want, if we are looking, is to repeat description. TODO COMMENTED FOR TESTING
             return;
         } else if (text.equalsIgnoreCase("HELP") || text.equalsIgnoreCase("H")) {
             showInstructions();
@@ -349,7 +349,8 @@ public class CodeChroniclesGameView {
         stage.sizeToScene();
 
         //finally, articulate the description
-        if (textToDisplay == null || textToDisplay.isBlank()) articulateRoomDescription();
+        // TODO: UNCOMMENT LATER
+        // if (textToDisplay == null || textToDisplay.isBlank()) articulateRoomDescription();
     }
 
     /**
@@ -368,7 +369,7 @@ public class CodeChroniclesGameView {
             else roomDescLabel.setText(roomDesc);
         } else roomDescLabel.setText(textToDisplay);
         roomDescLabel.setStyle("-fx-text-fill: white;");
-        roomDescLabel.setFont(new Font("Arial", 16));
+        roomDescLabel.setFont(new Font("Arial", this.fontSize));
         roomDescLabel.setAlignment(Pos.CENTER);
     }
 
@@ -511,7 +512,7 @@ public class CodeChroniclesGameView {
         if (!this.helpToggle) {
             Label instrLabel =  new Label(this.game.getInstructions());
             instrLabel.setAlignment(Pos.CENTER);
-            instrLabel.setFont(new Font("Arial", 16));
+            instrLabel.setFont(new Font("Arial", this.fontSize));
             instrLabel.setStyle("-fx-text-fill: white;");
             instrLabel.setWrapText(true);
             ScrollPane sp = new ScrollPane();
@@ -541,7 +542,7 @@ public class CodeChroniclesGameView {
         if (!this.helpToggle) {
             Label instrLabel =  new Label(this.game.getInstructions());
             instrLabel.setAlignment(Pos.CENTER);
-            instrLabel.setFont(new Font("Arial", 16));
+            instrLabel.setFont(new Font("Arial", this.fontSize));
             instrLabel.setStyle("-fx-text-fill: white;");
             instrLabel.setWrapText(true);
             ScrollPane sp = new ScrollPane();
