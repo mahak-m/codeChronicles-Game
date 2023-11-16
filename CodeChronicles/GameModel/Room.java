@@ -41,7 +41,7 @@ public class Room implements Serializable {
     private boolean isVisited;
 
     /**
-     * AdvGameRoom constructor.
+     * Room constructor.
      *
      * @param roomName: The name of the room.
      * @param roomNumber: The number of the room.

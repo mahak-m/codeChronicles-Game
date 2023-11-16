@@ -54,6 +54,7 @@ public class GameMenu {
         fontSize.setTextFill(Color.web(this.gameView.colourScheme.fontColour1));
         fontSize.setFont(new Font("Helvetica", this.gameView.fontSize));
         this.fontSizeBox = new Spinner<Integer>(12, 20, 16);
+        this.fontSizeBox.getValueFactory().setValue(this.gameView.fontSize);
         // Create Music Toggle Button
         Label music = new Label("Music");
         music.setTextFill(Color.web(this.gameView.colourScheme.fontColour1));
