@@ -13,6 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.util.Scanner;
 
 public class GameMenu {
 
@@ -75,7 +76,7 @@ public class GameMenu {
         this.restartButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         this.restartButton.setPrefSize(200, 50);
         this.restartButton.setFont(new Font(16));
-        this.restartButton.setOnAction(e -> this.stage.close()); //TODO! Restart Game!
+        this.restartButton.setOnAction(e -> this.restart()); //TODO! Restart Game!
         CodeChroniclesGameView.makeButtonAccessible(this.restartButton, "Restart Game", "This is a button to restart the game", "Use this button to restart the game. It will load the game from the beginning, and you will lose your progress.");
 
         // Create Save Changes Button
@@ -83,7 +84,7 @@ public class GameMenu {
         this.saveChangesButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         this.saveChangesButton.setPrefSize(200, 50);
         this.saveChangesButton.setFont(new Font(16));
-        this.saveChangesButton.setOnAction(e ->this.stage.close()); // TODO! Implement Method to Save Changes!
+        this.saveChangesButton.setOnAction(e ->this.save_changes()); // TODO! Implement Method to Save Changes!
         CodeChroniclesGameView.makeButtonAccessible(this.saveChangesButton, "Save Changes", "This is a button to save your game's settings", "Use this button to save your game's settings. It will update the game based on the changes you have made.");
 
         // Add Buttons to Horizontal Box
@@ -120,4 +121,33 @@ public class GameMenu {
         this.stage.setResizable(false);
         this.stage.show();
     }
+
+    private void restart() {
+
+    }
+
+    private void save_changes() {
+        // check value of music box, update this.gameView.music
+        if (this.musicBox.getValue().equals("On")){
+            this.gameView.music = true;
+        }
+        else{
+            this.gameView.music = false;
+        }
+        // check value of audio box, update this.gameView.audio
+        if (this.audioBox.getValue().equals("On")){
+            this.gameView.audio = true;
+        }
+        else{
+            this.gameView.audio = false;
+        }
+        // check value of colour scheme box, update this.colourScheme.music
+        this.gameView.colourScheme = new ColourScheme(this.colourModeBox.getValue());
+
+        // check value of font size box, update this.colourScheme.font size
+        this.gameView.fontSize = this.fontSizeBox.getValue();
+        this.stage.close(); // close the stage after saving the changes
+
+    }
+
 }
