@@ -41,6 +41,8 @@ public class CodeChroniclesGameView {
     Stage stage; //stage on which all is rendered
     Button menuButton, helpButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
+    Boolean music;
+    Boolean audio;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
     VBox objectsInRoom = new VBox(); //to hold room items
