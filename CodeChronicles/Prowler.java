@@ -1,37 +1,42 @@
+import GameModel.AdventureObject;
+import GameModel.Room;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import java.util.Objects;
+import java.util.ArrayList;
 
-public class Prowler {
-
-    private final String name; //name of the 7 prowlers
-    private final Image prowlerImage; // Image of the prowler
-    private boolean defeated; //keeps track of if the prowler is defeated or not
-
-    /**
-     * Constructor
-     */
-    public Prowler(String name, Image prowlerImage) {
-        this.name = name;
-        this.prowlerImage = prowlerImage;
-        this.defeated = true;
-
-    }
+/**
+ * Prowler class
+ * ____________________
+ * The Prowler class represents the Polymorphic Prowlers. Due to their
+ * polymorphic nature, they can "shape-shift" and hence, are indistinguishable
+ * by appearence.
+ *
+ * There are 5 prowlers to face. Their images are in the
+ * folder characterImages --> ProwlerImages
+ */
+public class Prowler extends Character{
+    private int strength;
+    // the prowler's strength can range between 1-10 bytes (needed to destroy)
+    public Image prowlerImage;
 
     /**
-     * Defeat method that keeps track if the prowler was defeated or not
+     * Prowler Constructor
+     * __________________________
+     * Initializes attributes
+     *
      */
-    public void setDefeated(boolean defeated) {
+    public Prowler(String characterName, String characterDesc, Room myCurrLocation, int myStrength) {
+        super(characterName, characterDesc, myCurrLocation, "Prowler");
+        isPlayable = false;
+        this.strength = myStrength;
+    }
 
-        this.defeated = defeated;
-    }
-    public Image getProwlerImage(){
-        return prowlerImage;
-    }
-    public String getName(){
-        return name;
+    public int getStrength() {
+        return strength;
     }
 
 }
+
+
+
 
