@@ -1,11 +1,14 @@
 package InteractingWithPlayer;
 
+
+import InteractingWithPlayer.Player.Player;
+
 public class HackCommand implements Hack{
     // for now
-
+    Player player;
     int MINIMUM_BYTES = 2;
-    int codeBytes = Character.getCodeBytes();
-    String playQuest = Player.playQuest();
+    int codeBytes = player.getCodeBytes();
+    // String playQuest = Player.playQuest();
     //constructor
     public HackCommand(int numberOfBytes){
         this.codeBytes = numberOfBytes;
@@ -18,7 +21,7 @@ public class HackCommand implements Hack{
     @Override
     public void showCharacterIdentity() {
         // check if character type is Prowler, warn the player.
-        if (characterType == "Prowler") {
+        if (player.getPlayerType() == "Prowler") {
             System.out.println("Danger! You decided to hack a Prowler.");
         }
         // check if character type is school member, greet the player.
@@ -41,7 +44,7 @@ public class HackCommand implements Hack{
         }
         // If you have more than the minimum code bytes you play the quest.
         else {
-            String playQuest1 = this.playQuest;
+            // String playQuest1 = this.playQuest;
 
         }
     }

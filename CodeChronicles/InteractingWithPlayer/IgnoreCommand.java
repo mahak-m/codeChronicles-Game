@@ -1,5 +1,7 @@
 package InteractingWithPlayer;
 
+import InteractingWithPlayer.Player.Player;
+
 /**
  * The player can ignore a character by using 5 code bytes
  */
@@ -7,7 +9,9 @@ package InteractingWithPlayer;
 
 public class IgnoreCommand implements Ignore {
 
-    int codeBytes = Character.getCodeBytes();
+    Player player;
+
+    int codeBytes = player.getCodeBytes();
 
     /**
      * Constructor

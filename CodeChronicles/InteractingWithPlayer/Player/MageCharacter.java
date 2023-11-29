@@ -1,4 +1,4 @@
-package week3.group_project.group_99.CodeChronicles;
+package InteractingWithPlayer.Player;
 
 import GameModel.AdventureObject;
 import GameModel.Room;
@@ -6,52 +6,43 @@ import GameModel.Room;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import InteractingWithPlayer.Player.Player;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- * AlchemistCharacter class
+ * MageCharacter class
  * _________________________
- * The AlchemistCharacter extends the superclass. This character and has no special powers
+ * The MageCharacter extends the superclass. This character and has no special powers
  * or features. If no character is chosen, this is the default character.
- * This class sets the character type and assigns an image for the AlchemistCharacter which can later
- * be used in UI
  *
- * AlchemistCharacter objects have an elementalAffinity attribute (i.e. fire, water, wind, earth).
- * It can be used in battle once during the game using castAffinity().
- *
- * Its usage is tracked through the affinityUsed.
- *
- * The castSpell() method is overridden to reflect the change in AlchemistCharacter’s lines when in battle.
+ * This class sets the character type and assigns an image for the MageCharacter which
+ * can later be used in UI. The castSpell method stays the same.
  *
  *  */
-public class AlchemistCharacter extends Character {
+public class MageCharacter extends Player {
 
     private Image characterImage;
-    private AdventureObject philosophersStone;
-    private AdventureObject elementalAffinity;
-    public boolean affinityUsed;
+    // The image associated with the MageCharacter
     private ArrayList<AdventureObject> inventory;
+    // The inventory of the character. May only contain items of type AdventureObject.
     public String playerType;
 
 
     /**
-     * AlchemistCharacter Constructor
+     * MageCharacter Constructor
      * __________________________
      * Initializes attributes
      *
      */
-    public AlchemistCharacter(String characterName, String characterDesc, Room myCurrLocation, ArrayList<AdventureObject> myInventory) {
-        super(characterName, characterDesc, myCurrLocation, "Alchemist");
-        this.inventory = myInventory;
+    public MageCharacter(String characterName, String characterDesc, Room myCurrLocation, ArrayList<AdventureObject> myInventory) {
+        super(characterName, characterDesc, myCurrLocation, "Mage");
         isPlayable = true;
-        this.affinityUsed = false;
+        this.inventory = myInventory;
         // load the image
-        characterImage = new Image(getClass().getResourceAsStream("AlchemistCharacter.png"));
-        // add special objects to inventory
-        inventory.add(elementalAffinity);
+        characterImage = new Image(getClass().getResourceAsStream("MageCharacter.png"));
         // change playerType
-        playerType = "Alchemist";
+        playerType = "Mage";
     }
 
     public ImageView getCharacterImageView() {
@@ -123,25 +114,4 @@ public class AlchemistCharacter extends Character {
     public String[] getInventory() {
         return inventory.toArray(new String[inventory.size()]);
     }
-
-    /**
-     * useElementalAffinity
-     * ______________________
-     * If elementalAffinity has not already been used, it is used in battle.
-     * If it has been used, this method does nothing.
-     */
-    public void useElementalAffinity() {
-        if (!affinityUsed) {
-            // check if the player is currently in battle with a prowler
-            // then, release the spell and change affinityUsed to true
-            affinityUsed = true;
-        }
-    }
-
-    public void castSpell() {
-        // finish
-    }
-
-    // override castSpell
 }
-

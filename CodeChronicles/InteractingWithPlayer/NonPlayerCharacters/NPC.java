@@ -1,11 +1,8 @@
-package week3.group_project.group_99.CodeChronicles;
+package InteractingWithPlayer.NonPlayerCharacters;
 
-import GameModel.AdventureObject;
 import GameModel.Room;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.util.ArrayList;
 
 /**
  * NPC
@@ -17,13 +14,17 @@ import java.util.ArrayList;
  * folder characterImages --> NPCimages
  */
 public class NPC {
-    String NPCname;
+    String name;
     // the name of the NPC character
-    String NPCdescription;
+    String IntroText;
     // a short description in case the user would like to know more about the NPC
+
+    String CharacterRevealText;
+    // a short description in case the user would like to know more about the NPC
+
     Room currLocation;
     // the location of the NPC (the room where they are found)
-    private Image NPCimage;
+    private Image image;
     // the image assigned to the NPC
 
     /**
@@ -31,16 +32,16 @@ public class NPC {
      * __________________________
      * Initializes attributes
      */
-    public NPC(String characterName, String characterDesc, Room myCurrLocation, Image characterImage) {
-        this.NPCname = characterName;
-        this.NPCdescription = characterDesc;
-        this.currLocation = myCurrLocation;
+    public NPC(String characterName, String introText, String revealText, Image characterImage) {
+        this.name = characterName;
+        this.IntroText = introText;
+        this.CharacterRevealText = revealText;
         // load the image
-        NPCimage = characterImage;
+        this.image = characterImage;
     }
 
     public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(NPCimage);
+        ImageView imageView = new ImageView(image);
         // default (change these later as needed):
         imageView.setFitHeight(100);
         return imageView;

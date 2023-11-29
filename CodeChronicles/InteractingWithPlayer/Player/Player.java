@@ -1,10 +1,6 @@
-package week3.group_project.group_99.CodeChronicles;
+package InteractingWithPlayer.Player;
 
-import GameModel.AdventureObject;
 import GameModel.Room;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 // TO-DO for this class:
 // replace object and class name types later.
@@ -24,8 +20,8 @@ import java.util.Objects;
  * At the start of the game the player will be able to choose the
  * character "type" as indicated by the subclasses.
  *  */
-public class Character {
-    String characterName;
+public class Player {
+    String playerName;
     // The name of the character, allow the character to choose
     String characterDesc;
     // The description of the character, allow the character to edit
@@ -44,11 +40,11 @@ public class Character {
      * __________________________
      * Initializes attributes
      *
-     * @param characterName
+     * @param playerName
      * @param characterDesc
      */
-    public Character(String characterName, String characterDesc, Room myCurrLocation, String myPlayerType) {
-        this.characterName = "Unnamed Wizard"; // BEFORE the player customizes their name
+    public Player(String playerName, String characterDesc, Room myCurrLocation, String myPlayerType) {
+        this.playerName = "Unnamed Wizard"; // BEFORE the player customizes their name
         this.characterDesc = "You are a wizard that has recently been admitted to Hackwards School of Codecraft. You love to code and are an ambitious student.\";";
         this.currLocation = myCurrLocation;
         this.playerType = myPlayerType;
@@ -65,8 +61,8 @@ public class Character {
      *
      * @return the name of the character.
      */
-    public String getCharacterName() {
-        return this.characterName;
+    public String getPlayerName() {
+        return this.playerName;
     }
 
     /**
@@ -88,8 +84,8 @@ public class Character {
      * This is useful for instances in the story in which the
      * Characters name is said by another character.
      */
-    public void setCharacterName(String name) {
-        this.characterName = name;
+    public void setPlayerName(String name) {
+        this.playerName = name;
     }
 
     /**

@@ -1,16 +1,20 @@
 package InteractingWithPlayer;
 
+import InteractingWithPlayer.Player.Player;
+
 public class TrustCommand implements Trust {
 
+    Player player;
+
     private int life = 5;
-    int codeBytes = Character.getCodeBytes();
+    int codeBytes = player.getCodeBytes();
 
     /**
      * As the player decides to trust the character, show the player the identity of the character.
      */
     @Override
     public void showCharacterIdentity() {
-        if (characterType == "Prowler"){
+        if (player.getPlayerType() == "Prowler"){
             System.out.println("Danger! You decided to trust a Prowler.");
         }
         else {
@@ -25,7 +29,7 @@ public class TrustCommand implements Trust {
 
     @Override
     public void reducePlayerLife() {
-        if (characterType == "Prowler"){
+        if (player.getPlayerType() == "Prowler"){
             life = life - 1;
         }
         else{

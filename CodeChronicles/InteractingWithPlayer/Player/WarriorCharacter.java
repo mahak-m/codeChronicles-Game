@@ -1,4 +1,4 @@
-package week3.group_project.group_99.CodeChronicles;
+package InteractingWithPlayer.Player;
 
 import GameModel.AdventureObject;
 import GameModel.Room;
@@ -6,42 +6,51 @@ import GameModel.Room;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import InteractingWithPlayer.Player.Player;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- * MageCharacter class
+ * WarriorCharacter class
  * _________________________
- * The MageCharacter extends the superclass. This character and has no special powers
+ * The WarriorCharacter extends the superclass. This character and has no special powers
  * or features. If no character is chosen, this is the default character.
+ * This class sets the character type and assigns an image for the WarriorCharacter which can later
+ * be used in UI
  *
- * This class sets the character type and assigns an image for the MageCharacter which
- * can later be used in UI. The castSpell method stays the same.
+ * WarriorCharacter objects hold a diamond shield (guarantees victory in a battle when used).
+ * The shield can be used in battle once during the game using useShield().
+ *
+ * Its usage is tracked through the shieldUsed attribute.
+ *
+ * The castSpell() method is overridden to reflect the change in WarriorCharacter’s lines when in battle.
  *
  *  */
-public class MageCharacter extends Character {
+public class WarriorCharacter extends Player {
 
     private Image characterImage;
-    // The image associated with the MageCharacter
+    private AdventureObject diamondShield;
+    public boolean shieldUsed;
     private ArrayList<AdventureObject> inventory;
-    // The inventory of the character. May only contain items of type AdventureObject.
     public String playerType;
 
-
     /**
-     * MageCharacter Constructor
+     * WarriorCharacter Constructor
      * __________________________
      * Initializes attributes
      *
      */
-    public MageCharacter(String characterName, String characterDesc, Room myCurrLocation, ArrayList<AdventureObject> myInventory) {
-        super(characterName, characterDesc, myCurrLocation, "Mage");
-        isPlayable = true;
+    public WarriorCharacter(String characterName, String characterDesc, Room myCurrLocation, ArrayList<AdventureObject> myInventory) {
+        super(characterName, characterDesc, myCurrLocation, "Warrior");
         this.inventory = myInventory;
+        isPlayable = true;
+        this.shieldUsed = false;
         // load the image
-        characterImage = new Image(getClass().getResourceAsStream("MageCharacter.png"));
+        characterImage = new Image(getClass().getResourceAsStream("WarriorCharacter.png"));
+        // add special objects to inventory
+        inventory.add(diamondShield);
         // change playerType
-        playerType = "Mage";
+        playerType = "Warrior";
     }
 
     public ImageView getCharacterImageView() {
@@ -113,4 +122,11 @@ public class MageCharacter extends Character {
     public String[] getInventory() {
         return inventory.toArray(new String[inventory.size()]);
     }
+
+    public void useShield() {
+        // add this in later
+    }
+
+    // override castSpell
+
 }
