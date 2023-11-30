@@ -2,6 +2,7 @@ package InteractingWithPlayer.Player;
 
 import GameModel.Room;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 // TO-DO for this class:
 // replace object and class name types later.
@@ -21,7 +22,7 @@ import javafx.scene.image.Image;
  * At the start of the game the player will be able to choose the
  * character "type" as indicated by the subclasses.
  *  */
-public class Player {
+public abstract class Player {
 
     public Image characterImage;
     String playerName;
@@ -102,5 +103,13 @@ public class Player {
     public int getCodeBytes() {
         return this.codeBytes;
     }
+
+    public ImageView getCharacterImageView() {
+        ImageView imageView = new ImageView(this.characterImage);
+        // default (change these later as needed):
+        imageView.setFitWidth(300);
+        return new ImageView();
+    }
 }
+
 

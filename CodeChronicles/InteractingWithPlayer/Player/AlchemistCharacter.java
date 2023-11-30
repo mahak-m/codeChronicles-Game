@@ -45,24 +45,15 @@ public class AlchemistCharacter extends Player {
     public AlchemistCharacter(Room myCurrLocation) {
         super(myCurrLocation, "Alchemist");
         this.inventory = new ArrayList<AdventureObject>();
-        isPlayable = true;
+        this.isPlayable = true;
         this.affinityUsed = false;
         // load the image
-        characterImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
+        this.characterImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
         // add special objects to inventory
-        inventory.add(elementalAffinity);
+        this.inventory.add(elementalAffinity);
         // change playerType
-        playerType = "Alchemist";
+        this.playerType = "Alchemist";
     }
-
-    public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(characterImage);
-        // default (change these later as needed):
-        imageView.setFitHeight(100);
-        return imageView;
-    }
-    // IMPORTANT: to use the image in UI (i.e. in pane, panel):
-    // ImageView mageImageView = mageCharacter.getCharacterImageView();
 
     /**
      * equiptItem

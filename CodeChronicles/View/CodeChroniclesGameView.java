@@ -1,6 +1,7 @@
 package View;
 
 import GameModel.CodeChroniclesGame;
+import InteractingWithPlayer.Player.Player;
 import InteractingWithPlayer.Player.AlchemistCharacter;
 import InteractingWithPlayer.Player.MageCharacter;
 import InteractingWithPlayer.Player.WarriorCharacter;
@@ -28,6 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static javafx.scene.control.ContentDisplay.TOP;
 import static javafx.scene.layout.GridPane.getColumnIndex;
 import static javafx.scene.layout.GridPane.getRowIndex;
+import static jdk.dynalink.linker.support.Guards.isInstance;
 
 /**
  * Class AdventureGameView.
@@ -227,7 +229,7 @@ public class CodeChroniclesGameView {
         roomGridPane.setAlignment(Pos.CENTER);
 
         // GridPane
-        roomGridPane.setPadding(new Insets(20));
+        roomGridPane.setPadding(new Insets(0));
         roomGridPane.setBackground(new Background(new BackgroundFill(
                 Color.valueOf(this.colourScheme.backgroundColour1),
                 new CornerRadii(0),
@@ -235,11 +237,11 @@ public class CodeChroniclesGameView {
         )));
 
         // Row and Column Constraints
-        ColumnConstraints column1 = new ColumnConstraints(50);
-        ColumnConstraints column2 = new ColumnConstraints(300);
+        ColumnConstraints column1 = new ColumnConstraints(30);
+        ColumnConstraints column2 = new ColumnConstraints(320);
         ColumnConstraints column3 = new ColumnConstraints(300);
-        ColumnConstraints column4 = new ColumnConstraints(300);
-        ColumnConstraints column5 = new ColumnConstraints(50);
+        ColumnConstraints column4 = new ColumnConstraints(320);
+        ColumnConstraints column5 = new ColumnConstraints(30);
         RowConstraints row1 = new RowConstraints(80);
         RowConstraints row2 = new RowConstraints( 20);
         RowConstraints row3 = new RowConstraints(600);
@@ -271,17 +273,18 @@ public class CodeChroniclesGameView {
         topButtons.setSpacing(10);
         topButtons.setAlignment(Pos.CENTER);
 
-
         //add all the widgets to the GridPane
-        roomGridPane.add(topButtons, 1, 0, 5, 1 );  // Add buttons
+        roomGridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
         roomGridPane.setHalignment(topButtons, HPos.CENTER);
-        // add characters
-        ImageView character = new ImageView(this.game.player.characterImage);
-        character.setFitWidth(300);
-        character.setFitHeight(500);
-        Button characterButton = new Button();
-        characterButton.setGraphic(character);
-        roomGridPane.add(characterButton, 2, 2, 1, 1);
+
+        // add characters and NPCs to the GridPane
+        roomGridPane.add(this.getCharacterImageView(), 3, 2);
+
+        // add room description to GridPane
+        Label roomLabel= new Label(this.game.player.getCurrentRoom().getRoomDescription());
+        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour1), CornerRadii.EMPTY, Insets.EMPTY)));
+
+        roomGridPane.add(roomLabel, 0, 3, 5, 1);
 
         // add background
         roomGridPane.setStyle("-fx-background-image: url('OtherFiles/roomImages/FrontGate.jpg');");
@@ -291,6 +294,28 @@ public class CodeChroniclesGameView {
         this.stage.setScene(scene);
         this.stage.setResizable(false);
         this.stage.show();
+    }
+
+    public ImageView getCharacterImageView() {
+        if (this.game.player instanceof AlchemistCharacter) {
+            Image playerImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
+            ImageView imageView = new ImageView(playerImage);
+            imageView.setFitWidth(400);
+            imageView.setFitHeight(500);
+            return imageView;
+        } else if (this.game.player instanceof MageCharacter) {
+            Image playerImage = new Image("OtherFiles/characterImages/mageCharacter.png");
+            ImageView imageView = new ImageView(playerImage);
+            imageView.setFitWidth(400);
+            imageView.setFitHeight(500);
+            return imageView;
+        } else {
+            Image playerImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
+            ImageView imageView = new ImageView(playerImage);
+            imageView.setFitWidth(400);
+            imageView.setFitHeight(500);
+            return imageView;
+        }
     }
 
 

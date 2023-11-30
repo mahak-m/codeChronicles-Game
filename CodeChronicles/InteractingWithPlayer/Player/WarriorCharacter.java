@@ -43,24 +43,15 @@ public class WarriorCharacter extends Player {
     public WarriorCharacter(Room myCurrLocation) {
         super(myCurrLocation, "Warrior");
         this.inventory = new ArrayList<AdventureObject>();
-        isPlayable = true;
+        this.isPlayable = true;
         this.shieldUsed = false;
         // load the image
-        characterImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
+        this.characterImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
         // add special objects to inventory
-        inventory.add(diamondShield);
+        this.inventory.add(diamondShield);
         // change playerType
-        playerType = "Warrior";
+        this.playerType = "Warrior";
     }
-
-    public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(characterImage);
-        // default (change these later as needed):
-        imageView.setFitHeight(100);
-        return imageView;
-    }
-    // IMPORTANT: to use the image in UI (i.e. in pane, panel):
-    // ImageView mageImageView = mageCharacter.getCharacterImageView();
 
     /**
      * equiptItem

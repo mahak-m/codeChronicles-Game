@@ -37,22 +37,13 @@ public class MageCharacter extends Player {
      */
     public MageCharacter(Room myCurrLocation) {
         super(myCurrLocation, "Mage");
-        isPlayable = true;
+        this.isPlayable = true;
         this.inventory = new ArrayList<AdventureObject>();
         // load the image
-        characterImage = new Image("OtherFiles/characterImages/mageCharacter.png");
+        this.characterImage = new Image("OtherFiles/characterImages/mageCharacter.png");
         // change playerType
-        playerType = "Mage";
+        this.playerType = "Mage";
     }
-
-    public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(characterImage);
-        // default (change these later as needed):
-        imageView.setFitHeight(100);
-        return imageView;
-    }
-    // IMPORTANT: to use the image in UI (i.e. in pane, panel):
-    // ImageView mageImageView = mageCharacter.getCharacterImageView();
 
     /**
      * equiptItem
