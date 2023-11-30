@@ -1,6 +1,7 @@
 package InteractingWithPlayer.Player;
 
 import GameModel.Room;
+import javafx.scene.image.Image;
 
 // TO-DO for this class:
 // replace object and class name types later.
@@ -21,6 +22,8 @@ import GameModel.Room;
  * character "type" as indicated by the subclasses.
  *  */
 public class Player {
+
+    public Image characterImage;
     String playerName;
     // The name of the character, allow the character to choose
     String characterDesc;
@@ -36,14 +39,12 @@ public class Player {
 
 
     /**
-     * Character Constructor
+     * Player Constructor
      * __________________________
      * Initializes attributes
      *
-     * @param playerName
-     * @param characterDesc
      */
-    public Player(String playerName, String characterDesc, Room myCurrLocation, String myPlayerType) {
+    public Player(Room myCurrLocation, String myPlayerType) {
         this.playerName = "Unnamed Wizard"; // BEFORE the player customizes their name
         this.characterDesc = "You are a wizard that has recently been admitted to Hackwards School of Codecraft. You love to code and are an ambitious student.\";";
         this.currLocation = myCurrLocation;
@@ -52,7 +53,7 @@ public class Player {
     }
 
     /**
-     * getCharacterName
+     * getPlayerName
      * _________________________
      * Getter method for the character name.
      *

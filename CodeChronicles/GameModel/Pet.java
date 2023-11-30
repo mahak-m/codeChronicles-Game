@@ -1,4 +1,5 @@
 package GameModel;
+import InteractingWithPlayer.Player.Player;
 import jdk.jshell.spi.ExecutionControl;
 
 import java.io.Serializable;

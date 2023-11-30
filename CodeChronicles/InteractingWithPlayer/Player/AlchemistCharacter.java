@@ -28,7 +28,7 @@ import javafx.scene.image.ImageView;
  *  */
 public class AlchemistCharacter extends Player {
 
-    private Image characterImage;
+    public Image characterImage;
     private AdventureObject philosophersStone;
     private AdventureObject elementalAffinity;
     public boolean affinityUsed;
@@ -42,13 +42,13 @@ public class AlchemistCharacter extends Player {
      * Initializes attributes
      *
      */
-    public AlchemistCharacter(String characterName, String characterDesc, Room myCurrLocation, ArrayList<AdventureObject> myInventory) {
-        super(characterName, characterDesc, myCurrLocation, "Alchemist");
-        this.inventory = myInventory;
+    public AlchemistCharacter(Room myCurrLocation) {
+        super(myCurrLocation, "Alchemist");
+        this.inventory = new ArrayList<AdventureObject>();
         isPlayable = true;
         this.affinityUsed = false;
         // load the image
-        characterImage = new Image(getClass().getResourceAsStream("AlchemistCharacter.png"));
+        characterImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
         // add special objects to inventory
         inventory.add(elementalAffinity);
         // change playerType

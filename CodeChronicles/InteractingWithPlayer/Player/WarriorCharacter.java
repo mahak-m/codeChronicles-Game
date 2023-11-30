@@ -28,7 +28,7 @@ import javafx.scene.image.ImageView;
  *  */
 public class WarriorCharacter extends Player {
 
-    private Image characterImage;
+    public Image characterImage;
     private AdventureObject diamondShield;
     public boolean shieldUsed;
     private ArrayList<AdventureObject> inventory;
@@ -40,13 +40,13 @@ public class WarriorCharacter extends Player {
      * Initializes attributes
      *
      */
-    public WarriorCharacter(String characterName, String characterDesc, Room myCurrLocation, ArrayList<AdventureObject> myInventory) {
-        super(characterName, characterDesc, myCurrLocation, "Warrior");
-        this.inventory = myInventory;
+    public WarriorCharacter(Room myCurrLocation) {
+        super(myCurrLocation, "Warrior");
+        this.inventory = new ArrayList<AdventureObject>();
         isPlayable = true;
         this.shieldUsed = false;
         // load the image
-        characterImage = new Image(getClass().getResourceAsStream("WarriorCharacter.png"));
+        characterImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
         // add special objects to inventory
         inventory.add(diamondShield);
         // change playerType

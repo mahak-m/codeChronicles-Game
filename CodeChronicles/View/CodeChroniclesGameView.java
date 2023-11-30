@@ -1,10 +1,11 @@
 package View;
 
 import GameModel.CodeChroniclesGame;
-import GameModel.AdventureObject;
+import InteractingWithPlayer.Player.AlchemistCharacter;
+import InteractingWithPlayer.Player.MageCharacter;
+import InteractingWithPlayer.Player.WarriorCharacter;
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,10 +20,10 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import javafx.event.EventHandler; //you will need this too!
 import javafx.scene.AccessibleRole;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static javafx.scene.control.ContentDisplay.TOP;
 import static javafx.scene.layout.GridPane.getColumnIndex;
@@ -48,7 +49,6 @@ public class CodeChroniclesGameView {
     VBox objectsInRoom = new VBox(); //to hold room items
     VBox objectsInInventory = new VBox(); //to hold inventory items
     ImageView roomImageView; //to hold room image
-    TextField inputTextField; //for user input
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
 
@@ -70,39 +70,182 @@ public class CodeChroniclesGameView {
      */
     public void intiUI() {
 
-        // setting up the stage
+        // SETTING UP THE STAGE
         this.stage.setTitle("Code Chronicles: Wizard's Quest");
 
-        //Inventory + Room items
-        objectsInInventory.setSpacing(10);
-        objectsInInventory.setAlignment(Pos.TOP_CENTER);
-        objectsInRoom.setSpacing(10);
-        objectsInRoom.setAlignment(Pos.TOP_CENTER);
+        // CREATE LOADING SCREEN
+        GridPane gamePane = new GridPane();
+        gamePane.setStyle("-fx-background-image: url('OtherFiles/StartScreen.jpg');");
+        var scene1 = new Scene(gamePane ,  1000, 800);
+        this.stage.setScene(scene1);
+        this.stage.setResizable(false);
+        this.stage.show();
+
+        // AFTER LOADING SCREEN SHOW CHARACTER CUSTOMIZATION SCREEN
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        pause.setOnFinished(event -> {
+            this.stage.setScene(this.setCharacterCustomizationScene());
+        });
+        pause.play();
+    }
+
+    public Scene setCharacterCustomizationScene() {
+
+        // SETUP GRIDPANE
+        GridPane characterGridPane = new GridPane();
+        // characterGridPane.setPadding(new Insets(20));
+        characterGridPane.setBackground(new Background(new BackgroundFill(
+                Color.valueOf(this.colourScheme.backgroundColour1),
+                new CornerRadii(0),
+                new Insets(0)
+        )));
+        // Row and Column Constraints
+        ColumnConstraints column1 = new ColumnConstraints(50);
+        ColumnConstraints column2 = new ColumnConstraints(300);
+        ColumnConstraints column3 = new ColumnConstraints(300);
+        ColumnConstraints column4 = new ColumnConstraints(300);
+        ColumnConstraints column5 = new ColumnConstraints(50);
+        RowConstraints row1 = new RowConstraints(50);
+        RowConstraints row2 = new RowConstraints( 30);
+        RowConstraints row3 = new RowConstraints(600);
+        RowConstraints row4 = new RowConstraints(120);
+        characterGridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
+        characterGridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
+
+        //SETUP OTHER BUTTONS AND LABELS
+
+        // "Character Customization" Label
+        Label characterCustomization = new Label("Character Customization");
+        characterCustomization.setFont(new Font("Helvetica", 25));
+        characterCustomization.setTextFill(Color.web(this.colourScheme.fontColour1));
+        characterCustomization.setAlignment(Pos.CENTER);
+        characterGridPane.add(characterCustomization, 2, 0, 1, 1);
+        characterGridPane.setHalignment(characterCustomization, HPos.CENTER);
+
+        // Character Selection Label
+        Label selectedPlayerLabel = new Label("Please select a player.");
+        selectedPlayerLabel.setFont(new Font("Helvetica", this.fontSize));
+        selectedPlayerLabel.setTextFill(Color.web(this.colourScheme.fontColour2));
+        selectedPlayerLabel.setAlignment(Pos.CENTER);
+        characterGridPane.add(selectedPlayerLabel, 2, 1, 1, 1);
+        characterGridPane.setHalignment(selectedPlayerLabel, HPos.CENTER);
+
+        // Input Text Field for Player Name
+
+        // Play Game Button
+        Button playButton = new Button("Play");
+        playButton.setId("Play");
+        playButton.setAlignment(Pos.CENTER);
+        customizeButton(playButton,100, 50);
+        makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
+        playButton.setOnAction(e -> {
+            if (this.game.player != null) {
+                setRoomScene();
+            }
+        });
+        characterGridPane.add(playButton, 3, 3, 1, 1);
+        characterGridPane.setHalignment(playButton, HPos.RIGHT);
+
+        // CHARACTER SELECTION BUTTONS
+
+        // Alchemist Player
+        Button alchemistButton = new Button("ALCHEMIST CHARACTER \n \n character description here");
+        alchemistButton.setId("Alchemist Character");
+        alchemistButton.setAlignment(Pos.CENTER);
+        customizeButton(alchemistButton, 280, 550);
+        Image alchemistImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
+        ImageView alchemistView = new ImageView(alchemistImage);
+        alchemistView.setFitHeight(300);
+        alchemistView.setFitWidth(250);
+        alchemistView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        alchemistView.setAccessibleText("DESCRIPTION");
+        alchemistButton.setGraphic(alchemistView);
+        alchemistButton.setContentDisplay(TOP);
+        alchemistButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
+        makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "DESCRIPTION");
+        alchemistButton.setOnAction(e -> {
+            selectedPlayerLabel.setText("You have selected: Alchemist Character");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get(1));
+        });
+
+        // Mage Player
+        Button mageButton = new Button("   MAGE CHARACTER \n \n character description here");
+        mageButton.setId("Mage Character");
+        mageButton.setAlignment(Pos.CENTER);
+        customizeButton(mageButton, 280, 550);
+        Image mageImage = new Image("OtherFiles/characterImages/mageCharacter.png");
+        ImageView mageView = new ImageView(mageImage);
+        mageView.setFitHeight(300);
+        mageView.setFitWidth(250);
+        mageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        mageView.setAccessibleText("DESCRIPTION");
+        mageButton.setGraphic(mageView);
+        mageButton.setContentDisplay(TOP);
+        mageButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
+        makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "DESCRIPTION");
+        mageButton.setOnAction(e -> {
+            selectedPlayerLabel.setText("You have selected: Mage Character");
+            this.game.player = new MageCharacter(this.game.rooms.get(1));
+        });
+
+        // Warrior Player
+        Button warriorButton = new Button("WARRIOR CHARACTER \n \n character description here");
+        warriorButton.setId("Warrior Character");
+        warriorButton.setAlignment(Pos.CENTER);
+        customizeButton(warriorButton, 280, 550);
+        Image warriorImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
+        ImageView warriorView = new ImageView(warriorImage);
+        warriorView.setFitHeight(300);
+        warriorView.setFitWidth(250);
+        warriorView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        warriorView.setAccessibleText("DESCRIPTION");
+        warriorButton.setGraphic(warriorView);
+        warriorButton.setContentDisplay(TOP);
+        warriorButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
+        makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "DESCRIPTION");
+        warriorButton.setOnAction(e -> {
+            selectedPlayerLabel.setText("You have selected: Warrior Character");
+            this.game.player = new WarriorCharacter(this.game.rooms.get(1));
+        });
+
+        // Add character buttons to grid pane.
+        characterGridPane.add(alchemistButton, 1, 2, 1, 1 );
+        characterGridPane.setHalignment(alchemistButton, HPos.CENTER);
+        characterGridPane.add(mageButton, 2, 2, 1, 1 );
+        characterGridPane.setHalignment(mageButton, HPos.CENTER);
+        characterGridPane.add(warriorButton, 3, 2, 1, 1 );
+        characterGridPane.setHalignment(warriorButton, HPos.CENTER);
+
+        // SETUP SCENE
+        Scene scene = new Scene(characterGridPane ,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour1));
+        return scene;
+    }
+
+    public void setRoomScene() {
+        GridPane roomGridPane = new GridPane();
+        roomGridPane.setAlignment(Pos.CENTER);
 
         // GridPane
-        gridPane.setPadding(new Insets(20));
-        gridPane.setBackground(new Background(new BackgroundFill(
+        roomGridPane.setPadding(new Insets(20));
+        roomGridPane.setBackground(new Background(new BackgroundFill(
                 Color.valueOf(this.colourScheme.backgroundColour1),
                 new CornerRadii(0),
                 new Insets(0)
         )));
 
-        //Three columns, three rows for the GridPane
-        ColumnConstraints column1 = new ColumnConstraints(150);
-        ColumnConstraints column2 = new ColumnConstraints(650);
-        ColumnConstraints column3 = new ColumnConstraints(150);
-        column3.setHgrow( Priority.SOMETIMES ); //let some columns grow to take any extra space
-        column1.setHgrow( Priority.SOMETIMES );
-
-        // Row constraints
-        RowConstraints row1 = new RowConstraints(90);
-        RowConstraints row2 = new RowConstraints( 550 );
-        RowConstraints row3 = new RowConstraints();
-        row1.setVgrow( Priority.SOMETIMES );
-        row3.setVgrow( Priority.SOMETIMES );
-
-        gridPane.getColumnConstraints().addAll( column1 , column2 , column1 );
-        gridPane.getRowConstraints().addAll( row1 , row2 , row1 );
+        // Row and Column Constraints
+        ColumnConstraints column1 = new ColumnConstraints(50);
+        ColumnConstraints column2 = new ColumnConstraints(300);
+        ColumnConstraints column3 = new ColumnConstraints(300);
+        ColumnConstraints column4 = new ColumnConstraints(300);
+        ColumnConstraints column5 = new ColumnConstraints(50);
+        RowConstraints row1 = new RowConstraints(80);
+        RowConstraints row2 = new RowConstraints( 20);
+        RowConstraints row3 = new RowConstraints(600);
+        RowConstraints row4 = new RowConstraints(100);
+        roomGridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
+        roomGridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
 
         // Buttons
         menuButton = new Button("Menu");
@@ -128,64 +271,26 @@ public class CodeChroniclesGameView {
         topButtons.setSpacing(10);
         topButtons.setAlignment(Pos.CENTER);
 
-        inputTextField = new TextField();
-        inputTextField.setFont(new Font("Arial", this.fontSize));
-        inputTextField.setFocusTraversable(true);
-
-        inputTextField.setAccessibleRole(AccessibleRole.TEXT_AREA);
-        inputTextField.setAccessibleRoleDescription("Text Entry Box");
-        inputTextField.setAccessibleText("Enter commands in this box.");
-        inputTextField.setAccessibleHelp("This is the area in which you can enter commands you would like to play.  Enter a command and hit return to continue.");
-        addTextHandlingEvent(); //attach an event to this input field
-
-        //labels for inventory and room items
-        Label objLabel =  new Label("Objects in Room");
-        objLabel.setAlignment(Pos.CENTER);
-        objLabel.setStyle("-fx-text-fill: white;");
-        objLabel.setFont(new Font("Arial", this.fontSize));
-
-        Label invLabel =  new Label("Your Inventory");
-        invLabel.setAlignment(Pos.CENTER);
-        invLabel.setStyle("-fx-text-fill: white;");
-        invLabel.setFont(new Font("Arial", this.fontSize));
 
         //add all the widgets to the GridPane
-        gridPane.add( objLabel, 0, 0, 1, 1 );  // Add label
-        gridPane.add( topButtons, 1, 0, 1, 1 );  // Add buttons
-        gridPane.add( invLabel, 2, 0, 1, 1 );  // Add label
+        roomGridPane.add(topButtons, 1, 0, 5, 1 );  // Add buttons
+        roomGridPane.setHalignment(topButtons, HPos.CENTER);
+        // add characters
+        ImageView character = new ImageView(this.game.player.characterImage);
+        character.setFitWidth(300);
+        character.setFitHeight(500);
+        Button characterButton = new Button();
+        characterButton.setGraphic(character);
+        roomGridPane.add(characterButton, 2, 2, 1, 1);
 
-        Label commandLabel = new Label("What would you like to do?");
-        commandLabel.setStyle("-fx-text-fill: white;");
-        commandLabel.setFont(new Font("Arial", this.fontSize));
+        // add background
+        roomGridPane.setStyle("-fx-background-image: url('OtherFiles/roomImages/FrontGate.jpg');");
 
-        updateScene(""); //method displays an image and whatever text is supplied
-        updateItems(); //update items shows inventory and objects in rooms
-
-        // adding the text area and submit button to a VBox
-        VBox textEntry = new VBox();
-        textEntry.setStyle("-fx-background-color: " + this.colourScheme.backgroundColour1 + ";");
-        textEntry.setPadding(new Insets(20, 20, 20, 20));
-        textEntry.getChildren().addAll(commandLabel, inputTextField);
-        textEntry.setSpacing(10);
-        textEntry.setAlignment(Pos.CENTER);
-        gridPane.add( textEntry, 0, 2, 3, 1 );
-
-        GridPane gamePane = new GridPane();
-        gamePane.setStyle("-fx-background-image: url('OtherFiles/StartScreen.jpg');");
-        var scene1 = new Scene(gamePane ,  1000, 800);
-        this.stage.setScene(scene1);
+        var scene = new Scene( roomGridPane ,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour1));
+        this.stage.setScene(scene);
         this.stage.setResizable(false);
         this.stage.show();
-
-
-        PauseTransition pause = new PauseTransition(Duration.seconds(3));
-        pause.setOnFinished(event -> {
-            var scene = new Scene( gridPane ,  1000, 800);
-            scene.setFill(Color.valueOf(this.colourScheme.backgroundColour1));
-            this.stage.setScene(scene);
-            GameMenu menu = new GameMenu(this);
-        });
-        pause.play();
     }
 
 
@@ -223,139 +328,6 @@ public class CodeChroniclesGameView {
     }
 
     /**
-     * addTextHandlingEvent
-     * __________________________
-     * Add an event handler to the inputTextField attribute
-     *
-     * Your event handler should respond when users 
-     * hits the ENTER or TAB KEY. If the user hits 
-     * the ENTER Key, strip white space from the
-     * input to inputTextField and pass the stripped
-     * string to submitEvent for processing.
-     *
-     * If the user hits the TAB key, move the focus 
-     * of the scene onto any other node in the scene 
-     * graph by invoking requestFocus method.
-     */
-    private void addTextHandlingEvent() {
-        TextField textField = this.inputTextField;
-
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                String text = textField.getText().trim();
-                submitEvent(text);
-                textField.clear();
-            }
-        };
-        // when enter is pressed
-        inputTextField.setOnAction(event);
-
-    }
-
-
-    /**
-     * submitEvent
-     * __________________________
-     *
-     * @param text the command that needs to be processed
-     */
-    private void submitEvent(String text) {
-
-        text = text.strip(); //get rid of white space
-        stopArticulation(); //if speaking, stop
-
-        if (text.equalsIgnoreCase("LOOK") || text.equalsIgnoreCase("L")) {
-            String roomDesc = this.game.getPlayer().getCurrentRoom().getRoomDescription();
-            String objectString = this.game.getPlayer().getCurrentRoom().getObjectString();
-            if (!objectString.isEmpty()) roomDescLabel.setText(roomDesc + "\n\nObjects in this room:\n" + objectString);
-            articulateRoomDescription(); //all we want, if we are looking, is to repeat description. TODO COMMENTED FOR TESTING
-            return;
-        } else if (text.equalsIgnoreCase("HELP") || text.equalsIgnoreCase("H")) {
-            showInstructions();
-            return;
-        } else if (text.equalsIgnoreCase("COMMANDS") || text.equalsIgnoreCase("C")) {
-            showCommands(); //this is new!  We did not have this command in A1
-            return;
-        }
-
-        //try to move!
-        String output = this.game.interpretAction(text); //process the command!
-
-        if (output == null || (!output.equals("GAME OVER") && !output.equals("FORCED") && !output.equals("HELP"))) {
-            updateScene(output);
-            updateItems();
-        } else if (output.equals("GAME OVER")) {
-            updateScene("");
-            updateItems();
-            PauseTransition pause = new PauseTransition(Duration.seconds(10));
-            pause.setOnFinished(event -> {
-                Platform.exit();
-            });
-            pause.play();
-        } else if (output.equals("FORCED")) {
-            //write code here to handle "FORCED" events!
-            //Your code will need to display the image in the
-            //current room and pause, then transition to
-            //the forced room.
-            updateScene(this.game.player.getCurrentRoom().getRoomDescription());
-            updateItems();
-            PauseTransition pause = new PauseTransition(Duration.seconds(5));
-            pause.setOnFinished(event -> {
-                submitEvent("FORCED");
-            });
-            pause.play();
-        }
-    }
-
-
-    /**
-     * showCommands
-     * __________________________
-     *
-     * update the text in the GUI (within roomDescLabel)
-     * to show all the moves that are possible from the 
-     * current room.
-     */
-    private void showCommands() {
-        String commands = this.game.getPlayer().getCurrentRoom().getCommands();
-        this.roomDescLabel.setText("You can move in these directions:\n" + commands);
-    }
-
-
-    /**
-     * updateScene
-     * __________________________
-     *
-     * Show the current room, and print some text below it.
-     * If the input parameter is not null, it will be displayed
-     * below the image.
-     * Otherwise, the current room description will be dispplayed
-     * below the image.
-     * 
-     * @param textToDisplay the text to display below the image.
-     */
-    public void updateScene(String textToDisplay) {
-
-        getRoomImage(); //get the image of the current room
-        formatText(textToDisplay); //format the text to display
-        roomDescLabel.setPrefWidth(500);
-        roomDescLabel.setPrefHeight(500);
-        roomDescLabel.setTextOverrun(OverrunStyle.CLIP);
-        roomDescLabel.setWrapText(true);
-        VBox roomPane = new VBox(roomImageView,roomDescLabel);
-        roomPane.setPadding(new Insets(10));
-        roomPane.setAlignment(Pos.TOP_CENTER);
-        roomPane.setStyle("-fx-background-color: #000000;");
-
-        gridPane.add(roomPane, 1, 1);
-        stage.sizeToScene();
-
-        //finally, articulate the description
-        // TODO: UNCOMMENT LATER
-        // if (textToDisplay == null || textToDisplay.isBlank()) articulateRoomDescription();
-    }
-
-    /**
      * formatText
      * __________________________
      *
@@ -382,10 +354,8 @@ public class CodeChroniclesGameView {
      * Get the image for the current room and place 
      * it in the roomImageView 
      */
-    private void getRoomImage() {
-
-        int roomNumber = this.game.getPlayer().getCurrentRoom().getRoomNumber();
-        String roomImage = "OtherFiles/room-images/" + roomNumber + ".png";
+    private ImageView getRoomImage() {
+        String roomImage = "OtherFiles/roomImages/" + this.game.player.getCurrentRoom().getRoomName() + ".jpg";
 
         Image roomImageFile = new Image(roomImage);
         roomImageView = new ImageView(roomImageFile);
@@ -397,95 +367,7 @@ public class CodeChroniclesGameView {
         roomImageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
         roomImageView.setAccessibleText(this.game.getPlayer().getCurrentRoom().getRoomDescription());
         roomImageView.setFocusTraversable(true);
-    }
-
-    /**
-     * updateItems
-     * __________________________
-     *
-     * This method is partially completed, but you are asked to finish it off.
-     *
-     * The method should populate the objectsInRoom and objectsInInventory Vboxes.
-     * Each Vbox should contain a collection of nodes (Buttons, ImageViews, you can decide)
-     * Each node represents a different object.
-     * 
-     * Images of each object are in the assets 
-     * folders of the given adventure game.
-     */
-    public void updateItems() {
-        //please use setAccessibleText to add "alt" descriptions to your images!
-        //the path to the image of any is as follows:
-        //this.model.getDirectoryName() + "/objectImages/" + objectName + ".jpg";
-        this.objectsInRoom.getChildren().clear();
-        this.objectsInInventory.getChildren().clear();
-        //write some code here to add images of objects in a given room to the objectsInRoom Vbox
-        for (AdventureObject obj : this.game.getPlayer().getCurrentRoom().objectsInRoom) {
-            // Creating the image
-            Image objIm = new Image("OtherFiles/objectImages/" + obj.getName() + ".jpg");
-            ImageView objView = new ImageView(objIm);
-            objView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-            objView.setAccessibleText(obj.getDescription());
-            objView.setFocusTraversable(true);
-            objView.setFitWidth(100);
-            // Creating the button
-            Button objButton = new Button(obj.getName());
-            objButton.setId(obj.getName());
-            objButton.setGraphic(objView);
-            objButton.setContentDisplay(TOP);
-            objButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
-            makeButtonAccessible(objButton, obj.getName(), obj.getName(), obj.getDescription());
-            // Action
-            objButton.setOnAction(e -> {
-                if (this.objectsInRoom.getChildren().contains(objButton)) {
-                    this.game.player.takeObject(obj.getName());
-                    this.updateItems();
-                } else if (this.objectsInInventory.getChildren().contains(objButton)) {
-                    this.game.player.dropObject(obj.getName());
-                    this.updateItems();
-                }
-            });
-            this.objectsInRoom.getChildren().add(objButton);
-        }
-        //write some code here to add images of objects in a player's inventory room to the objectsInInventory Vbox
-        for (AdventureObject obj : this.game.getPlayer().inventory) {
-            // Creating the image
-            Image objIm = new Image("OtherFiles/objectImages/" + obj.getName() + ".jpg");
-            ImageView objView = new ImageView(objIm);
-            objView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-            objView.setAccessibleText(obj.getDescription());
-            objView.setFocusTraversable(true);
-            objView.setFitWidth(100);
-            // Creating the button
-            Button objButton = new Button(obj.getName());
-            objButton.setId(obj.getName());
-            objButton.setGraphic(objView);
-            objButton.setContentDisplay(TOP);
-            objButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
-            makeButtonAccessible(objButton, obj.getName(), obj.getName(), obj.getDescription());
-            // Action
-            objButton.setOnAction(e -> {
-                if (this.objectsInRoom.getChildren().contains(objButton)) {
-                    this.game.player.takeObject(obj.getName());
-                    this.updateItems();
-                } else if (this.objectsInInventory.getChildren().contains(objButton)) {
-                    this.game.player.dropObject(obj.getName());
-                    this.updateItems();
-                }
-            });
-            // Adding the button to Vbox
-            this.objectsInInventory.getChildren().add(objButton);
-        }
-        ScrollPane scO = new ScrollPane(objectsInRoom);
-        scO.setPadding(new Insets(10));
-        scO.setStyle("-fx-background: #000000; -fx-background-color:transparent;");
-        scO.setFitToWidth(true);
-        gridPane.add(scO,0,1);
-
-        ScrollPane scI = new ScrollPane(objectsInInventory);
-        scI.setFitToWidth(true);
-        scI.setStyle("-fx-background: #000000; -fx-background-color:transparent;");
-        gridPane.add(scI,2,1);
-
+        return roomImageView;
     }
 
     /*
@@ -503,40 +385,12 @@ public class CodeChroniclesGameView {
      * -- Again, REMOVE whatever nodes are within the cell beforehand!
      */
     public void showInstructions() {
-        // First remove nodes in the cell beforehand
-        for (Node node: this.gridPane.getChildren()) {
-            if ((getRowIndex(node) == 1) && (getColumnIndex(node) == 1)) {
-                this.gridPane.getChildren().remove(node);
-                break;
-            }
-        }
-        // If helpToggle is false
-        if (!this.helpToggle) {
-            Label instrLabel =  new Label(this.game.getInstructions());
-            instrLabel.setAlignment(Pos.CENTER);
-            instrLabel.setFont(new Font("Arial", this.fontSize));
-            instrLabel.setStyle("-fx-text-fill: white;");
-            instrLabel.setWrapText(true);
-            ScrollPane sp = new ScrollPane();
-            sp.setContent(instrLabel);
-            sp.setPadding(new Insets(25));
-            sp.setStyle("-fx-background: #000000; -fx-background-color:transparent; -fx-border-color:royalblue;");
-            sp.setFitToWidth(true);
-            gridPane.add(sp, 1, 1, 1, 1 );  // Add label
-            this.helpToggle = true;
-        }
-        // If helpToggle is true
-        else {
-            updateScene("");
-            this.helpToggle = false;
-        }
-    }
+        GridPane gridPane = new GridPane();
 
-    public void showMenu() {
         // First remove nodes in the cell beforehand
-        for (Node node: this.gridPane.getChildren()) {
+        for (Node node: gridPane.getChildren()) {
             if ((getRowIndex(node) == 1) && (getColumnIndex(node) == 1)) {
-                this.gridPane.getChildren().remove(node);
+                gridPane.getChildren().remove(node);
                 break;
             }
         }
@@ -557,7 +411,6 @@ public class CodeChroniclesGameView {
         }
         // If helpToggle is true
         else {
-            updateScene("");
             this.helpToggle = false;
         }
     }
@@ -620,3 +473,4 @@ public class CodeChroniclesGameView {
         }
     }
 }
+
