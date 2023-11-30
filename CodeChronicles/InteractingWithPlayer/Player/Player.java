@@ -34,8 +34,9 @@ public class Player {
     // The type of character [Either Mage, Alchemist or, Warrior]
     boolean isPlayable;
     // Attribute that determines if character is playable
-    int codeBytes;
+    private int codeBytes;
     // keeps track of the current number of code bytes
+    private int lives;
 
 
     /**
@@ -49,7 +50,8 @@ public class Player {
         this.characterDesc = "You are a wizard that has recently been admitted to Hackwards School of Codecraft. You love to code and are an ambitious student.\";";
         this.currLocation = myCurrLocation;
         this.playerType = myPlayerType;
-        this.codeBytes = 0; // default value
+        this.codeBytes = 5; // initial value
+        this.lives = 5; //default value
     }
 
     /**
@@ -101,6 +103,19 @@ public class Player {
      */
     public int getCodeBytes() {
         return this.codeBytes;
+    }
+
+    public int getLives() {return this.lives;
+    }
+    public void updateCodeBytes(int codeBytes) {
+        this.codeBytes += codeBytes;
+    }
+    public void loseLife() {
+        this.lives -= 1;
+    }
+
+    public boolean playQuest() { return true;
+        // after quest has been implemented, refer to hia for this implementation
     }
 }
 

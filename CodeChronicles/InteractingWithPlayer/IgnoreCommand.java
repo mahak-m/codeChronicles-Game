@@ -7,26 +7,13 @@ import InteractingWithPlayer.Player.Player;
  */
 
 
-public class IgnoreCommand implements Ignore {
-
-    Player player;
-
-    int codeBytes = player.getCodeBytes();
-
-    /**
-     * Constructor
-     */
-    public IgnoreCommand(int bytes){
-        this.codeBytes = bytes;
-
-    }
+public class IgnoreCommand {
 
 
-    @Override
-    public void playerIgnore() {
+    public void playerIgnore(Player player) {
         //Simply ignore the character
-        if (this.codeBytes >= 5){
-            this.codeBytes -= 5;
+        if (player.getCodeBytes() >= 5){
+            player.updateCodeBytes(-5);
             System.out.println("You decided to ignore the character.");
         }
 
