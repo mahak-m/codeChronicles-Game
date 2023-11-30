@@ -26,8 +26,6 @@ public class CodeChroniclesLoader {
      */
     public void loadGame() throws IOException {
         createRooms();
-        parseObjects();
-        parseSynonyms();
         this.game.setHelpText(parseOtherFile("help"));
     }
 
@@ -35,95 +33,44 @@ public class CodeChroniclesLoader {
      * Parse Rooms File
      */
     private void createRooms() throws IOException {
-
-        int roomNumber;
-
-        String roomFileName = "OtherFiles/rooms.txt";
-        BufferedReader buff = new BufferedReader(new FileReader(roomFileName));
-
-        while (buff.ready()) {
-
-            String currRoom = buff.readLine(); // first line is the number of a room
-
-            roomNumber = Integer.parseInt(currRoom); //current room number
-
-            // now need to get room name
-            String roomName = buff.readLine();
-
-            // now we need to get the description
-            String roomDescription = "";
-            String line = buff.readLine();
-            while (!line.equals("-----")) {
-                roomDescription += line + "\n";
-                line = buff.readLine();
-            }
-            roomDescription += "\n";
-
-            // now we make the room object
-            Room room = new Room(roomName, roomNumber, roomDescription);
-
-            // now we make the motion table
-            line = buff.readLine(); // reads the line after "-----"
-            while (line != null && !line.equals("")) {
-                String[] part = line.split(" \s+"); // have to use regex \\s+ as we don't know how many spaces are between the direction and the room number
-                String direction = part[0];
-                String dest = part[1];
-                if (dest.contains("/")) {
-                    String[] blockedPath = dest.split("/");
-                    String dest_part = blockedPath[0];
-                    String object = blockedPath[1];
-                    Passage entry = new Passage(direction, dest_part, object);
-                    room.getMotionTable().addDirection(entry);
-                } else {
-                    Passage entry = new Passage(direction, dest);
-                    room.getMotionTable().addDirection(entry);
-                }
-                line = buff.readLine();
-            }
-            this.game.getRooms().put(room.getRoomNumber(), room);
-        }
-
+        // Create Room 1: Syntax Square
+        Room room1 = new Room("Front Gate", 0, 0, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(1, room1);
+        // Create Room 2: Byte Camp
+        Room room2 = new Room("Main Entrance", 1, 0, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(2, room2);
+        // Create Room 3: Hack Harbour
+        Room room3 = new Room("Administrations Office", 2, 0, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(3, room3);
+        // Create Room 4: Coder's Cove
+        Room room4 = new Room("Dorm Rooms", 3, 0, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(4, room4);
+        // Create Room 5: Algorithm Alley
+        Room room5 = new Room("Hackers Hallway", 0, 1, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(5, room5);
+        // Create Room 6: Logic Lab
+        Room room6 = new Room("Coders Building", 1, 1, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(6, room6);
+        // Create Room 7: Tech Tower
+        Room room7 = new Room("Library", 2, 1, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(7, room7);
+        // Create Room 8: Code Sphere
+        Room room8 = new Room("CodeCraft Classroom", 3, 1, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(8, room8);
+        // Create Room 9: Pixel Plex
+        Room room9 = new Room("Locker Room", 0, 2, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(9, room9);
+        // Create Room 10: Quantum Quarters
+        Room room10 = new Room("Fourth Floor", 1, 2, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(10, room10);
+        // Create Room 11: Data Den
+        Room room11 = new Room("Cafeteria", 2, 2, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(11, room11);
+        // Create Room 12: Chamber of Code
+        Room room12 = new Room("CodeCraft Classroom", 3, 2, "[INSERTROOMDESCRIPTION]");
+        this.game.rooms.put(12, room12);
     }
 
-     /**
-     * Parse Objects File
-     */
-    public void parseObjects() throws IOException {
-
-        String objectFileName = "OtherFiles/objects.txt";
-        BufferedReader buff = new BufferedReader(new FileReader(objectFileName));
-
-        while (buff.ready()) {
-            String objectName = buff.readLine();
-            String objectDescription = buff.readLine();
-            String objectLocation = buff.readLine();
-            String separator = buff.readLine();
-            if (separator != null && !separator.isEmpty())
-                System.out.println("Formatting Error!");
-            int i = Integer.parseInt(objectLocation);
-            Room location = this.game.getRooms().get(i);
-            AdventureObject object = new AdventureObject(objectName, objectDescription, location);
-            location.addGameObject(object);
-        }
-
-    }
-
-     /**
-     * Parse Synonyms File
-     */
-    public void parseSynonyms() throws IOException {
-        String synonymsFileName = "OtherFiles/synonyms.txt";
-        BufferedReader buff = new BufferedReader(new FileReader(synonymsFileName));
-        String line = buff.readLine();
-        while(line != null){
-            String[] commandAndSynonym = line.split("=");
-            String command1 = commandAndSynonym[0];
-            String command2 = commandAndSynonym[1];
-            this.game.getSynonyms().put(command1,command2);
-            line = buff.readLine();
-        }
-
-    }
 
     /**
      * Parse Files other than Rooms, Objects and Synonyms

@@ -22,7 +22,7 @@ import javafx.scene.image.ImageView;
  *  */
 public class MageCharacter extends Player {
 
-    private Image characterImage;
+    public Image characterImage;
     // The image associated with the MageCharacter
     private ArrayList<AdventureObject> inventory;
     // The inventory of the character. May only contain items of type AdventureObject.
@@ -35,12 +35,12 @@ public class MageCharacter extends Player {
      * Initializes attributes
      *
      */
-    public MageCharacter(String characterName, String characterDesc, Room myCurrLocation, ArrayList<AdventureObject> myInventory) {
-        super(characterName, characterDesc, myCurrLocation, "Mage");
+    public MageCharacter(Room myCurrLocation) {
+        super(myCurrLocation, "Mage");
         isPlayable = true;
-        this.inventory = myInventory;
+        this.inventory = new ArrayList<AdventureObject>();
         // load the image
-        characterImage = new Image(getClass().getResourceAsStream("MageCharacter.png"));
+        characterImage = new Image("OtherFiles/characterImages/mageCharacter.png");
         // change playerType
         playerType = "Mage";
     }

@@ -11,9 +11,14 @@ import java.util.*;
 public class Room implements Serializable {
 
     /**
-     * The number of the room.
+     * The x-coordinate of the room on the map.
      */
-    private int roomNumber;
+    private int xCoord;
+
+    /**
+     * The y-coordinate of the room on the map.
+     */
+    private int yCoord;
 
     /**
      * The name of the room.
@@ -24,11 +29,6 @@ public class Room implements Serializable {
      * The description of the room.
      */
     private String roomDescription;
-
-    /**
-     * The passage table for the room.
-     */
-    private PassageTable motionTable = new PassageTable();
 
     /**
      * The list of objects in the room.
@@ -44,12 +44,14 @@ public class Room implements Serializable {
      * AdvGameRoom constructor.
      *
      * @param roomName: The name of the room.
-     * @param roomNumber: The number of the room.
+     * @param xCoord: The x-coordinate of the room on the map.
+     * @param yCoord: The y-coordinate of the room on the map.
      * @param roomDescription: The description of the room.
      */
-    public Room(String roomName, int roomNumber, String roomDescription){
+    public Room(String roomName, int xCoord, int yCoord, String roomDescription){
         this.roomName = roomName;
-        this.roomNumber = roomNumber;
+        this.xCoord = xCoord;
+        this.yCoord = yCoord;
         this.roomDescription = roomDescription;
         this.isVisited = false;
     }
@@ -73,28 +75,6 @@ public class Room implements Serializable {
             return "";
         }
 
-    }
-
-    /**
-     * Returns a comma delimited list of every
-     * move that is possible from the given room,
-     * e.g. "DOWN, UP, NORTH, SOUTH".
-     *
-     * @return delimited string of possible moves
-     */
-    public String getCommands() {
-        ArrayList<String> lstcommands = new ArrayList<>();
-        List<Passage> passages = this.getMotionTable().passageTable;
-        for (Passage p:passages) {
-            if (!lstcommands.contains(p.getDirection())) {
-                lstcommands.add(p.getDirection());
-            }
-        } String commands = "";
-        for (String dir: lstcommands) {
-            commands = commands.concat(dir + ",");
-        }
-        commands = commands.substring(0, commands.length()-1);
-        return commands;
     }
 
     /**
@@ -149,15 +129,6 @@ public class Room implements Serializable {
     }
 
     /**
-     * Getter method for the number attribute.
-     *
-     * @return: number of the room
-     */
-    public int getRoomNumber(){
-        return this.roomNumber;
-    }
-
-    /**
      * Getter method for the description attribute.
      *
      * @return: description of the room
@@ -185,16 +156,5 @@ public class Room implements Serializable {
     public boolean getVisited(){
         return this.isVisited;
     }
-
-
-    /**
-     * Getter method for the motionTable attribute.
-     *
-     * @return: motion table of the room
-     */
-    public PassageTable getMotionTable(){
-        return this.motionTable;
-    }
-
 
 }

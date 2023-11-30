@@ -1,12 +1,8 @@
 package GameModel.pet;
 
 import GameModel.Pet;
-import GameModel.Player;
-import GameModel.Room;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.util.HashMap;
-import java.util.concurrent.Callable;
 
 /**
  * This class keeps track of the progress

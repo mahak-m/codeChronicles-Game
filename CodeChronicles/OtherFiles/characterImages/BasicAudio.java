@@ -1,4 +1,4 @@
-package GameModel.characterImages;
+package OtherFiles.characterImages;
 
 import GameModel.CodeChroniclesGame;
 import javafx.scene.media.Media;
