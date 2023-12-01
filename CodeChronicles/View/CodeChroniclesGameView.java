@@ -1,6 +1,7 @@
 package View;
 
 import GameModel.CodeChroniclesGame;
+import GameModel.Room;
 import InteractingWithPlayer.Player.AlchemistCharacter;
 import InteractingWithPlayer.Player.MageCharacter;
 import InteractingWithPlayer.Player.WarriorCharacter;
@@ -43,6 +44,7 @@ public class CodeChroniclesGameView {
     Stage stage; //stage on which all is rendered
     Button menuButton, helpButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
+    Boolean mapToggle = false; //is map on display?
     Boolean music;
     Boolean audio;
     GridPane gridPane = new GridPane(); //to hold images and buttons
@@ -102,7 +104,7 @@ public class CodeChroniclesGameView {
 
     public Scene setCharacterCustomizationScene() {
 
-        // SETUP GRIDPANE
+        // SETUP GRID PANE
         GridPane characterGridPane = new GridPane();
         // characterGridPane.setPadding(new Insets(20));
         characterGridPane.setBackground(new Background(new BackgroundFill(
@@ -142,6 +144,7 @@ public class CodeChroniclesGameView {
         characterGridPane.setHalignment(selectedPlayerLabel, HPos.CENTER);
 
         // Input Text Field for Player Name
+        // TODO
 
         // Play Game Button
         Button playButton = new Button("Play");
@@ -375,29 +378,6 @@ public class CodeChroniclesGameView {
         roomDescLabel.setAlignment(Pos.CENTER);
     }
 
-    /**
-     * getRoomImage
-     * __________________________
-     *
-     * Get the image for the current room and place 
-     * it in the roomImageView 
-     */
-    private ImageView getRoomImage() {
-        String roomImage = "OtherFiles/roomImages/" + this.game.player.getCurrentRoom().getRoomName() + ".jpg";
-
-        Image roomImageFile = new Image(roomImage);
-        roomImageView = new ImageView(roomImageFile);
-        roomImageView.setPreserveRatio(true);
-        roomImageView.setFitWidth(400);
-        roomImageView.setFitHeight(400);
-
-        //set accessible text
-        roomImageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        roomImageView.setAccessibleText(this.game.getPlayer().getCurrentRoom().getRoomDescription());
-        roomImageView.setFocusTraversable(true);
-        return roomImageView;
-    }
-
     /*
      * Show the game instructions.
      *
@@ -413,16 +393,7 @@ public class CodeChroniclesGameView {
      * -- Again, REMOVE whatever nodes are within the cell beforehand!
      */
     public void showInstructions() {
-        GridPane gridPane = new GridPane();
-
-        // First remove nodes in the cell beforehand
-        for (Node node: gridPane.getChildren()) {
-            if ((getRowIndex(node) == 1) && (getColumnIndex(node) == 1)) {
-                gridPane.getChildren().remove(node);
-                break;
-            }
-        }
-        // If helpToggle is false
+        // If helpToggle is false, add instructions to the grid pane.
         if (!this.helpToggle) {
             Label instrLabel =  new Label(this.game.getInstructions());
             instrLabel.setAlignment(Pos.CENTER);
@@ -434,17 +405,40 @@ public class CodeChroniclesGameView {
             sp.setPadding(new Insets(25));
             sp.setStyle("-fx-background: #000000; -fx-background-color:transparent; -fx-border-color:royalblue;");
             sp.setFitToWidth(true);
-            gridPane.add(sp, 1, 1, 1, 1 );  // Add label
+            this.gridPane.add(sp, 1, 1, 1, 1 );  // Add label
             this.helpToggle = true;
         }
-        // If helpToggle is true
+        // If helpToggle is true, show the room scene again.
         else {
+            this.setRoomScene();
             this.helpToggle = false;
         }
     }
 
     public void showMap() {
+        // If the mapToggle is false, show the map on the grid pane.
+        if (!this.mapToggle) {
+            HBox roomsRow0 = new HBox();
+            HBox roomsRow1 = new HBox();
+            HBox roomsRow2 = new HBox();
+            VBox allRooms = new VBox();
+            roomsRow0.setSpacing(10);
+            roomsRow1.setSpacing(10);
+            roomsRow2.setSpacing(10);
+            allRooms.setSpacing(10);
+            for (Room room : this.game.rooms) {
+                if (room.getVisited()) {
 
+                } else {
+
+                }
+            }
+        }
+        // If mapToggle is true, shoe the room scene again.
+        else {
+            this.setRoomScene();
+            this.helpToggle = false;
+        }
     }
 
 
@@ -470,7 +464,6 @@ public class CodeChroniclesGameView {
     private void addMapEvent() {
         mapButton.setOnAction(e -> {
             stopArticulation();
-            gridPane.requestFocus();
             showMap();
         });
     }

@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class CodeChroniclesGame implements Serializable {
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
-    public HashMap<Integer, Room> rooms; //A list of all the rooms in the game.
+    public ArrayList<Room> rooms; //A list of all the rooms in the game.
 
     public Player player; //The Player of the game.
 
@@ -23,7 +23,7 @@ public class CodeChroniclesGame implements Serializable {
      */
     public CodeChroniclesGame(){
         try {
-            this.rooms = new HashMap<>();
+            this.rooms = new ArrayList<Room>();
             setUpGame();
         } catch (IOException e) {
             throw new RuntimeException("An Error Occurred: " + e.getMessage());
@@ -66,7 +66,7 @@ public class CodeChroniclesGame implements Serializable {
      * Getter method for rooms 
      * @return map of key value pairs (integer to room)
      */
-    public HashMap<Integer, Room> getRooms() {
+    public ArrayList<Room> getRooms() {
         return this.rooms;
     }
 
