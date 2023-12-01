@@ -27,6 +27,7 @@ public class NPC {
     private Image image;
     // the image assigned to the NPC
 
+    private String NPCType;
     /**
      * Character Constructor
      * __________________________
