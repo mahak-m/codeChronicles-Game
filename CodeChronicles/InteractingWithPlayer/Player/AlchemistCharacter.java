@@ -42,7 +42,7 @@ public class AlchemistCharacter extends Player {
      *
      */
     public AlchemistCharacter(Room myCurrLocation, String playerName, String playerDesc) {
-        super(myCurrLocation, "Alchemist", playerName, playerDesc);
+        super(playerName, playerDesc, myCurrLocation, "Alchemist");
         isPlayable = true;
         this.affinityUsed = false;
         // load the image
