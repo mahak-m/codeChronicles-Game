@@ -67,7 +67,7 @@ public class CodeChroniclesLoader {
         Room room11 = new Room("Cafeteria", 2, 2, "[INSERTROOMDESCRIPTION]");
         this.game.rooms.put(11, room11);
         // Create Room 12: Chamber of Code
-        Room room12 = new Room("CodeCraft Classroom", 3, 2, "[INSERTROOMDESCRIPTION]");
+        Room room12 = new Room("SideEntrance", 3, 2, "[INSERTROOMDESCRIPTION]");
         this.game.rooms.put(12, room12);
     }
 

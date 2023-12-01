@@ -87,7 +87,7 @@ public class MageCharacter extends Player {
         if (!inventory.isEmpty()) {
             for (AdventureObject k : inventory) {
                 if (Objects.equals(k.getName(), s)) {
-                    currLocation.objectsInRoom.add(k);
+                    // currLocation.objectsInRoom.add(k);
                     inventory.remove(k);
                     break; // item removed so break
                 }

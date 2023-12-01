@@ -1,7 +1,6 @@
 package View;
 
 import GameModel.CodeChroniclesGame;
-import InteractingWithPlayer.Player.Player;
 import InteractingWithPlayer.Player.AlchemistCharacter;
 import InteractingWithPlayer.Player.MageCharacter;
 import InteractingWithPlayer.Player.WarriorCharacter;
@@ -9,6 +8,7 @@ import javafx.animation.PauseTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,7 +24,6 @@ import javafx.util.Duration;
 import javafx.scene.AccessibleRole;
 
 import java.io.File;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static javafx.scene.control.ContentDisplay.TOP;
 import static javafx.scene.layout.GridPane.getColumnIndex;
@@ -75,6 +74,16 @@ public class CodeChroniclesGameView {
         // SETTING UP THE STAGE
         this.stage.setTitle("Code Chronicles: Wizard's Quest");
 
+        this.gridPane.setAlignment(Pos.CENTER);
+
+        // Setup Playing GridPane
+        this.gridPane.setPadding(new Insets(0));
+        this.gridPane.setBackground(new Background(new BackgroundFill(
+                Color.valueOf(this.colourScheme.backgroundColour),
+                new CornerRadii(0),
+                new Insets(0)
+        )));
+
         // CREATE LOADING SCREEN
         GridPane gamePane = new GridPane();
         gamePane.setStyle("-fx-background-image: url('OtherFiles/StartScreen.jpg');");
@@ -97,7 +106,7 @@ public class CodeChroniclesGameView {
         GridPane characterGridPane = new GridPane();
         // characterGridPane.setPadding(new Insets(20));
         characterGridPane.setBackground(new Background(new BackgroundFill(
-                Color.valueOf(this.colourScheme.backgroundColour1),
+                Color.valueOf(this.colourScheme.backgroundColour),
                 new CornerRadii(0),
                 new Insets(0)
         )));
@@ -119,7 +128,7 @@ public class CodeChroniclesGameView {
         // "Character Customization" Label
         Label characterCustomization = new Label("Character Customization");
         characterCustomization.setFont(new Font("Helvetica", 25));
-        characterCustomization.setTextFill(Color.web(this.colourScheme.fontColour1));
+        characterCustomization.setTextFill(Color.web(this.colourScheme.regularFontColour));
         characterCustomization.setAlignment(Pos.CENTER);
         characterGridPane.add(characterCustomization, 2, 0, 1, 1);
         characterGridPane.setHalignment(characterCustomization, HPos.CENTER);
@@ -127,7 +136,7 @@ public class CodeChroniclesGameView {
         // Character Selection Label
         Label selectedPlayerLabel = new Label("Please select a player.");
         selectedPlayerLabel.setFont(new Font("Helvetica", this.fontSize));
-        selectedPlayerLabel.setTextFill(Color.web(this.colourScheme.fontColour2));
+        selectedPlayerLabel.setTextFill(Color.web(this.colourScheme.regularFontColour));
         selectedPlayerLabel.setAlignment(Pos.CENTER);
         characterGridPane.add(selectedPlayerLabel, 2, 1, 1, 1);
         characterGridPane.setHalignment(selectedPlayerLabel, HPos.CENTER);
@@ -220,21 +229,11 @@ public class CodeChroniclesGameView {
 
         // SETUP SCENE
         Scene scene = new Scene(characterGridPane ,  1000, 800);
-        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour1));
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
         return scene;
     }
 
     public void setRoomScene() {
-        GridPane roomGridPane = new GridPane();
-        roomGridPane.setAlignment(Pos.CENTER);
-
-        // GridPane
-        roomGridPane.setPadding(new Insets(0));
-        roomGridPane.setBackground(new Background(new BackgroundFill(
-                Color.valueOf(this.colourScheme.backgroundColour1),
-                new CornerRadii(0),
-                new Insets(0)
-        )));
 
         // Row and Column Constraints
         ColumnConstraints column1 = new ColumnConstraints(30);
@@ -246,8 +245,8 @@ public class CodeChroniclesGameView {
         RowConstraints row2 = new RowConstraints( 20);
         RowConstraints row3 = new RowConstraints(600);
         RowConstraints row4 = new RowConstraints(100);
-        roomGridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
-        roomGridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
+        this.gridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
+        this.gridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
 
         // Buttons
         menuButton = new Button("Menu");
@@ -274,23 +273,27 @@ public class CodeChroniclesGameView {
         topButtons.setAlignment(Pos.CENTER);
 
         //add all the widgets to the GridPane
-        roomGridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
-        roomGridPane.setHalignment(topButtons, HPos.CENTER);
+        this.gridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
+        this.gridPane.setHalignment(topButtons, HPos.CENTER);
 
         // add characters and NPCs to the GridPane
-        roomGridPane.add(this.getCharacterImageView(), 3, 2);
+        ImageView characterView = this.getCharacterImageView();
+        this.gridPane.add(characterView, 3, 2);
+        this.gridPane.setValignment(this.getCharacterImageView(), VPos.BOTTOM);
 
         // add room description to GridPane
         Label roomLabel= new Label(this.game.player.getCurrentRoom().getRoomDescription());
-        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour1), CornerRadii.EMPTY, Insets.EMPTY)));
-
-        roomGridPane.add(roomLabel, 0, 3, 5, 1);
+        roomLabel.setMinWidth(940);
+        roomLabel.setMinHeight(250);
+        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
+        this.gridPane.add(roomLabel, 1, 3, 5, 1);
 
         // add background
-        roomGridPane.setStyle("-fx-background-image: url('OtherFiles/roomImages/FrontGate.jpg');");
+        String roomName = this.game.player.getCurrentRoom().getRoomName().replaceAll("\\s", "");
+        this.gridPane.setStyle("-fx-background-image: url('OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg');");
 
-        var scene = new Scene( roomGridPane ,  1000, 800);
-        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour1));
+        var scene = new Scene( this.gridPane ,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
         this.stage.setScene(scene);
         this.stage.setResizable(false);
         this.stage.show();
@@ -440,6 +443,11 @@ public class CodeChroniclesGameView {
         }
     }
 
+    public void showMap() {
+
+    }
+
+
     /**
      * This method handles the event related to the
      * help button.
@@ -463,7 +471,7 @@ public class CodeChroniclesGameView {
         mapButton.setOnAction(e -> {
             stopArticulation();
             gridPane.requestFocus();
-            GameMap map = new GameMap(this);
+            showMap();
         });
     }
 
