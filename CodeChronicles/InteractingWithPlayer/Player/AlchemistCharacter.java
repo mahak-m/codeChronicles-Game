@@ -29,11 +29,6 @@ import javafx.scene.image.ImageView;
 public class AlchemistCharacter extends Player {
 
     public Image characterImage;
-    private AdventureObject philosophersStone;
-    private AdventureObject elementalAffinity;
-    public boolean affinityUsed;
-    public String playerType;
-
 
     /**
      * AlchemistCharacter Constructor
@@ -44,7 +39,6 @@ public class AlchemistCharacter extends Player {
     public AlchemistCharacter(Room myCurrLocation, String playerName, String playerDesc) {
         super(playerName, playerDesc, myCurrLocation, "Alchemist");
         isPlayable = true;
-        this.affinityUsed = false;
         // load the image
         characterImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
         // change playerType
