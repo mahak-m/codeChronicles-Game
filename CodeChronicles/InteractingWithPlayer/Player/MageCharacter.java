@@ -33,13 +33,11 @@ public class MageCharacter extends Player {
      * Initializes attributes
      *
      */
-    public MageCharacter(Room myCurrLocation) {
-        super(myCurrLocation, "Mage");
+    public MageCharacter(Room myCurrLocation, String playerName, String playerDesc) {
+        super(playerName, playerDesc, myCurrLocation, "Mage");
         isPlayable = true;
         // load the image
         this.characterImage = new Image("OtherFiles/characterImages/mageCharacter.png");
-        // change playerType
-        this.playerType = "Mage";
     }
 
     public ImageView getCharacterImageView() {
