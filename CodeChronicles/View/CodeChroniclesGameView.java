@@ -427,12 +427,21 @@ public class CodeChroniclesGameView {
             roomsRow2.setSpacing(10);
             allRooms.setSpacing(10);
             for (Room room : this.game.rooms) {
+                // create room icon
+                RoomIcon roomIcon = new UnvisitedRoomIcon(this.game, this, room);
                 if (room.getVisited()) {
-
-                } else {
-
+                    roomIcon = new VisitedRoomIcon(this.game, this, room);
                 }
-            }
+                // add button to map box
+                if (room.yCoord == 0) {
+                    roomsRow0.getChildren().add(roomIcon.getRoomButton());
+                } else if (room.yCoord == 1) {
+                    roomsRow1.getChildren().add(roomIcon.getRoomButton());
+                } else if (room.yCoord == 2) {
+                    roomsRow2.getChildren().add(roomIcon.getRoomButton());
+                }
+            } allRooms.getChildren().addAll(roomsRow0, roomsRow1, roomsRow2);
+            this.gridPane.add(allRooms, 2, 2, 3, 1);
         }
         // If mapToggle is true, shoe the room scene again.
         else {

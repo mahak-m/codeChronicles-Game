@@ -41,8 +41,18 @@ public class UnvisitedRoomIcon implements RoomIcon {
         this.gameView = gameView;
         this.iconButton = new Button("Unknown Place");
         String roomName = room.getRoomName().replaceAll("\\s", "");
-        Image image = new Image("OtherFiles/Images/" + this.gameView.colourScheme.colourSchemeName + "/roomImagesBlurred/" + roomName + ".jpg');");
+        Image image = new Image("OtherFiles/Images/" + this.gameView.colourScheme.colourSchemeName + "/roomImagesBlurred/" + roomName + ".jpg");
         this.roomImage = new ImageView(image);
+    }
+
+    public void formatIcon() {
+        this.roomImage.setFitWidth(170);
+        this.roomImage.setFitHeight(50);
+        this.iconButton.setMinWidth(175);
+        this.iconButton.setMinHeight(200);
+        this.iconButton.setId(this.room.getRoomName());
+        this.iconButton.setGraphic(this.roomImage);
+        this.iconButton.setAlignment(Pos.CENTER);
     }
 
     public Button getRoomButton() {

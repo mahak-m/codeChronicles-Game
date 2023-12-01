@@ -41,18 +41,21 @@ public class VisitedRoomIcon implements RoomIcon{
         this.iconButton = new Button(room.getRoomName());
         this.description = room.getRoomDescription();
         String roomName = room.getRoomName().replaceAll("\\s", "");
-        Image image = new Image("OtherFiles/Images/" + this.gameView.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg');");
+        Image image = new Image("OtherFiles/Images/" + this.gameView.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg");
         this.roomImage = new ImageView(image);
-        this.roomImage.setFitWidth(170);
-        this.roomImage.setFitHeight(50);
     }
 
-    public Button getRoomButton() {
+    public void formatIcon() {
+        this.roomImage.setFitWidth(170);
+        this.roomImage.setFitHeight(50);
+        this.iconButton.setMinWidth(175);
+        this.iconButton.setMinHeight(200);
         this.iconButton.setId(this.room.getRoomName());
         this.iconButton.setGraphic(this.roomImage);
         this.iconButton.setAlignment(Pos.CENTER);
-        this.iconButton.setMinWidth(175);
-        this.iconButton.setMinHeight(200);
+    }
+
+    public Button getRoomButton() {
         return this.iconButton;
     }
 

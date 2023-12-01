@@ -28,6 +28,8 @@ import static jdk.dynalink.linker.support.Guards.isInstance;
 
 public interface RoomIcon {
 
+   public void formatIcon();
+
    public Button getRoomButton();
 
    public void movePlayerToRoom();
