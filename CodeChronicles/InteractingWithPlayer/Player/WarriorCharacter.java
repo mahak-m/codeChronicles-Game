@@ -29,8 +29,6 @@ import javafx.scene.image.ImageView;
 public class WarriorCharacter extends Player {
 
     public Image characterImage;
-    private AdventureObject diamondShield;
-    public boolean shieldUsed;
     public String playerType;
 
     /**
@@ -39,15 +37,11 @@ public class WarriorCharacter extends Player {
      * Initializes attributes
      *
      */
-    public WarriorCharacter(Room myCurrLocation) {
-        super(myCurrLocation, "Warrior");
-        this.inventory = new ArrayList<AdventureObject>();
+    public WarriorCharacter(Room myCurrLocation, String playerName, String playerDesc) {
+        super(playerName, playerDesc, myCurrLocation, "Warrior");
         this.isPlayable = true;
-        this.shieldUsed = false;
         // load the image
         characterImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
-        // change playerType
-        this.playerType = "Warrior";
     }
 
     public ImageView getCharacterImageView() {
