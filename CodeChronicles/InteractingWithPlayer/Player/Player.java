@@ -3,11 +3,6 @@ package InteractingWithPlayer.Player;
 import GameModel.Room;
 import javafx.scene.image.Image;
 
-// TO-DO for this class:
-// replace object and class name types later.
-// finish the castSpell method (check if item in inventory
-// has bool Used as false)
-
 /**
  * Character class
  * _________________________
@@ -45,9 +40,9 @@ public class Player {
      * Initializes attributes
      *
      */
-    public Player(Room myCurrLocation, String myPlayerType) {
-        this.playerName = "Unnamed Wizard"; // BEFORE the player customizes their name
-        this.characterDesc = "You are a wizard that has recently been admitted to Hackwards School of Codecraft. You love to code and are an ambitious student.\";";
+    public Player(String playerName, String characterDesc, Room myCurrLocation, String myPlayerType) {
+        this.playerName = playerName; // BEFORE the player customizes their name
+        this.characterDesc = characterDesc;
         this.currLocation = myCurrLocation;
         this.playerType = myPlayerType;
         this.codeBytes = 5; // initial value
@@ -105,15 +100,33 @@ public class Player {
         return this.codeBytes;
     }
 
+    /**
+     * getLives
+     */
     public int getLives() {return this.lives;
     }
+
+    /**
+     * updateCodeBytes
+     * _________________________
+     This method updates the attribute based on the provided number of code bytes
+     */
     public void updateCodeBytes(int codeBytes) {
         this.codeBytes += codeBytes;
     }
+
+    /**
+     * loseLife
+     * _________________________
+     This method updates the attribute based on the provided number of lives
+     */
     public void loseLife() {
         this.lives -= 1;
     }
 
+    /**
+     * playQuest
+     */
     public boolean playQuest() { return true;
         // after quest has been implemented, refer to hia for this implementation
     }
