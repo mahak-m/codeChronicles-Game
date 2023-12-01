@@ -42,12 +42,12 @@ public class WarriorCharacter extends Player {
     public WarriorCharacter(Room myCurrLocation) {
         super(myCurrLocation, "Warrior");
         this.inventory = new ArrayList<AdventureObject>();
-        isPlayable = true;
+        this.isPlayable = true;
         this.shieldUsed = false;
         // load the image
         characterImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
         // change playerType
-        playerType = "Warrior";
+        this.playerType = "Warrior";
     }
 
     public ImageView getCharacterImageView() {

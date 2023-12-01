@@ -1,44 +1,30 @@
 package GameModel;
 
+import InteractingWithPlayer.NonPlayerCharacters.NPC;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.*;
 
 /**
- * This class contains the information about a 
+ * This class contains the information about a
  * room in the Adventure Game.
  */
 public class Room implements Serializable {
 
-    /**
-     * The x-coordinate of the room on the map.
-     */
-    private int xCoord;
+    public int xCoord; // The x-coordinate of the room on the map.
 
-    /**
-     * The y-coordinate of the room on the map.
-     */
-    private int yCoord;
+    public int yCoord; // The y-coordinate of the room on the map.
 
-    /**
-     * The name of the room.
-     */
-    private String roomName;
+    public NPC characterInRoom;
 
-    /**
-     * The description of the room.
-     */
-    private String roomDescription;
+    private String roomName; // The name of the room.
 
-    /**
-     * The list of objects in the room.
-     */
-    public ArrayList<AdventureObject> objectsInRoom = new ArrayList<AdventureObject>();
+    private String roomDescription; // The description of the room.
 
-    /**
-     * A boolean to store if the room has been visited or not
-     */
-    private boolean isVisited;
+    public ArrayList<AdventureObject> objectsInRoom = new ArrayList<AdventureObject>(); // The list of objects in the room.
+
+    private boolean isVisited; // A boolean to store if the room has been visited or not.
 
     /**
      * AdvGameRoom constructor.
@@ -55,7 +41,6 @@ public class Room implements Serializable {
         this.roomDescription = roomDescription;
         this.isVisited = false;
     }
-
 
     /**
      * Returns a comma delimited list of every
@@ -78,24 +63,6 @@ public class Room implements Serializable {
     }
 
     /**
-     * This method adds a game object to the room.
-     *
-     * @param object to be added to the room.
-     */
-    public void addGameObject(AdventureObject object){
-        this.objectsInRoom.add(object);
-    }
-
-    /**
-     * This method removes a game object from the room.
-     *
-     * @param object to be removed from the room.
-     */
-    public void removeGameObject(AdventureObject object){
-        this.objectsInRoom.remove(object);
-    }
-
-    /**
      * This method checks if an object is in the room.
      *
      * @param objectName Name of the object to be checked.
@@ -113,19 +80,6 @@ public class Room implements Serializable {
      */
     public void visit(){
         isVisited = true;
-    }
-
-    /**
-     * Getter for returning an AdventureObject with a given name
-     *
-     * @param objectName: Object name to find in the room
-     * @return: AdventureObject
-     */
-    public AdventureObject getObject(String objectName){
-        for(int i = 0; i<objectsInRoom.size();i++){
-            if(this.objectsInRoom.get(i).getName().equals(objectName)) return this.objectsInRoom.get(i);
-        }
-        return null;
     }
 
     /**

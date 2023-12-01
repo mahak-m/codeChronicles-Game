@@ -10,12 +10,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class GameMenu {
 
@@ -44,26 +42,25 @@ public class GameMenu {
         menu.setAlignment(Pos.BASELINE_CENTER);
         menu.setFont(new Font("Helvetica", 30));
         menu.setMaxHeight(50);
-        menu.setTextFill(Color.web(this.gameView.colourScheme.accentColour1));
+        menu.setTextFill(Color.web(this.gameView.colourScheme.buttonColour1));
         // Create Colour Mode ComboBox
         Label colourTheme = new Label("Theme");
-        colourTheme.setTextFill(Color.web(this.gameView.colourScheme.fontColour1));
+        colourTheme.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         colourTheme.setFont(new Font("Helvetica", this.gameView.fontSize));
         this.colourModeBox = new ComboBox<String>();
-        this.colourModeBox.getItems().add("Light");
-        this.colourModeBox.getItems().add("High Contrast (Dark)");
+        // this.colourModeBox.getItems().add("High Contrast");
         this.colourModeBox.getItems().add("Monochrome");
         this.colourModeBox.getItems().add("Game Theme");
         this.colourModeBox.setValue("Game Theme");
         this.colourModeBox.setMaxWidth(150);
         // Create Font Size Spinner
         Label fontSize = new Label("Font Size");
-        fontSize.setTextFill(Color.web(this.gameView.colourScheme.fontColour1));
+        fontSize.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         fontSize.setFont(new Font("Helvetica", this.gameView.fontSize));
         this.fontSizeBox = new Spinner<Integer>(12, 20, 16);
         // Create Music Toggle Button
         Label music = new Label("Music");
-        music.setTextFill(Color.web(this.gameView.colourScheme.fontColour1));
+        music.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         menu.setFont(new Font("Helvetica", this.gameView.fontSize));
         this.musicBox = new ComboBox<String>();
         this.musicBox.getItems().add("On");
@@ -71,7 +68,7 @@ public class GameMenu {
         this.musicBox.setValue("On");
         // Create Audio Toggle Button
         Label audio = new Label("Audio");
-        audio.setTextFill(Color.web(this.gameView.colourScheme.fontColour1));
+        audio.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         audio.setFont(new Font("Helvetica", this.gameView.fontSize));
         this.audioBox = new ComboBox<String>();
         this.audioBox.getItems().add("On");
@@ -111,7 +108,7 @@ public class GameMenu {
         this.gridPane.getColumnConstraints().addAll(column, column, column, column, column, column, column);
         this.gridPane.getRowConstraints().addAll(row, row, row, row);
         gridPane.setBackground(new Background(new BackgroundFill(
-                Color.valueOf(this.gameView.colourScheme.backgroundColour1),
+                Color.valueOf(this.gameView.colourScheme.backgroundColour),
                 new CornerRadii(0),
                 new Insets(0)
         )));

@@ -44,12 +44,14 @@ public class AlchemistCharacter extends Player {
     public AlchemistCharacter(Room myCurrLocation) {
         super(myCurrLocation, "Alchemist");
         this.inventory = new ArrayList<AdventureObject>();
-        isPlayable = true;
+        this.isPlayable = true;
         this.affinityUsed = false;
         // load the image
-        characterImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
+        this.characterImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
+        // add special objects to inventory
+        this.inventory.add(elementalAffinity);
         // change playerType
-        playerType = "Alchemist";
+        this.playerType = "Alchemist";
     }
 
     public ImageView getCharacterImageView() {

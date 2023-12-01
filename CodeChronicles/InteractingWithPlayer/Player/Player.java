@@ -2,6 +2,7 @@ package InteractingWithPlayer.Player;
 
 import GameModel.Room;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Character class
@@ -16,7 +17,7 @@ import javafx.scene.image.Image;
  * At the start of the game the player will be able to choose the
  * character "type" as indicated by the subclasses.
  *  */
-public class Player {
+public abstract class Player {
 
     public Image characterImage;
     String playerName;
@@ -131,4 +132,5 @@ public class Player {
         // after quest has been implemented, refer to hia for this implementation
     }
 }
+
 

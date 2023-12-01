@@ -37,9 +37,9 @@ public class MageCharacter extends Player {
         super(myCurrLocation, "Mage");
         isPlayable = true;
         // load the image
-        characterImage = new Image("OtherFiles/characterImages/mageCharacter.png");
+        this.characterImage = new Image("OtherFiles/characterImages/mageCharacter.png");
         // change playerType
-        playerType = "Mage";
+        this.playerType = "Mage";
     }
 
     public ImageView getCharacterImageView() {

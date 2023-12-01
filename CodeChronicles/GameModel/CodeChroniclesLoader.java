@@ -25,55 +25,54 @@ public class CodeChroniclesLoader {
      * Load game from directory
      */
     public void loadGame() throws IOException {
-        createRooms();
+        parseRooms();
         this.game.setHelpText(parseOtherFile("help"));
     }
 
-     /**
+    /**
      * Parse Rooms File
      */
-    private void createRooms() throws IOException {
-        // Create Room 1: Syntax Square
-        Room room1 = new Room("Front Gate", 0, 0, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(1, room1);
-        // Create Room 2: Byte Camp
-        Room room2 = new Room("Main Entrance", 1, 0, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(2, room2);
-        // Create Room 3: Hack Harbour
-        Room room3 = new Room("Administrations Office", 2, 0, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(3, room3);
-        // Create Room 4: Coder's Cove
-        Room room4 = new Room("Dorm Rooms", 3, 0, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(4, room4);
-        // Create Room 5: Algorithm Alley
-        Room room5 = new Room("Hackers Hallway", 0, 1, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(5, room5);
-        // Create Room 6: Logic Lab
-        Room room6 = new Room("Coders Building", 1, 1, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(6, room6);
-        // Create Room 7: Tech Tower
-        Room room7 = new Room("Library", 2, 1, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(7, room7);
-        // Create Room 8: Code Sphere
-        Room room8 = new Room("CodeCraft Classroom", 3, 1, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(8, room8);
-        // Create Room 9: Pixel Plex
-        Room room9 = new Room("Locker Room", 0, 2, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(9, room9);
-        // Create Room 10: Quantum Quarters
-        Room room10 = new Room("Fourth Floor", 1, 2, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(10, room10);
-        // Create Room 11: Data Den
-        Room room11 = new Room("Cafeteria", 2, 2, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(11, room11);
-        // Create Room 12: Chamber of Code
-        Room room12 = new Room("CodeCraft Classroom", 3, 2, "[INSERTROOMDESCRIPTION]");
-        this.game.rooms.put(12, room12);
+    public void parseRooms() throws IOException {
+
+        BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/rooms.txt"));
+
+        while (buff.ready()) {
+            String roomName = buff.readLine();
+            Integer roomXCoord = Integer.parseInt(buff.readLine());
+            Integer roomYCoord = Integer.parseInt(buff.readLine());
+            String roomDescription = buff.readLine();
+            String separator = buff.readLine();
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            Room newRoom = new Room(roomName, roomXCoord, roomYCoord, roomDescription);
+            this.game.rooms.add(newRoom);
+        }
+    }
+
+    /**
+     * Parse Prowlers File
+     */
+    public void parseProwlers() throws IOException {
+
+        BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/prowlers.txt"));
+
+
+    }
+
+    /**
+     * Parse School Members File
+     */
+    public void parseSchoolMembers() throws IOException {
+
+        BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/schoolmembers.txt"));
+
+
     }
 
 
+
     /**
-     * Parse Files other than Rooms, Objects and Synonyms
+     * Parse Files other than Rooms, Prowlers and SchoolMembers
      *
      * @param fileName the file to parse
      */
