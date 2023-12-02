@@ -69,8 +69,13 @@ public class CodeChroniclesLoader {
 
     }
 
+    /**
+     * Parse Quests File
+     */
+    public void parseQuests() throws IOException {
+        BufferedReader buff_quest = new BufferedReader(new FileReader("OtherFiles/quests.txt"));
 
-
+    }
     /**
      * Parse Files other than Rooms, Prowlers and SchoolMembers
      *
