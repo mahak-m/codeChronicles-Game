@@ -12,22 +12,15 @@ import java.util.List;
  * of the player in the game.
  */
 public class MechaDoodle extends Pet {
+    final int MIN_CODEBYTES = 120;
     /**
      * Adventure Game Player Constructor
      */
-    public MechaDoodle(String name) {
-        super(name);
-        this.introduction = "";
-        this.commands = new HashMap<>();
+    public MechaDoodle() {
+        super();
+        this.description = "Meet MechaDoodle, a mystical guide for your journey. With the power to " +
+                "offer invaluable hints, MechaDoodle aids " +
+                "in pivotal moments, yet it is bound by a constraint—only accessible: able to assist in " +
+                "the ultimate battle with Incognito Phantom, unable to assist in any other quests.";
     }
-
-    /**
-     * This method takes command from the player for the pet.
-     *
-     * @param command the command given to this pet.
-     */
-    public void giveCommand(String command) {
-        ;
-    }
-
 }

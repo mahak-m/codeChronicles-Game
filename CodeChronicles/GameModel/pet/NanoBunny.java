@@ -15,16 +15,11 @@ public class NanoBunny extends Pet {
     /**
      * Adventure Game Player Constructor
      */
-    public NanoBunny(String name) {
-        super(name);
-        this.introduction = "";
-        this.commands = new HashMap<>();
+    public NanoBunny() {
+        super();
+        this.description = "Meet NanoBunny, the trusty first companion on any quest. " +
+                "NanoBunny becomes an invaluable guide throughout adventures by " +
+                "aiding the journey with its " +
+                "ability to provide essential clues.";
     }
-
-    /**
-     * This method takes command from the player for the pet.
-     *
-     * @param command the command given to this pet.
-     */
-    public void giveCommand(String command) {;}
 }
