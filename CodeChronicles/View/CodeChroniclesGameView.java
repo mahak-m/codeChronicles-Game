@@ -179,7 +179,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "DESCRIPTION");
         alchemistButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Alchemist Character");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get(1));
+            this.game.player = new AlchemistCharacter(this.game.rooms.get(1), "", "");
         });
 
         // Mage Player
@@ -199,7 +199,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "DESCRIPTION");
         mageButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Mage Character");
-            this.game.player = new MageCharacter(this.game.rooms.get(1));
+            this.game.player = new MageCharacter(this.game.rooms.get(1), "", "");
         });
 
         // Warrior Player
@@ -219,7 +219,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "DESCRIPTION");
         warriorButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Warrior Character");
-            this.game.player = new WarriorCharacter(this.game.rooms.get(1));
+            this.game.player = new WarriorCharacter(this.game.rooms.get(1), "", "");
         });
 
         // Add character buttons to grid pane.
