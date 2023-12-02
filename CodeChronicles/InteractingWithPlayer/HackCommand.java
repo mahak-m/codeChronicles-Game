@@ -5,54 +5,72 @@ import InteractingWithPlayer.NonPlayerCharacters.NPC;
 import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.Player.Player;
 
+
+/**
+ * The player uses Hack Command, if the player wishes to hack in the NPC character's mind
+ * which the player does not know is a prowler or school member.
+ */
 public class HackCommand {
     // for now
 
-    int MINIMUM_BYTES = 2;
+    int MINIMUM_BYTES = 2; //the minimum number of code bytes the player should have
 
 
     /**
-     * This method reveals the identity of the character when the player
+     * This method reveals the identity of the NPC character when the player
      * chooses to hack the character.
+     * @param player ;
+     * @param character ;
+     * @return the identity of the NPC character.
      */
 
-    public void showCharacterIdentity(NPC character, Player player) {
+    public String showCharacterIdentity(NPC character, Player player) {
         // check if character type is Prowler, warn the player.
         if (character instanceof Prowler) {
-            System.out.println("Danger! You decided to hack a Prowler.");
+            return "Danger! You decided to hack a Prowler.";
         }
         // check if character type is school member, greet the player.
         else {
-            System.out.println("You decided to hack a School Member. Hi! You are doing great in the game");
+            return "You decided to hack a School Member. Hi! You are doing great in the game," ;
         }
-        this.countBytes(player);
+
     }
 
     /**
      * This method checks if the player has the minimum required code bytes
      * to hack the prowler.
+     * @param player ;
+     * @return the number of code bytes the player has.
      */
 
-    public void countBytes(Player player) {
-        System.out.println("You have " + player.getCodeBytes()  + "code bytes");
+    public String countBytes(Player player) {
+        return "You have " + player.getCodeBytes() + "code bytes";
+    }
 
+    /**
+     * This method checks if it is a prowler and the player does not have MINIMUM_BYTES to fight the prowler,
+     * the player has to play the quest.
+     * @param player;
+     * @return result of the quest
+     */
+    public String prowlerQuest(Player player){
         if (polymorphicProwler() && player.getCodeBytes() < this.MINIMUM_BYTES) {
             if (player.getCodeBytes() < this.MINIMUM_BYTES) {
-                System.out.println("Danger! You don't have enough code bytes to fight the prowler." +
-                    "Look up for School Members to help you win.");
+                return "Danger! You don't have enough code bytes to fight the prowler." +
+                        "Look up for School Members to help you win.";
             }
             else if (player.getCodeBytes() >= this.MINIMUM_BYTES) {
-                System.out.println("3");
                 boolean won = player.playQuest();
                 if (won) {
-                    System.out.println("won quest");
+                    return "Congratulations! You won the quest";
                 }
                 else {
-                    System.out.println("play again");
+                    return "You lost the quest. Better luck next time.";
                 }
             }
         }
 
+        return "You are safe. You encountered a School Member.";
     }
 
     private boolean polymorphicProwler() {
