@@ -12,24 +12,21 @@ public class VirtualVulture extends Pet {
     /**
      * Adventure Game Player Constructor
      */
-    public VirtualVulture(String name) {
-        super(name);
-        this.introduction = "";
-        this.commands = new HashMap<>();
+    public VirtualVulture() {
+        super();
+        this.description = "Meet VirtualVulture, an enigmatic guide in your journey. " +
+                "With a talent for dropping hints that unravel the mysteries " +
+                "of quests, VirtualVulture's true power lies in revealing quests' " +
+                "answers, becoming an indispensable ally.";
     }
 
-    /**
-     * This method takes command from the player for the pet.
-     *
-     * @param command the command given to this pet.
-     */
-    public void giveCommand(String command) {;}
+
 
     /**
-     * This method returns the code byte in the current room.
+     * This method reveals the answer for the specific quest.
      *
      */
-    private String findCodeByte() {
+    private String revealAnswer() {
         return "";
     }
 }
