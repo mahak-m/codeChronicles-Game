@@ -11,6 +11,7 @@ public class Prowler extends NPC {
     private final Image prowlerImage; // Image of the prowler
     private boolean defeated; //keeps track of if the prowler is defeated or not
 
+
     /**
      * Constructor
      */

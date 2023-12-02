@@ -55,8 +55,6 @@ public class CodeChroniclesLoader {
     public void parseProwlers() throws IOException {
 
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/prowlers.txt"));
-
-
     }
 
     /**
