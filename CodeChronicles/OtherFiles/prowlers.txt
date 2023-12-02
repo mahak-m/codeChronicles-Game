@@ -1,30 +1,27 @@
 Noah Rodriguez
 Wealth Wraith
 "Hey! My name is Noah Rodriguez. You can choose any of the commands below to interact with me."
-*
+
 Rachel Chang
 Dread Marauder
 "Hey! My name is Rachel Chang. You can choose any of the commands below to interact with me."
-*
+
 Sophia Turner
 Night Shade Serpent
 "Hey! My name is Night Shade Serpent. You can choose any of the commands below to interact with me."
-*
+
 Olivia Peterson
 Sinister Shade
 "Hey! My name is Olivia Peterson. You can choose any of the commands below to interact with me."
-*
+
 Ava Thompson
 Crimson Specter
 "Hey! My name is Ava Thompson. You can choose any of the commands below to interact with me."
-*
+
 Victor Reynolds
 Dark Howler
 "Hey! My name is Victor Reynolds. You can choose any of the commands below to interact with me."
-*
+
 Freya Frostfall
 Lumina Wing
 "Hey! My name is Freya Frostfall. You can choose any of the commands below to interact with me."
-
-
-
