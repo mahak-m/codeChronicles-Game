@@ -1,10 +1,8 @@
-package GameModel;
+package GameModel.Pet;
+import GameModel.Room;
 import InteractingWithPlayer.Player.Player;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class keeps track of the progress
