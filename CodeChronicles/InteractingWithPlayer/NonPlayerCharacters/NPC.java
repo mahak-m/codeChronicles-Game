@@ -16,29 +16,28 @@ import javafx.scene.image.ImageView;
 public class NPC {
     String name;
     // the name of the NPC character
-    String IntroText;
+    ///String IntroText;
     // a short description in case the user would like to know more about the NPC
-
-    String CharacterRevealText;
+    String NPCGreeting;
     // a short description in case the user would like to know more about the NPC
-
+    Image image;
+    // the image assigned to the NPC
+    String npcName;
+    Image npcImage;
+    String npcGreetings;
     Room currLocation;
     // the location of the NPC (the room where they are found)
-    private Image image;
-    // the image assigned to the NPC
 
-    private String NPCType;
     /**
-     * Character Constructor
+     * NPC Character Constructor
      * __________________________
      * Initializes attributes
      */
-    public NPC(String characterName, String introText, String revealText, Image characterImage) {
-        this.name = characterName;
-        this.IntroText = introText;
-        this.CharacterRevealText = revealText;
-        // load the image
-        this.image = characterImage;
+    public NPC(String npcName, Image npcImage, String npcGreetings) {
+        this.name = npcName;
+        this.image = npcImage;
+        this.NPCGreeting = npcGreetings;
+
     }
 
     public ImageView getCharacterImageView() {

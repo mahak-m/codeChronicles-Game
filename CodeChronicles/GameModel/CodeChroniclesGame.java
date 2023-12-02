@@ -1,5 +1,8 @@
 package GameModel;
 
+import InteractingWithPlayer.NonPlayerCharacters.NPC;
+import InteractingWithPlayer.NonPlayerCharacters.Prowler;
+import InteractingWithPlayer.NonPlayerCharacters.SchoolMember;
 import InteractingWithPlayer.Player.Player;
 import InteractingWithPlayer.Player.WarriorCharacter;
 
@@ -14,6 +17,12 @@ public class CodeChroniclesGame implements Serializable {
     public ArrayList<Room> rooms; //A list of all the rooms in the game.
 
     public Player player; //The Player of the game.
+
+    public ArrayList<Prowler> prowlers;// The list of all the prowlers.
+
+    public ArrayList<SchoolMember> schoolMembers;// The list of all the School Members.
+
+
 
     /**
      * Adventure Game Constructor

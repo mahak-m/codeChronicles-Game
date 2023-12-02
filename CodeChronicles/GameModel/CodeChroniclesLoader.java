@@ -1,8 +1,16 @@
 package GameModel;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.awt.*;
+import java.io.*;
+import java.util.Objects;
+
+import InteractingWithPlayer.NonPlayerCharacters.Prowler;
+import InteractingWithPlayer.NonPlayerCharacters.SchoolMember;
+import javafx.scene.image.Image;
+
+import InteractingWithPlayer.NonPlayerCharacters.NPC;
+
+import static java.io.File.separator;
 
 /**
  * Class AdventureLoader. Loads an adventure from files.
@@ -55,16 +63,39 @@ public class CodeChroniclesLoader {
     public void parseProwlers() throws IOException {
 
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/prowlers.txt"));
+        while (buff.ready()) {
+            String npcName = buff.readLine();
+            String prowlerName = buff.readLine();
+            String npcGreetings = buff.readLine();
+            String fileNameNPC = "CodeChronicles/OtherFiles/npcImages/" + npcName + ".png";
+            String fileNameProwler = "CodeChronicles/OtherFiles/prowlerImages/" + prowlerName +".png";
+            Image npcImage = new Image(fileNameNPC);
+            Image prowlerImage = new Image(fileNameProwler);
+            String separator = buff.readLine();
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            Prowler prowler = new Prowler(prowlerName, prowlerImage, npcName, npcImage, npcGreetings);
+            this.game.prowlers.add(prowler);
+        }
+
+
+
     }
 
     /**
      * Parse School Members File
      */
     public void parseSchoolMembers() throws IOException {
-
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/schoolmembers.txt"));
-
-
+        String npcName = buff.readLine();
+        String npcGreetings = buff.readLine();
+        String fileNameNPC = "CodeChronicles/OtherFiles/npcImages/" + npcName + ".png";
+        Image npcImage = new Image(fileNameNPC);
+        String separator = buff.readLine();
+        if (separator != null && !separator.isEmpty())
+            System.out.println("Formatting Error!");
+        SchoolMember schoolMember = new SchoolMember(npcName, npcGreetings, npcImage);
+        this.game.schoolMembers.add(schoolMember);
     }
 
 

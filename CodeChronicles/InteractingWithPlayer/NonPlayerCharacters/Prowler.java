@@ -8,17 +8,23 @@ import javafx.scene.image.ImageView;
 import java.util.Objects;
 
 public class Prowler extends NPC {
-    private final Image prowlerImage; // Image of the prowler
-    private boolean defeated; //keeps track of if the prowler is defeated or not
+    Image prowlerImage; // Image of the prowler
+
+    private boolean defeated;
+
+
+    private String prowlerName;
+
 
 
     /**
      * Constructor
      */
-    public Prowler(String characterName, String introText, String revealText, Image characterImage, Image prowlerImage) {
-        super(characterName, introText, revealText, characterImage);
+    public Prowler(String prowlerName, Image prowlerImage, String npcName, Image NpcImage, String npcGreetings) {
+        super( npcName, NpcImage, npcGreetings);
+        this.prowlerName = prowlerName;
         this.prowlerImage = prowlerImage;
-        this.defeated = true;
+        this.defeated = false;
 
     }
 
