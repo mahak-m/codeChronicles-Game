@@ -5,6 +5,7 @@ import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.NonPlayerCharacters.SchoolMember;
 import InteractingWithPlayer.Player.Player;
 import InteractingWithPlayer.Player.WarriorCharacter;
+import InteractingWithPlayer.Quest;
 
 import java.io.*;
 import java.util.*;
@@ -18,9 +19,11 @@ public class CodeChroniclesGame implements Serializable {
 
     public Player player; //The Player of the game.
 
-    public ArrayList<Prowler> prowlers;// The list of all the prowlers.
+    public ArrayList<Prowler> prowlers; // The list of all the prowlers.
 
-    public ArrayList<SchoolMember> schoolMembers;// The list of all the School Members.
+    public ArrayList<SchoolMember> schoolMembers; // The list of all the School Members.
+
+    public ArrayList<Quest> quests; // The list of all the quests.
 
 
 
@@ -33,6 +36,9 @@ public class CodeChroniclesGame implements Serializable {
     public CodeChroniclesGame(){
         try {
             this.rooms = new ArrayList<Room>();
+            this.prowlers = new ArrayList<Prowler>();
+            this.quests = new ArrayList<Quest>();
+            this.schoolMembers = new ArrayList<SchoolMember>();
             setUpGame();
         } catch (IOException e) {
             throw new RuntimeException("An Error Occurred: " + e.getMessage());
