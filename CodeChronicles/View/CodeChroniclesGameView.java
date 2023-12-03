@@ -369,9 +369,7 @@ public class CodeChroniclesGameView {
     private void formatText(String textToDisplay) {
         if (textToDisplay == null || textToDisplay.isBlank()) {
             String roomDesc = this.game.getPlayer().getCurrentRoom().getRoomDescription() + "\n";
-            String objectString = this.game.getPlayer().getCurrentRoom().getObjectString();
-            if (objectString != null && !objectString.isEmpty()) roomDescLabel.setText(roomDesc + "\n\nObjects in this room:\n" + objectString);
-            else roomDescLabel.setText(roomDesc);
+            roomDescLabel.setText(roomDesc);
         } else roomDescLabel.setText(textToDisplay);
         roomDescLabel.setStyle("-fx-text-fill: white;");
         roomDescLabel.setFont(new Font("Arial", this.fontSize));

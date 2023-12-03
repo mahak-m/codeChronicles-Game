@@ -1,6 +1,5 @@
 package InteractingWithPlayer.Player;
 
-import GameModel.AdventureObject;
 import GameModel.Room;
 
 import java.util.ArrayList;
