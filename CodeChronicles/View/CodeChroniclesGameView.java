@@ -31,6 +31,12 @@ import static javafx.scene.layout.GridPane.getColumnIndex;
 import static javafx.scene.layout.GridPane.getRowIndex;
 import static jdk.dynalink.linker.support.Guards.isInstance;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 /**
  * Class AdventureGameView.
  *
@@ -55,6 +61,16 @@ public class CodeChroniclesGameView {
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
 
+    // attributes for the background
+    Long currentFrame;
+    Clip clip;
+
+    // current status of clip
+    String status;
+
+    AudioInputStream audioInputStream;
+    static String filePath;
+
     /**
      * Adventure Game View Constructor
      * __________________________
@@ -66,6 +82,9 @@ public class CodeChroniclesGameView {
         this.colourScheme = new ColourScheme("Game Theme");
         this.fontSize = 16;
         intiUI();
+
+        // call the method to play reduced background music indefinitely
+        this.playBackgroundMusic();
     }
 
     /**
@@ -180,6 +199,8 @@ public class CodeChroniclesGameView {
         alchemistButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Alchemist Character");
             this.game.player = new AlchemistCharacter(this.game.rooms.get(1), "", "");
+            // play introduction audio if selected by passing audio file to method
+            playIntroductionAudio("alchemistDescription.wav");
         });
 
         // Mage Player
@@ -200,6 +221,8 @@ public class CodeChroniclesGameView {
         mageButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Mage Character");
             this.game.player = new MageCharacter(this.game.rooms.get(1), "", "");
+            // play introduction audio if selected by passing audio file to method
+            playIntroductionAudio("mageDescription.wav");
         });
 
         // Warrior Player
@@ -220,6 +243,8 @@ public class CodeChroniclesGameView {
         warriorButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Warrior Character");
             this.game.player = new WarriorCharacter(this.game.rooms.get(1), "", "");
+            // play introduction audio if selected by passing audio file to method
+            playIntroductionAudio("warriorDescription.wav");
         });
 
         // Add character buttons to grid pane.
@@ -478,15 +503,21 @@ public class CodeChroniclesGameView {
     }
 
 
+    // these method is for playing the room descriptions (long and short)
     /**
      * This method articulates Room Descriptions
+     * ____________________
+     * Each room has a "short" and "long" audio that can be found
+     * in the sub folders audio --> roomDescriptions
      */
     public void articulateRoomDescription() {
         String musicFile;
         String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
 
-        if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-long.mp3" ;
+        if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.mp3" ;
+        // ^^ the "long" files have the description
         else musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-short.mp3" ;
+        // ^^ the "short" files have the room names
         musicFile = musicFile.replace(" ","-");
 
         Media sound = new Media(new File(musicFile).toURI().toString());
@@ -494,10 +525,11 @@ public class CodeChroniclesGameView {
         mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
         mediaPlaying = true;
-
     }
 
     /**
+     * stopArticulation()
+     * ______________________
      * This method stops articulations 
      * (useful when transitioning to a new room or loading a new game)
      */
@@ -505,6 +537,53 @@ public class CodeChroniclesGameView {
         if (mediaPlaying) {
             mediaPlayer.stop(); //shush!
             mediaPlaying = false;
+        }
+    }
+
+    // these methods are for the main background music
+    /**
+     * playBackgroundMusic
+     * ______________________
+     * This method controls the main background music for the game.
+     * It plays at 50% volume and runs indefinitely for the duration of the game.
+     * The background music should be found in audio -> backgroundMusic -> backgroundMusic.wav
+     */
+    public void playBackgroundMusic() {
+        //later switched to a "try/catch" format to fix MediaException errors
+        try {
+            String musicFile = "audio/backgroundMusicAudio/backgroundMusic.wav";
+
+            //create a media object and media player
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            mediaPlayer = new MediaPlayer(sound);
+
+            //self volume to 50% and play in a loop while the view is up
+            mediaPlayer.setVolume(0.5);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.play();
+
+        } catch (Exception e) {
+            System.out.println("Error loading background music: " + e.getMessage());
+        }
+    }
+
+    // these methods are for the character introduction audio (during character selection)
+    /**
+     * playIntroductionAudio
+     * ______________________
+     * This method plays the character description audio for a character when they are
+     * selected in the character customization screen.
+     *
+     */
+    private void playIntroductionAudio(String audioFileName) {
+        // changed to a try/catch format to avoid errors
+        try {
+            String musicFile = "audio/characterDescriptionAudio" + audioFileName;
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.out.println("there's an error with the audio: " + e.getMessage());
         }
     }
 }
