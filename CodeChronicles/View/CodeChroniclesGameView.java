@@ -49,8 +49,6 @@ public class CodeChroniclesGameView {
     Boolean audio;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
-    VBox objectsInRoom = new VBox(); //to hold room items
-    VBox objectsInInventory = new VBox(); //to hold inventory items
     ImageView roomImageView; //to hold room image
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
@@ -179,7 +177,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "DESCRIPTION");
         alchemistButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Alchemist Character");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get(1), "", "");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "", "");
         });
 
         // Mage Player
@@ -199,7 +197,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "DESCRIPTION");
         mageButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Mage Character");
-            this.game.player = new MageCharacter(this.game.rooms.get(1), "", "");
+            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "", "");
         });
 
         // Warrior Player
@@ -219,7 +217,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "DESCRIPTION");
         warriorButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Warrior Character");
-            this.game.player = new WarriorCharacter(this.game.rooms.get(1), "", "");
+            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "", "");
         });
 
         // Add character buttons to grid pane.
@@ -424,7 +422,8 @@ public class CodeChroniclesGameView {
             roomsRow1.setSpacing(10);
             roomsRow2.setSpacing(10);
             allRooms.setSpacing(10);
-            for (Room room : this.game.rooms) {
+            for (String roomName : this.game.rooms.keySet()) {
+                Room room = this.game.rooms.get(roomName);
                 // create room icon
                 RoomIcon roomIcon = new UnvisitedRoomIcon(this.game, this, room);
                 if (room.getVisited()) {

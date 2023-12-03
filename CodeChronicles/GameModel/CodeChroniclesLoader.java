@@ -1,18 +1,13 @@
 package GameModel;
 
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.NonPlayerCharacters.SchoolMember;
+import View.ColourScheme;
 import javafx.scene.image.Image;
 import InteractingWithPlayer.Quest;
-
-import InteractingWithPlayer.NonPlayerCharacters.NPC;
-
-import static java.io.File.separator;
 
 /**
  * Class AdventureLoader. Loads an adventure from files.
@@ -20,6 +15,7 @@ import static java.io.File.separator;
 public class CodeChroniclesLoader {
 
     private CodeChroniclesGame game; //the game to return
+    private ColourScheme colourScheme;
 
     /**
      * Adventure Loader Constructor
@@ -58,7 +54,7 @@ public class CodeChroniclesLoader {
             if (separator != null && !separator.isEmpty())
                 System.out.println("Formatting Error!");
             Room newRoom = new Room(roomName, roomXCoord, roomYCoord, roomDescription);
-            this.game.rooms.add(newRoom);
+            this.game.rooms.put(roomName, newRoom);
         }
     }
 
@@ -72,7 +68,7 @@ public class CodeChroniclesLoader {
             String npcName = buff.readLine();
             String prowlerName = buff.readLine();
             String npcGreetings = buff.readLine();
-            FileInputStream inputstreamNPC = new FileInputStream("OtherFiles/npcImages/" + npcName + ".png");
+            FileInputStream inputstreamNPC = new FileInputStream("OtherFiles//npcImages/" + npcName + ".png");
             Image npcImage = new Image(inputstreamNPC);
             FileInputStream inputstreamProwler = new FileInputStream("OtherFiles/prowlerImages/" + prowlerName + ".png");
             Image prowlerImage = new Image(inputstreamProwler);
