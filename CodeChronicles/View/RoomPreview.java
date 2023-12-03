@@ -8,13 +8,13 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class GameMap {
+public class RoomPreview {
 
     private Button closeWindowButton = new Button("Close Window");
 
     private CodeChroniclesGameView gameView;
 
-    public GameMap(CodeChroniclesGameView gameView) {
+    public RoomPreview(RoomIcon icon) {
         this.gameView = gameView;
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);

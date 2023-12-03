@@ -28,8 +28,8 @@ public class ColourScheme {
             this.colourSchemeName = "GameTheme";
             this.backgroundColour = "#210776";
             this.regularFontColour = "#5CE1E6";
-            this.headingsFontColour = "#FFFFFF";
-            this.buttonColour1 = "#5CE1E6";
+            this.headingsFontColour = "#5CE1E6";
+            this.buttonColour1 = "#4264D4";
             this.buttonColour2 = "#8C52FF";
         }
     }

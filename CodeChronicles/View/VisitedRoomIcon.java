@@ -43,16 +43,24 @@ public class VisitedRoomIcon implements RoomIcon{
         String roomName = room.getRoomName().replaceAll("\\s", "");
         Image image = new Image("OtherFiles/Images/" + this.gameView.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg");
         this.roomImage = new ImageView(image);
+        this.formatIcon();
     }
 
     public void formatIcon() {
+        // Format Visuals
         this.roomImage.setFitWidth(170);
-        this.roomImage.setFitHeight(50);
+        this.roomImage.setFitHeight(150);
         this.iconButton.setMinWidth(175);
         this.iconButton.setMinHeight(200);
         this.iconButton.setId(this.room.getRoomName());
         this.iconButton.setGraphic(this.roomImage);
+        this.iconButton.setContentDisplay(TOP);
+        this.iconButton.setStyle("-fx-background-color: "+ this.gameView.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         this.iconButton.setAlignment(Pos.CENTER);
+        // Create preview of room is player clicks on room button.
+        this.iconButton.setOnAction(e -> {
+            RoomPreview preview = new RoomPreview(this);
+        });
     }
 
     public Button getRoomButton() {

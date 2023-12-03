@@ -104,7 +104,6 @@ public class CodeChroniclesGameView {
 
         // SETUP GRID PANE
         GridPane characterGridPane = new GridPane();
-        // characterGridPane.setPadding(new Insets(20));
         characterGridPane.setBackground(new Background(new BackgroundFill(
                 Color.valueOf(this.colourScheme.backgroundColour),
                 new CornerRadii(0),
@@ -144,6 +143,79 @@ public class CodeChroniclesGameView {
         // Input Text Field for Player Name
         // TODO
 
+        // CHARACTER SELECTION BUTTONS
+
+        // Alchemist Player
+        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
+        alchemistButton.setId("Alchemist Character");
+        alchemistButton.setAlignment(Pos.TOP_CENTER);
+        customizeButton(alchemistButton, 280, 550);
+        alchemistButton.wrapTextProperty().setValue(true);
+        Image alchemistImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
+        ImageView alchemistView = new ImageView(alchemistImage);
+        alchemistView.setFitHeight(300);
+        alchemistView.setFitWidth(250);
+        alchemistView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        alchemistView.setAccessibleText("As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
+        alchemistButton.setGraphic(alchemistView);
+        alchemistButton.setContentDisplay(TOP);
+        alchemistButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
+        makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
+        alchemistButton.setOnAction(e -> {
+            selectedPlayerLabel.setText("You have selected: Alchemist Character");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "", "");
+        });
+
+        // Mage Player
+        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
+        mageButton.setId("Mage Character");
+        mageButton.setAlignment(Pos.TOP_CENTER);
+        customizeButton(mageButton, 280, 550);
+        mageButton.wrapTextProperty().setValue(true);
+        Image mageImage = new Image("OtherFiles/characterImages/mageCharacter.png");
+        ImageView mageView = new ImageView(mageImage);
+        mageView.setFitHeight(300);
+        mageView.setFitWidth(250);
+        mageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        mageView.setAccessibleText("As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
+        mageButton.setGraphic(mageView);
+        mageButton.setContentDisplay(TOP);
+        mageButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
+        makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
+        mageButton.setOnAction(e -> {
+            selectedPlayerLabel.setText("You have selected: Mage Character");
+            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "", "");
+        });
+
+        // Warrior Player
+        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
+        warriorButton.setId("Warrior Character");
+        warriorButton.setAlignment(Pos.TOP_CENTER);
+        customizeButton(warriorButton, 280, 550);
+        warriorButton.wrapTextProperty().setValue(true);
+        Image warriorImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
+        ImageView warriorView = new ImageView(warriorImage);
+        warriorView.setFitHeight(300);
+        warriorView.setFitWidth(250);
+        warriorView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        warriorView.setAccessibleText("As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
+        warriorButton.setGraphic(warriorView);
+        warriorButton.setContentDisplay(TOP);
+        warriorButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
+        makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
+        warriorButton.setOnAction(e -> {
+            selectedPlayerLabel.setText("You have selected: Warrior Character");
+            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "", "");
+        });
+
+        // Add character buttons to grid pane.
+        characterGridPane.add(alchemistButton, 1, 2, 1, 1 );
+        characterGridPane.setHalignment(alchemistButton, HPos.CENTER);
+        characterGridPane.add(mageButton, 2, 2, 1, 1 );
+        characterGridPane.setHalignment(mageButton, HPos.CENTER);
+        characterGridPane.add(warriorButton, 3, 2, 1, 1 );
+        characterGridPane.setHalignment(warriorButton, HPos.CENTER);
+
         // Play Game Button
         Button playButton = new Button("Play");
         playButton.setId("Play");
@@ -158,84 +230,91 @@ public class CodeChroniclesGameView {
         characterGridPane.add(playButton, 3, 3, 1, 1);
         characterGridPane.setHalignment(playButton, HPos.RIGHT);
 
-        // CHARACTER SELECTION BUTTONS
-
-        // Alchemist Player
-        Button alchemistButton = new Button("ALCHEMIST CHARACTER \n \n character description here");
-        alchemistButton.setId("Alchemist Character");
-        alchemistButton.setAlignment(Pos.CENTER);
-        customizeButton(alchemistButton, 280, 550);
-        Image alchemistImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
-        ImageView alchemistView = new ImageView(alchemistImage);
-        alchemistView.setFitHeight(300);
-        alchemistView.setFitWidth(250);
-        alchemistView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        alchemistView.setAccessibleText("DESCRIPTION");
-        alchemistButton.setGraphic(alchemistView);
-        alchemistButton.setContentDisplay(TOP);
-        alchemistButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
-        makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "DESCRIPTION");
-        alchemistButton.setOnAction(e -> {
-            selectedPlayerLabel.setText("You have selected: Alchemist Character");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "", "");
-        });
-
-        // Mage Player
-        Button mageButton = new Button("   MAGE CHARACTER \n \n character description here");
-        mageButton.setId("Mage Character");
-        mageButton.setAlignment(Pos.CENTER);
-        customizeButton(mageButton, 280, 550);
-        Image mageImage = new Image("OtherFiles/characterImages/mageCharacter.png");
-        ImageView mageView = new ImageView(mageImage);
-        mageView.setFitHeight(300);
-        mageView.setFitWidth(250);
-        mageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        mageView.setAccessibleText("DESCRIPTION");
-        mageButton.setGraphic(mageView);
-        mageButton.setContentDisplay(TOP);
-        mageButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
-        makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "DESCRIPTION");
-        mageButton.setOnAction(e -> {
-            selectedPlayerLabel.setText("You have selected: Mage Character");
-            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "", "");
-        });
-
-        // Warrior Player
-        Button warriorButton = new Button("WARRIOR CHARACTER \n \n character description here");
-        warriorButton.setId("Warrior Character");
-        warriorButton.setAlignment(Pos.CENTER);
-        customizeButton(warriorButton, 280, 550);
-        Image warriorImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
-        ImageView warriorView = new ImageView(warriorImage);
-        warriorView.setFitHeight(300);
-        warriorView.setFitWidth(250);
-        warriorView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        warriorView.setAccessibleText("DESCRIPTION");
-        warriorButton.setGraphic(warriorView);
-        warriorButton.setContentDisplay(TOP);
-        warriorButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
-        makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "DESCRIPTION");
-        warriorButton.setOnAction(e -> {
-            selectedPlayerLabel.setText("You have selected: Warrior Character");
-            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "", "");
-        });
-
-        // Add character buttons to grid pane.
-        characterGridPane.add(alchemistButton, 1, 2, 1, 1 );
-        characterGridPane.setHalignment(alchemistButton, HPos.CENTER);
-        characterGridPane.add(mageButton, 2, 2, 1, 1 );
-        characterGridPane.setHalignment(mageButton, HPos.CENTER);
-        characterGridPane.add(warriorButton, 3, 2, 1, 1 );
-        characterGridPane.setHalignment(warriorButton, HPos.CENTER);
-
         // SETUP SCENE
         Scene scene = new Scene(characterGridPane ,  1000, 800);
         scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
         return scene;
     }
 
+    public void showAnimalAlert() {
+
+        // SETUP GRID PANE
+        GridPane animalGridPane = new GridPane();
+        animalGridPane.setBackground(new Background(new BackgroundFill(
+                Color.valueOf(this.colourScheme.backgroundColour),
+                new CornerRadii(0),
+                new Insets(0)
+        )));
+        // Row and Column Constraints
+        ColumnConstraints column1 = new ColumnConstraints(50);
+        ColumnConstraints column2 = new ColumnConstraints(300);
+        ColumnConstraints column3 = new ColumnConstraints(300);
+        ColumnConstraints column4 = new ColumnConstraints(300);
+        ColumnConstraints column5 = new ColumnConstraints(50);
+        RowConstraints row1 = new RowConstraints(50);
+        RowConstraints row2 = new RowConstraints( 30);
+        RowConstraints row3 = new RowConstraints(600);
+        RowConstraints row4 = new RowConstraints(120);
+        animalGridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
+        animalGridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
+
+        // Play Game Button
+        Button playButton = new Button("Play");
+        playButton.setId("Play");
+        playButton.setAlignment(Pos.CENTER);
+        customizeButton(playButton,100, 50);
+        makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
+        playButton.setOnAction(e -> {
+            if (this.game.player != null) {
+                setRoomScene();
+            }
+        });
+        animalGridPane.add(playButton, 3, 3, 1, 1);
+        animalGridPane.setHalignment(playButton, HPos.RIGHT);
+
+        // SETUP SCENE
+        Scene scene = new Scene(animalGridPane ,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+        // return scene;
+    }
+
     public void setRoomScene() {
 
+        GridPane roomPane = new GridPane();
+        this.setupGridPane(roomPane);
+        this.addGameHeader(roomPane);
+
+        // add characters and NPCs to the GridPane
+        ImageView characterView = this.getCharacterImageView();
+        roomPane.add(characterView, 3, 2);
+        roomPane.setValignment(this.getCharacterImageView(), VPos.BOTTOM);
+
+
+        // add room description to GridPane
+        Label roomLabel= new Label(this.game.player.getCurrentRoom().getRoomDescription());
+        roomLabel.setMinWidth(940);
+        roomLabel.setMinHeight(250);
+        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
+        roomPane.add(roomLabel, 1, 3, 5, 1);
+
+        // add background
+        String roomName = this.game.player.getCurrentRoom().getRoomName().replaceAll("\\s", "");
+        roomPane.setStyle("-fx-background-image: url('OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg');");
+
+        this.gridPane = roomPane;
+        var scene = new Scene( this.gridPane ,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+        this.stage.setScene(scene);
+        this.stage.setResizable(false);
+        this.stage.show();
+    }
+
+    public void setupGridPane(GridPane gridPane) {
+        gridPane.setBackground(new Background(new BackgroundFill(
+                Color.valueOf(this.colourScheme.backgroundColour),
+                new CornerRadii(0),
+                new Insets(0)
+        )));
         // Row and Column Constraints
         ColumnConstraints column1 = new ColumnConstraints(30);
         ColumnConstraints column2 = new ColumnConstraints(320);
@@ -246,10 +325,12 @@ public class CodeChroniclesGameView {
         RowConstraints row2 = new RowConstraints( 20);
         RowConstraints row3 = new RowConstraints(600);
         RowConstraints row4 = new RowConstraints(100);
-        this.gridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
-        this.gridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
+        gridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
+        gridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
+    }
 
-        // Buttons
+    public void addGameHeader(GridPane gridPane) {
+        // Create Buttons
         menuButton = new Button("Menu");
         menuButton.setId("Save");
         customizeButton(menuButton, 200, 50);
@@ -274,30 +355,8 @@ public class CodeChroniclesGameView {
         topButtons.setAlignment(Pos.CENTER);
 
         //add all the widgets to the GridPane
-        this.gridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
-        this.gridPane.setHalignment(topButtons, HPos.CENTER);
-
-        // add characters and NPCs to the GridPane
-        ImageView characterView = this.getCharacterImageView();
-        this.gridPane.add(characterView, 3, 2);
-        this.gridPane.setValignment(this.getCharacterImageView(), VPos.BOTTOM);
-
-        // add room description to GridPane
-        Label roomLabel= new Label(this.game.player.getCurrentRoom().getRoomDescription());
-        roomLabel.setMinWidth(940);
-        roomLabel.setMinHeight(250);
-        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
-        this.gridPane.add(roomLabel, 1, 3, 5, 1);
-
-        // add background
-        String roomName = this.game.player.getCurrentRoom().getRoomName().replaceAll("\\s", "");
-        this.gridPane.setStyle("-fx-background-image: url('OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg');");
-
-        var scene = new Scene( this.gridPane ,  1000, 800);
-        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
-        this.stage.setScene(scene);
-        this.stage.setResizable(false);
-        this.stage.show();
+        gridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
+        gridPane.setHalignment(topButtons, HPos.CENTER);
     }
 
     public ImageView getCharacterImageView() {
@@ -320,6 +379,11 @@ public class CodeChroniclesGameView {
             imageView.setFitHeight(500);
             return imageView;
         }
+    }
+
+    public ImageView getNPCImageView() {
+        ImageView view = new ImageView();
+        return view;
     }
 
 
@@ -414,10 +478,19 @@ public class CodeChroniclesGameView {
     public void showMap() {
         // If the mapToggle is false, show the map on the grid pane.
         if (!this.mapToggle) {
+            // Create map background.
+            this.gridPane = new GridPane();
+            this.setupGridPane(this.gridPane);
+            this.addGameHeader(this.gridPane);
+
+            // Populate the room icons.
             HBox roomsRow0 = new HBox();
             HBox roomsRow1 = new HBox();
             HBox roomsRow2 = new HBox();
             VBox allRooms = new VBox();
+            roomsRow0.setAlignment(Pos.CENTER);
+            roomsRow1.setAlignment(Pos.CENTER);
+            roomsRow2.setAlignment(Pos.CENTER);
             roomsRow0.setSpacing(10);
             roomsRow1.setSpacing(10);
             roomsRow2.setSpacing(10);
@@ -438,12 +511,19 @@ public class CodeChroniclesGameView {
                     roomsRow2.getChildren().add(roomIcon.getRoomButton());
                 }
             } allRooms.getChildren().addAll(roomsRow0, roomsRow1, roomsRow2);
-            this.gridPane.add(allRooms, 2, 2, 3, 1);
+            this.gridPane.add(allRooms, 1, 2, 5, 1);
+            this.gridPane.setHalignment(allRooms, HPos.CENTER);
+            var scene = new Scene( this.gridPane ,  1000, 800);
+            scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+            this.stage.setScene(scene);
+            this.stage.setResizable(false);
+            this.stage.show();
+            this.mapToggle = true;
         }
         // If mapToggle is true, shoe the room scene again.
         else {
             this.setRoomScene();
-            this.helpToggle = false;
+            this.mapToggle = false;
         }
     }
 
