@@ -76,4 +76,11 @@ public class Room implements Serializable {
         return this.isVisited;
     }
 
+    /**
+     * Sets the room's NPC attribute.
+     */
+    public void setNPC(NPC npc){
+        this.characterInRoom = npc;
+    }
+
 }

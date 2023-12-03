@@ -67,6 +67,7 @@ public class CodeChroniclesLoader {
         while (buff.ready()) {
             String npcName = buff.readLine();
             String prowlerName = buff.readLine();
+            String roomName = buff.readLine();
             String npcGreetings = buff.readLine();
             FileInputStream inputstreamNPC = new FileInputStream("OtherFiles//npcImages/" + npcName + ".png");
             Image npcImage = new Image(inputstreamNPC);
@@ -77,10 +78,8 @@ public class CodeChroniclesLoader {
                 System.out.println("Formatting Error!");
             Prowler prowler = new Prowler(prowlerName, prowlerImage, npcName, npcImage, npcGreetings);
             this.game.prowlers.add(prowler);
+            this.game.rooms.get(roomName).setNPC(prowler);
         }
-
-
-
     }
 
     /**
@@ -89,6 +88,7 @@ public class CodeChroniclesLoader {
     public void parseSchoolMembers() throws IOException {
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/schoolmembers.txt"));
         String npcName = buff.readLine();
+        String roomName = buff.readLine();
         String npcGreetings = buff.readLine();
         FileInputStream inputstreamNPC = new FileInputStream("OtherFiles/npcImages/" + npcName + ".png");
         Image npcImage = new Image(inputstreamNPC);
@@ -97,6 +97,7 @@ public class CodeChroniclesLoader {
             System.out.println("Formatting Error!");
         SchoolMember schoolMember = new SchoolMember(npcName, npcGreetings, npcImage);
         this.game.schoolMembers.add(schoolMember);
+        this.game.rooms.get(roomName).setNPC(schoolMember);
     }
 
     /**
