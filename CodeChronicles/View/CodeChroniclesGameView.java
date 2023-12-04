@@ -189,7 +189,7 @@ public class CodeChroniclesGameView {
         // CHARACTER SELECTION BUTTONS
 
         // Alchemist Player
-        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
+        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe. \n \n Lives: 5 \n Code Bytes: 10");
         alchemistButton.setId("Alchemist Character");
         alchemistButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(alchemistButton, 280, 550, this.colourScheme.buttonColour2);
@@ -212,7 +212,7 @@ public class CodeChroniclesGameView {
         });
 
         // Mage Player
-        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
+        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air. \n \n \n Lives: 7 \n Code Bytes: 7");
         mageButton.setId("Mage Character");
         mageButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(mageButton, 280, 550, this.colourScheme.buttonColour2);
@@ -235,7 +235,7 @@ public class CodeChroniclesGameView {
         });
 
         // Warrior Player
-        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
+        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles. \n \n \n Lives: 10 \n Code Bytes: 5");
         warriorButton.setId("Warrior Character");
         warriorButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(warriorButton, 280, 550, this.colourScheme.buttonColour2);
