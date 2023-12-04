@@ -75,6 +75,13 @@ public abstract class Player {
         return this.currLocation;
     }
 
+    public void setCurrentRoom(Room room) {
+        this.currLocation = room;
+        if (!room.getVisited()) {
+            this.updateCodeBytes(-1);
+        } room.visit();
+    }
+
     /**
      * setCharacterName
      * _________________________
