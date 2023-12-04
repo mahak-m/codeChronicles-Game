@@ -17,6 +17,11 @@ public class IgnoreCommand implements Command {
     }
 
     public String executeCommand() {
-        return "You decided to ignore the NPC character.";
+        if (this.player.getCodeBytes() >= 5) {
+            this.player.updateCodeBytes(-5);
+            return "You decided to ignore the NPC character.";
+        }
+        return "Sorry, you cannot ignore this NPC character, as you don't have enough " +
+                "codebytes. Look for school members in other rooms.";
     };
 }

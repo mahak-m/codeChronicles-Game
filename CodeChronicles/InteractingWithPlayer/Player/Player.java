@@ -2,6 +2,8 @@ package InteractingWithPlayer.Player;
 
 import GameModel.Pet.Pet;
 import GameModel.Room;
+import View.CodeChroniclesGameView;
+import View.QuestView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -135,8 +137,9 @@ public abstract class Player {
     /**
      * playQuest
      */
-    public boolean playQuest() { return true;
-        // after quest has been implemented, refer to hia for this implementation
+    public boolean playQuest(CodeChroniclesGameView gameView) {
+        QuestView questView = new QuestView(gameView, this.currLocation.characterInRoom.getQuest(), this, gameView.fontSize - 16);
+        return this.currLocation.characterInRoom.getQuest().getIfWon();
     }
 
     public void setPet(Pet pet) {this.pet = pet;}

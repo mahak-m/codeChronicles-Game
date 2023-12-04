@@ -34,12 +34,16 @@ public class QuestView {
     private Button exitButton = new Button("Exit");
     private Quest quest;
     private Player player;
+    private Integer increaseFont;
 
-    public QuestView(CodeChroniclesGameView gameView, Quest quest, Player player) {
+    public QuestView(CodeChroniclesGameView gameView, Quest quest, Player player, Integer fontIncrease) {
         this.gameView = gameView;
         this.quest = quest;
         this.player = player;
-
+        this.increaseFont = fontIncrease;
+        intiUI();
+    }
+    public void intiUI() {
         // SET THE STAGE UP
         this.stage.initModality(Modality.APPLICATION_MODAL);
         this.stage.initOwner(gameView.stage);
@@ -52,7 +56,7 @@ public class QuestView {
         // Create alertLabel
         Label alertLabel = new Label("You have decided to hack " + this.quest.prowler.getProwlerName() + "... A PROWLER!");
         alertLabel.setPadding(new Insets(20));
-        alertLabel.setFont(new Font("Georgia", 22));
+        alertLabel.setFont(new Font("Georgia", 22 + increaseFont));
         alertLabel.setTextFill(Color.valueOf("white"));
         alertLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#000000"), CornerRadii.EMPTY, Insets.EMPTY)));
         BorderPane.setAlignment(alertLabel, Pos.TOP_CENTER);
@@ -61,8 +65,7 @@ public class QuestView {
         // Create continueButton
         this.continueButton.setId("Continue");
         this.continueButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
-        this.continueButton.setPrefSize(90, 30);
-        this.continueButton.setFont(new Font("Georgia", 16));
+        this.continueButton.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(continueButton, "Continue", "Continue", "Continue to the next screen.");
         this.continueButton.setOnAction(e -> {
             setInstructionScene();
@@ -75,13 +78,13 @@ public class QuestView {
         try {
             Image image = new Image(new FileInputStream("OtherFiles/prowlerImages/" + this.quest.prowler.getProwlerName() + ".png"));
             borderPane.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
+                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
         // CREATE A SCREEN
-        var questScene1 = new Scene(borderPane, 600, 600);
+        var questScene1 = new Scene(borderPane, 730, 730);
         this.stage.setScene(questScene1);
         this.stage.setResizable(false);
         this.stage.show();
@@ -96,16 +99,15 @@ public class QuestView {
         try {
             Image image = new Image(new FileInputStream("OtherFiles/questScreens/instruction screen.png"));
             borderPane2.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
+                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
         // Create challengeButton
         this.challengeButton.setId("Accept the Challenge!");
-        this.challengeButton.setPrefSize(200, 30);
         this.challengeButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
-        this.challengeButton.setFont(new Font("Georgia", 16));
+        this.challengeButton.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(challengeButton, "Challenge", "Accept the challenge!", "Accept the challenge and see the question.");
         challengeButton.setOnAction(e -> {
             setQuestionScene(false);
@@ -115,7 +117,7 @@ public class QuestView {
 
         // Create questIntroLabel
         Label questIntroLabel = new Label("Now, you must play their Quest!");
-        questIntroLabel.setFont(new Font("Georgia", 30));
+        questIntroLabel.setFont(new Font("Georgia", 30 + increaseFont));
         questIntroLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white;");
         borderPane2.setAlignment(questIntroLabel, Pos.TOP_CENTER);
         borderPane2.setTop(questIntroLabel);
@@ -135,7 +137,7 @@ public class QuestView {
                         "a life and get 0 codebytes.\n" +
                         "Remember to use your attempts wisely and make appropriate choices. You may now proceed.");
         instructionsLabel.setWrapText(true);
-        instructionsLabel.setFont(new Font("Georgia", 18));
+        instructionsLabel.setFont(new Font("Georgia", 18 + increaseFont));
         instructionsLabel.setTextFill(Color.valueOf("black"));
         instructionsLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#37a6a4"), CornerRadii.EMPTY, Insets.EMPTY)));
         instructionsLabel.setOpacity(0.90);
@@ -144,7 +146,7 @@ public class QuestView {
         borderPane2.setAlignment(instructionsLabel, Pos.CENTER_LEFT);
         borderPane2.setCenter(instructionsLabel);
 
-        var questScene2 = new Scene(borderPane2, 600, 600);
+        var questScene2 = new Scene(borderPane2, 730, 730);
         this.stage.setScene(questScene2);
         this.stage.setResizable(false);
         this.stage.show();
@@ -158,16 +160,15 @@ public class QuestView {
         try {
             Image image = new Image(new FileInputStream("OtherFiles/questScreens/question screen.png"));
             borderPane3.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
+                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
         // Create submitButton
         this.submitButton.setId("Submit Answer");
-        this.submitButton.setPrefSize(200, 30);
         this.submitButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
-        this.submitButton.setFont(new Font("Georgia", 16));
+        this.submitButton.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(submitButton, "Submit", "Submit answer", "Submit your answer to be evaluated.");
         borderPane3.setAlignment(submitButton, Pos.BOTTOM_RIGHT);
         borderPane3.setBottom(submitButton);
@@ -187,11 +188,19 @@ public class QuestView {
         radioButtons.add(optionA); radioButtons.add(optionB); radioButtons.add(optionC); radioButtons.add(optionD);
 
         for (RadioButton radioButton : radioButtons) {
-            radioButton.setMinHeight(80);
-            radioButton.setMinWidth(250);
-            radioButton.setMaxHeight(80);
-            radioButton.setMaxWidth(250);
-            radioButton.setFont(new Font("Georgia", 16));
+            if (increaseFont > 0) {
+                radioButton.setMinHeight(180);
+                radioButton.setMinWidth(330);
+                radioButton.setMaxHeight(180);
+                radioButton.setMaxWidth(330);
+            }
+            else {
+                radioButton.setMinHeight(145);
+                radioButton.setMinWidth(250);
+                radioButton.setMaxHeight(145);
+                radioButton.setMaxWidth(250);
+            }
+            radioButton.setFont(new Font("Georgia", 16 + increaseFont));
             radioButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
             radioButton.setPadding(new Insets(10));
             radioButton.setOpacity(0.9);
@@ -221,7 +230,7 @@ public class QuestView {
 
         // Create questionLabel
         Label questionLabel = new Label(this.quest.questQuestion);
-        questionLabel.setFont(new Font("Georgia", 30));
+        questionLabel.setFont(new Font("Georgia", 22 + increaseFont));
         questionLabel.setWrapText(true);
         questionLabel.setTextFill(Color.valueOf("white"));
         questionLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
@@ -233,17 +242,19 @@ public class QuestView {
             if (selectedRadioButton != null) {
                 if (selectedRadioButton.getText().equals(this.quest.getQuestAnswer())) {
                     setEndScene("won");
+                    this.quest.setIfWon(true);
                 }
                 else if (! selectedRadioButton.getText().equals(this.quest.getQuestAnswer()) & ! doneTwoAttempts) {
                     setHintScene();
                 }
                 else if (! selectedRadioButton.getText().equals(this.quest.getQuestAnswer()) & doneTwoAttempts) {
                     setEndScene("lost");
+                    this.quest.setIfWon(false);
                 }
             }
         });
 
-        var questScene3 = new Scene(borderPane3, 600, 600);
+        var questScene3 = new Scene(borderPane3, 730, 730);
         this.stage.setScene(questScene3);
         this.stage.setResizable(false);
         this.stage.show();
@@ -257,7 +268,7 @@ public class QuestView {
         try {
             Image image = new Image(new FileInputStream("OtherFiles/questScreens/question screen.png"));
             borderPane4.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
+                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -265,7 +276,7 @@ public class QuestView {
         // Create questOutroLabel
         String endLine = (status.equals("won")) ? "You won the Quest!" : "You lost the Quest!";
         Label questOutroLabel = new Label(endLine);
-        questOutroLabel.setFont(new Font("Georgia", 60));
+        questOutroLabel.setFont(new Font("Georgia", 55 + increaseFont));
         questOutroLabel.setStyle("-fx-background-color: #000000;");
         questOutroLabel.setTextFill(Color.valueOf("white"));
         borderPane4.setAlignment(questOutroLabel, Pos.CENTER);
@@ -283,8 +294,7 @@ public class QuestView {
         // Create exitButton
         this.exitButton.setId("Exit");
         this.exitButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
-        this.exitButton.setPrefSize(90, 30);
-        this.exitButton.setFont(new Font("Georgia", 16));
+        this.exitButton.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(exitButton, "Exit", "Exit the quest", "Exit the quest and return to the room.");
         this.exitButton.setOnAction(e -> {
             this.stage.close();
@@ -293,7 +303,7 @@ public class QuestView {
         borderPane4.setAlignment(this.exitButton, Pos.BOTTOM_RIGHT);
         borderPane4.setBottom(this.exitButton);
 
-        var questScene4 = new Scene(borderPane4, 600, 600);
+        var questScene4 = new Scene(borderPane4, 730, 730);
         this.stage.setScene(questScene4);
         this.stage.setResizable(false);
         this.stage.show();
@@ -307,7 +317,7 @@ public class QuestView {
         try {
             Image image = new Image(new FileInputStream("OtherFiles/questScreens/question screen.png"));
             borderPane5.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
+                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -315,7 +325,7 @@ public class QuestView {
         // Create a hintLabel
         Label hintLabel = new Label("Oops! Wrong Answer. Please select one of the following options to help you " +
                 "in the next attempt.");
-        hintLabel.setFont(new Font("Georgia", 30));
+        hintLabel.setFont(new Font("Georgia", 30 + increaseFont));
         hintLabel.setWrapText(true);
         hintLabel.setTextFill(Color.valueOf("white"));
         hintLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: #000000");
@@ -326,9 +336,8 @@ public class QuestView {
         // Create a hintButton
         Button hintButton = new Button("Hint");
         makeButtonAccessible(hintButton, "Hint", "This is a hint to the question.", this.quest.getQuestHint());
-        hintButton.setMinHeight(80);
         hintButton.setMinWidth(250);
-        hintButton.setFont(new Font("Georgia", 18));
+        hintButton.setFont(new Font("Georgia", 18 + increaseFont));
         hintButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
         hintButton.setPadding(new Insets(10));
         hintButton.setOpacity(0.9);
@@ -342,9 +351,8 @@ public class QuestView {
         // Create a revealAnswerButton
         Button revealAnswerButton = new Button("Reveal Answer");
         makeButtonAccessible(revealAnswerButton, "Reveal Answer", "This is the answer to the question", "Please click on the button to see the answer");
-        revealAnswerButton.setMinHeight(80);
         revealAnswerButton.setMinWidth(250);
-        revealAnswerButton.setFont(new Font("Georgia", 18));
+        revealAnswerButton.setFont(new Font("Georgia", 18 + increaseFont));
         revealAnswerButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
         revealAnswerButton.setPadding(new Insets(10));
         revealAnswerButton.setOpacity(0.9);
@@ -372,9 +380,7 @@ public class QuestView {
         // Create Back button
         Button back = new Button("Back to the Question");
         back.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
-        back.setMinWidth(100);
-        back.setMinHeight(30);
-        back.setFont(new Font("Georgia", 16));
+        back.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(back, "Back", "Back to the question", "Go back to the question using this button.");
         back.setOnAction(e -> {
             if (this.quest.isWithHint() || this.quest.isWithAnswer()) {
@@ -384,7 +390,7 @@ public class QuestView {
         borderPane5.setAlignment(back, Pos.BOTTOM_RIGHT);
         borderPane5.setBottom(back);
 
-        var questScene5 = new Scene(borderPane5, 600, 600);
+        var questScene5 = new Scene(borderPane5, 730, 730);
         this.stage.setScene(questScene5);
         this.stage.setResizable(false);
         this.stage.show();

@@ -13,6 +13,7 @@ public class Quest implements Serializable {
     public Prowler prowler; // The prowler who proposes this question.
     private boolean withHint; // did the player solve the question with a hint?
     private boolean withAnswer; // did the player have to reveal the answer?
+    private boolean ifWon; // did the player win the quest?
 
     /**
      * Quest Constructor
@@ -32,6 +33,7 @@ public class Quest implements Serializable {
         this.questHint = hint;
         this.prowler = prowler;
         this.withHint = false; this.withAnswer = false;
+        this.ifWon = false;
     }
 
     public String getQuestAnswer() {
@@ -56,5 +58,11 @@ public class Quest implements Serializable {
 
     public boolean isWithAnswer() {
         return withAnswer;
+    }
+    public void setIfWon(boolean ifWon) {
+        this.ifWon = ifWon;
+    }
+    public boolean getIfWon() {
+        return this.ifWon;
     }
 }
