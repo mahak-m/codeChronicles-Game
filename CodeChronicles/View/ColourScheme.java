@@ -2,7 +2,7 @@ package View;
 
 public class ColourScheme {
 
-    String colourSchemeName; // Colour Scheme folder name without spaces for path to images in colour scheme folder.
+    public String colourSchemeName; // Colour Scheme folder name without spaces for path to images in colour scheme folder.
     String backgroundColour;
     String regularFontColour;
     String headingsFontColour;
@@ -26,4 +26,5 @@ public class ColourScheme {
             this.buttonColour2 = "#8C52FF";
         }
     }
+
 }

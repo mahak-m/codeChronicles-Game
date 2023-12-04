@@ -46,7 +46,7 @@ public class CodeChroniclesGameView {
 
     CodeChroniclesGame game; //model of the game
     public Integer fontSize;
-    ColourScheme colourScheme;
+    public ColourScheme colourScheme;
     Stage stage; //stage on which all is rendered
     Button menuButton, instructionsButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
@@ -60,9 +60,10 @@ public class CodeChroniclesGameView {
     private MediaPlayer backgroundMusicPlayer;
     private MediaPlayer introductionAudioPlayer;
     private MediaPlayer roomAudioPlayer;
+    private MediaPlayer buttonClickPlayer;
     private boolean backgroundMediaPlaying; //to know if the room descriptions are playing
     private boolean roomMediaPlaying; //to know if the background audio is playing
-    private boolean characterMediaPlaying; //to know if the character audio is playing
+
 
     // attributes for the background
     Long currentFrame;
@@ -174,6 +175,7 @@ public class CodeChroniclesGameView {
         customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
+            playButtonClick(); // plays the button click sound effect when pressed
             if (this.game.player != null) {
                 try {
                     setRoomScene();
@@ -203,10 +205,11 @@ public class CodeChroniclesGameView {
         alchemistButton.setGraphic(alchemistView);
         alchemistButton.setContentDisplay(TOP);
         alchemistButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
-        makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
+        makeButtonAccessible(alchemistButton, "Alchemist", "Alchemist Character", "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
         alchemistButton.setOnAction(e -> {
-            selectedPlayerLabel.setText("You have selected: Alchemist Character");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "Harry Potter"); //TODO: PLAYER NAME
+            playButtonClick(); // adds button click sound effect
+            selectedPlayerLabel.setText("You have selected: Alchemist");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "");
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("alchemistDescription.wav");
         });
@@ -226,10 +229,11 @@ public class CodeChroniclesGameView {
         mageButton.setGraphic(mageView);
         mageButton.setContentDisplay(TOP);
         mageButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
-        makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
+        makeButtonAccessible(mageButton, "Mage", "Mage Character", "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
         mageButton.setOnAction(e -> {
-            selectedPlayerLabel.setText("You have selected: Mage Character");
-            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "Harry Potter"); //TODO: PLAYER NAME
+            playButtonClick(); // adds button click sound effect
+            selectedPlayerLabel.setText("You have selected: Mage");
+            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "");
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("mageDescription.wav");
         });
@@ -251,8 +255,9 @@ public class CodeChroniclesGameView {
         warriorButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
         warriorButton.setOnAction(e -> {
-            selectedPlayerLabel.setText("You have selected: Warrior Character");
-            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "Harry Potter"); //TODO: PLAYER NAME
+            playButtonClick(); // adds button click sound effect
+            selectedPlayerLabel.setText("You have selected: Warrior");
+            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "");
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("warriorDescription.wav");
         });
@@ -460,6 +465,12 @@ public class CodeChroniclesGameView {
     }
 
     public void addGameHeader(GridPane gridPane) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof HBox && gridPane.getRowIndex(node) == 0 && gridPane.getColumnIndex(node) == 1) {
+                gridPane.getChildren().remove(node);
+                break;
+            }
+        }
         // Create Buttons
         menuButton = new Button("Menu");
         menuButton.setId("Save");
@@ -654,7 +665,8 @@ public class CodeChroniclesGameView {
      * This method handles the event related to the instructions button.
      */
     public void addInstructionEvent() {
-        instructionsButton.setOnAction(e -> {
+        helpButton.setOnAction(e -> {
+            playButtonClick(); // add button click audio
             stopArticulation();
             try {
                 showInstructions();
@@ -666,6 +678,7 @@ public class CodeChroniclesGameView {
 
     private void addMenuEvent() {
         menuButton.setOnAction(e -> {
+            playButtonClick(); // add button click audio
             stopArticulation();
             gridPane.requestFocus();
 //            QuestView view = new QuestView(this, this.game.quests.get(0), this.game.player);
@@ -676,6 +689,7 @@ public class CodeChroniclesGameView {
 
     private void addMapEvent() {
         mapButton.setOnAction(e -> {
+            playButtonClick(); // add button click audio
             stopArticulation();
             try {
                 showMap();
@@ -789,6 +803,25 @@ public class CodeChroniclesGameView {
     private void stopIntroductionAudio() {
         if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             introductionAudioPlayer.stop();
+        }
+    }
+
+    /* playButtonClick
+     * ______________________
+     * This method controls the button click sound effect
+     */
+    public void playButtonClick() {
+        //later switched to a "try/catch" format to fix MediaException errors
+        try {
+            String musicFile = "audio/buttonClick.wav";
+
+            //create a media object and media player
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            buttonClickPlayer = new MediaPlayer(sound);
+            buttonClickPlayer.play();
+
+        } catch (Exception e) {
+            System.out.println("Error loading button click audio: " + e.getMessage());
         }
     }
 }
