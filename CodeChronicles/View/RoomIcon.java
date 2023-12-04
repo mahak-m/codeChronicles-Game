@@ -1,5 +1,6 @@
 package View;
 
+import GameModel.Room;
 import javafx.animation.PauseTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -31,6 +32,12 @@ public interface RoomIcon {
    public void formatIcon();
 
    public Button getRoomButton();
+
+   public ImageView getRoomImage();
+
+   public Room getRoom();
+
+   public String getPreviewText();
 
    public void movePlayerToRoom();
 

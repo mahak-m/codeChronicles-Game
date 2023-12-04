@@ -1,37 +1,37 @@
 package View;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class RoomPreview {
 
-    private Button closeWindowButton = new Button("Close Window");
-
+    private Label previewText;
     private CodeChroniclesGameView gameView;
 
-    public RoomPreview(RoomIcon icon) {
+    public RoomPreview(RoomIcon icon, CodeChroniclesGameView gameView) {
         this.gameView = gameView;
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(gameView.stage);
+        dialog.initOwner(this.gameView.stage);
         VBox dialogVbox = new VBox(20);
         dialogVbox.setPadding(new Insets(20, 20, 20, 20));
-        dialogVbox.setStyle("-fx-background-color: #121212;");
+        dialogVbox.setStyle("-fx-background-color: " + this.gameView.colourScheme.buttonColour1 + ";");
 
-        closeWindowButton = new Button("Close Window");
-        closeWindowButton.setId("closeWindowButton");
-        closeWindowButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
-        closeWindowButton.setPrefSize(200, 50);
-        closeWindowButton.setFont(new Font(16));
-        closeWindowButton.setOnAction(e -> dialog.close());
-        CodeChroniclesGameView.makeButtonAccessible(closeWindowButton, "close window", "This is a button to close the save game window", "Use this button to close the save game window.");
+        VBox preview = new VBox();
+        preview.getChildren().addAll(icon.getRoomImage(), new Label(icon.getRoom().getRoomName()),new Label(icon.getPreviewText()));
+        preview.setAlignment(Pos.BASELINE_CENTER);
+        preview.setSpacing(20);
 
-        Scene dialogScene = new Scene(dialogVbox, 400, 400);
+        Scene dialogScene = new Scene(preview, 400, 400);
+        dialogScene.setFill(Color.valueOf(this.gameView.colourScheme.backgroundColour));
         dialog.setScene(dialogScene);
         dialog.show();
     }

@@ -208,6 +208,8 @@ public class CodeChroniclesGameView {
             this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "", "");
         });
 
+        this.game.rooms.get("Front Gate").visit();
+
         // Add character buttons to grid pane.
         characterGridPane.add(alchemistButton, 1, 2, 1, 1 );
         characterGridPane.setHalignment(alchemistButton, HPos.CENTER);
@@ -417,7 +419,7 @@ public class CodeChroniclesGameView {
     private void customizeButton(Button inputButton, int w, int h) {
         inputButton.setPrefSize(w, h);
         inputButton.setFont(new Font("Arial", this.fontSize));
-        inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        inputButton.setStyle("-fx-background-color: " + this.colourScheme.buttonColour2 + "; -fx-text-fill: white;");
     }
 
     /**
