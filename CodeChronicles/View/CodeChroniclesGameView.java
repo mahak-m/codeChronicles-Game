@@ -112,7 +112,7 @@ public class CodeChroniclesGameView {
         this.stage.show();
 
         // AFTER LOADING SCREEN SHOW CHARACTER CUSTOMIZATION SCREEN
-        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(event -> {
             this.stage.setScene(this.setCharacterCustomizationScene());
         });
@@ -161,81 +161,6 @@ public class CodeChroniclesGameView {
 
         // Input Text Field for Player Name
         // TODO
-
-        // CHARACTER SELECTION BUTTONS
-
-        // Alchemist Player
-        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
-        alchemistButton.setId("Alchemist Character");
-        alchemistButton.setAlignment(Pos.TOP_CENTER);
-        customizeButton(alchemistButton, 280, 550);
-        alchemistButton.wrapTextProperty().setValue(true);
-        Image alchemistImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
-        ImageView alchemistView = new ImageView(alchemistImage);
-        alchemistView.setFitHeight(300);
-        alchemistView.setFitWidth(250);
-        alchemistView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        alchemistView.setAccessibleText("As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
-        alchemistButton.setGraphic(alchemistView);
-        alchemistButton.setContentDisplay(TOP);
-        alchemistButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
-        makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
-        alchemistButton.setOnAction(e -> {
-            selectedPlayerLabel.setText("You have selected: Alchemist Character");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "", "");
-        });
-
-        // Mage Player
-        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
-        mageButton.setId("Mage Character");
-        mageButton.setAlignment(Pos.TOP_CENTER);
-        customizeButton(mageButton, 280, 550);
-        mageButton.wrapTextProperty().setValue(true);
-        Image mageImage = new Image("OtherFiles/characterImages/mageCharacter.png");
-        ImageView mageView = new ImageView(mageImage);
-        mageView.setFitHeight(300);
-        mageView.setFitWidth(250);
-        mageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        mageView.setAccessibleText("As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
-        mageButton.setGraphic(mageView);
-        mageButton.setContentDisplay(TOP);
-        mageButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
-        makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
-        mageButton.setOnAction(e -> {
-            selectedPlayerLabel.setText("You have selected: Mage Character");
-            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "", "");
-        });
-
-        // Warrior Player
-        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
-        warriorButton.setId("Warrior Character");
-        warriorButton.setAlignment(Pos.TOP_CENTER);
-        customizeButton(warriorButton, 280, 550);
-        warriorButton.wrapTextProperty().setValue(true);
-        Image warriorImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
-        ImageView warriorView = new ImageView(warriorImage);
-        warriorView.setFitHeight(300);
-        warriorView.setFitWidth(250);
-        warriorView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        warriorView.setAccessibleText("As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
-        warriorButton.setGraphic(warriorView);
-        warriorButton.setContentDisplay(TOP);
-        warriorButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
-        makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
-        warriorButton.setOnAction(e -> {
-            selectedPlayerLabel.setText("You have selected: Warrior Character");
-            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "", "");
-        });
-
-        this.game.rooms.get("Front Gate").visit();
-
-        // Add character buttons to grid pane.
-        characterGridPane.add(alchemistButton, 1, 2, 1, 1 );
-        characterGridPane.setHalignment(alchemistButton, HPos.CENTER);
-        characterGridPane.add(mageButton, 2, 2, 1, 1 );
-        characterGridPane.setHalignment(mageButton, HPos.CENTER);
-        characterGridPane.add(warriorButton, 3, 2, 1, 1 );
-        characterGridPane.setHalignment(warriorButton, HPos.CENTER);
 
         // Play Game Button
         Button playButton = new Button("Play");
@@ -318,6 +243,8 @@ public class CodeChroniclesGameView {
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("warriorDescription.wav");
         });
+
+        this.game.rooms.get("Front Gate").visit();
 
         // Add character buttons to grid pane.
         characterGridPane.add(alchemistButton, 1, 2, 1, 1 );
