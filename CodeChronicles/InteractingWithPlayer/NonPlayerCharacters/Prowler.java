@@ -8,10 +8,8 @@ import javafx.scene.image.ImageView;
 import java.util.Objects;
 
 public class Prowler extends NPC {
-    Image prowlerImage; // Image of the prowler
 
     private boolean defeated;
-
 
     private String prowlerName;
 
@@ -20,10 +18,9 @@ public class Prowler extends NPC {
     /**
      * Constructor
      */
-    public Prowler(String prowlerName, Image prowlerImage, String npcName, Image NpcImage, String npcGreetings) {
-        super( npcName, NpcImage, npcGreetings);
+    public Prowler(String npcName, String prowlerName, String npcGreetings) {
+        super(npcName, npcGreetings);
         this.prowlerName = prowlerName;
-        this.prowlerImage = prowlerImage;
         this.defeated = false;
 
     }
@@ -32,14 +29,11 @@ public class Prowler extends NPC {
      * Defeat method that keeps track if the prowler was defeated or not
      */
     public void setDefeated(boolean defeated) {
-
         this.defeated = defeated;
     }
-    public Image getProwlerImage(){
-        return prowlerImage;
-    }
-    public String getName(){
-        return name;
+
+    public String getProwlerName() {
+        return this.prowlerName;
     }
 
 }

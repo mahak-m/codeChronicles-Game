@@ -1,18 +1,14 @@
 package GameModel;
 
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
+import InteractingWithPlayer.LastBattleQuestion;
 import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.NonPlayerCharacters.SchoolMember;
+import View.ColourScheme;
 import javafx.scene.image.Image;
 import InteractingWithPlayer.Quest;
-
-import InteractingWithPlayer.NonPlayerCharacters.NPC;
-
-import static java.io.File.separator;
 
 /**
  * Class AdventureLoader. Loads an adventure from files.
@@ -20,6 +16,7 @@ import static java.io.File.separator;
 public class CodeChroniclesLoader {
 
     private CodeChroniclesGame game; //the game to return
+    private ColourScheme colourScheme;
 
     /**
      * Adventure Loader Constructor
@@ -39,6 +36,7 @@ public class CodeChroniclesLoader {
         parseProwlers();
         parseSchoolMembers();
         parseQuests();
+        parseLastBattleQuestions();
         this.game.setHelpText(parseOtherFile("help"));
     }
 
@@ -58,7 +56,7 @@ public class CodeChroniclesLoader {
             if (separator != null && !separator.isEmpty())
                 System.out.println("Formatting Error!");
             Room newRoom = new Room(roomName, roomXCoord, roomYCoord, roomDescription);
-            this.game.rooms.add(newRoom);
+            this.game.rooms.put(roomName, newRoom);
         }
     }
 
@@ -71,20 +69,15 @@ public class CodeChroniclesLoader {
         while (buff.ready()) {
             String npcName = buff.readLine();
             String prowlerName = buff.readLine();
+            String roomName = buff.readLine();
             String npcGreetings = buff.readLine();
-            FileInputStream inputstreamNPC = new FileInputStream("OtherFiles/npcImages/" + npcName + ".png");
-            Image npcImage = new Image(inputstreamNPC);
-            FileInputStream inputstreamProwler = new FileInputStream("OtherFiles/prowlerImages/" + prowlerName + ".png");
-            Image prowlerImage = new Image(inputstreamProwler);
             String separator = buff.readLine();
             if (separator != null && !separator.isEmpty())
                 System.out.println("Formatting Error!");
-            Prowler prowler = new Prowler(prowlerName, prowlerImage, npcName, npcImage, npcGreetings);
+            Prowler prowler = new Prowler(npcName, prowlerName, npcGreetings);
             this.game.prowlers.add(prowler);
+            this.game.rooms.get(roomName).setNPC(prowler);
         }
-
-
-
     }
 
     /**
@@ -92,15 +85,17 @@ public class CodeChroniclesLoader {
      */
     public void parseSchoolMembers() throws IOException {
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/schoolmembers.txt"));
-        String npcName = buff.readLine();
-        String npcGreetings = buff.readLine();
-        FileInputStream inputstreamNPC = new FileInputStream("OtherFiles/npcImages/" + npcName + ".png");
-        Image npcImage = new Image(inputstreamNPC);
-        String separator = buff.readLine();
-        if (separator != null && !separator.isEmpty())
-            System.out.println("Formatting Error!");
-        SchoolMember schoolMember = new SchoolMember(npcName, npcGreetings, npcImage);
-        this.game.schoolMembers.add(schoolMember);
+        while (buff.ready()) {
+            String npcName = buff.readLine();
+            String roomName = buff.readLine();
+            String npcGreetings = buff.readLine();
+            String separator = buff.readLine();
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            SchoolMember schoolMember = new SchoolMember(npcName, npcGreetings);
+            this.game.schoolMembers.add(schoolMember);
+            this.game.rooms.get(roomName).setNPC(schoolMember);
+        }
     }
 
     /**
@@ -108,28 +103,61 @@ public class CodeChroniclesLoader {
      */
     public void parseQuests() throws IOException {
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/quests.txt"));
-        String questName = buff.readLine();
-        String questQuestion = buff.readLine();
-        String optionA = buff.readLine();
-        String optionB = buff.readLine();
-        String optionC = buff.readLine();
-        String optionD = buff.readLine();
-        ArrayList<String> options = new ArrayList<String>();
-        options.add(optionA); options.add(optionB); options.add(optionC); options.add(optionD);
-        String questAnswer = buff.readLine();
-        String questHint = buff.readLine();
-        String prowlerName = buff.readLine();
-        String separator = buff.readLine();
-        Prowler questProwler = null;
-        for (Prowler prowler : this.game.prowlers) {
-            if (prowler.getName() == prowlerName) {
-                questProwler = prowler;
+        while (buff.ready()) {
+            String questName = buff.readLine();
+            String questQuestion = buff.readLine();
+            String optionA = buff.readLine();
+            String optionB = buff.readLine();
+            String optionC = buff.readLine();
+            String optionD = buff.readLine();
+            ArrayList<String> options = new ArrayList<String>();
+            options.add(optionA);
+            options.add(optionB);
+            options.add(optionC);
+            options.add(optionD);
+            String questAnswer = buff.readLine();
+            String questHint = buff.readLine();
+            String prowlerName = buff.readLine();
+            String separator = buff.readLine();
+            Prowler questProwler = null;
+            for (Prowler prowler : this.game.prowlers) {
+                if (prowler.getProwlerName().equals(prowlerName)) {
+                    questProwler = prowler;
+                }
             }
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            Quest quest = new Quest(questName, questQuestion, options, questAnswer, questHint, questProwler);
+            this.game.quests.add(quest);
         }
-        if (separator != null && !separator.isEmpty())
-            System.out.println("Formatting Error!");
-        Quest quest = new Quest(questName, questQuestion, options, questAnswer, questHint, questProwler);
-        this.game.quests.add(quest);
+    }
+
+    /**
+     * Parse Quests File
+     */
+    public void parseLastBattleQuestions() throws IOException {
+        BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/lastBattleQuestions.txt"));
+        while (buff.ready()) {
+            String question = buff.readLine();
+            String optionA = buff.readLine();
+            String optionB = buff.readLine();
+            String optionC = buff.readLine();
+            String optionD = buff.readLine();
+            ArrayList<String> options = new ArrayList<String>();
+            options.add(optionA);
+            options.add(optionB);
+            options.add(optionC);
+            options.add(optionD);
+            String answer = buff.readLine();
+            String hint = buff.readLine();
+            String separator = buff.readLine();
+            Prowler questProwler = null;
+
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            LastBattleQuestion lbQuestion = new LastBattleQuestion(question, options, answer, hint);
+            this.game.lastBattleQuestions.add(lbQuestion);
+        }
     }
 
     /**

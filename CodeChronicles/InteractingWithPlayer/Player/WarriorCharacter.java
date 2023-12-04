@@ -1,6 +1,5 @@
 package InteractingWithPlayer.Player;
 
-import GameModel.AdventureObject;
 import GameModel.Room;
 
 import java.util.ArrayList;
@@ -28,8 +27,8 @@ import javafx.scene.image.ImageView;
  *  */
 public class WarriorCharacter extends Player {
 
-    public Image characterImage;
-    public String playerType;
+    String characterDesc = "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.";
+    // The description of the character
 
     /**
      * WarriorCharacter Constructor
@@ -37,20 +36,8 @@ public class WarriorCharacter extends Player {
      * Initializes attributes
      *
      */
-    public WarriorCharacter(Room myCurrLocation, String playerName, String playerDesc) {
-        super(playerName, playerDesc, myCurrLocation, "Warrior");
+    public WarriorCharacter(Room myCurrLocation, String playerName) {
+        super(playerName, myCurrLocation, "Warrior", 5, 10);
         this.isPlayable = true;
-        // load the image
-        characterImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
     }
-
-    public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(characterImage);
-        // default (change these later as needed):
-        imageView.setFitHeight(100);
-        return imageView;
-    }
-    // IMPORTANT: to use the image in UI (i.e. in pane, panel):
-    // ImageView mageImageView = mageCharacter.getCharacterImageView();
-
 }

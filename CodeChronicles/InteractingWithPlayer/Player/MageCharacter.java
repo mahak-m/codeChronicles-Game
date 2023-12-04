@@ -1,6 +1,5 @@
 package InteractingWithPlayer.Player;
 
-import GameModel.AdventureObject;
 import GameModel.Room;
 
 import java.util.ArrayList;
@@ -22,9 +21,8 @@ import javafx.scene.image.ImageView;
  *  */
 public class MageCharacter extends Player {
 
-    public Image characterImage;
-    // The image associated with the MageCharacter
-    public String playerType;
+    String characterDesc = "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.";
+    // The description of the character
 
 
     /**
@@ -33,20 +31,8 @@ public class MageCharacter extends Player {
      * Initializes attributes
      *
      */
-    public MageCharacter(Room myCurrLocation, String playerName, String playerDesc) {
-        super(playerName, playerDesc, myCurrLocation, "Mage");
+    public MageCharacter(Room myCurrLocation, String playerName) {
+        super(playerName, myCurrLocation, "Mage", 7, 7);
         isPlayable = true;
-        // load the image
-        this.characterImage = new Image("OtherFiles/characterImages/mageCharacter.png");
     }
-
-    public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(characterImage);
-        // default (change these later as needed):
-        imageView.setFitHeight(100);
-        return imageView;
-    }
-    // IMPORTANT: to use the image in UI (i.e. in pane, panel):
-    // ImageView mageImageView = mageCharacter.getCharacterImageView();
-
 }

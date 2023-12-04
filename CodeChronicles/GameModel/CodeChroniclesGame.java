@@ -1,5 +1,6 @@
 package GameModel;
 
+import InteractingWithPlayer.LastBattleQuestion;
 import InteractingWithPlayer.NonPlayerCharacters.NPC;
 import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.NonPlayerCharacters.SchoolMember;
@@ -15,15 +16,13 @@ import java.util.*;
  */
 public class CodeChroniclesGame implements Serializable {
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
-    public ArrayList<Room> rooms; //A list of all the rooms in the game.
+    public HashMap<String, Room> rooms; //A list of all the rooms in the game.
 
     public Player player; //The Player of the game.
-
     public ArrayList<Prowler> prowlers; // The list of all the prowlers.
-
     public ArrayList<SchoolMember> schoolMembers; // The list of all the School Members.
-
     public ArrayList<Quest> quests; // The list of all the quests.
+    public ArrayList<LastBattleQuestion> lastBattleQuestions; // The list of all the questions in the last battle.
 
 
 
@@ -35,10 +34,11 @@ public class CodeChroniclesGame implements Serializable {
      */
     public CodeChroniclesGame(){
         try {
-            this.rooms = new ArrayList<Room>();
+            this.rooms = new HashMap<String,Room>();
             this.prowlers = new ArrayList<Prowler>();
             this.quests = new ArrayList<Quest>();
             this.schoolMembers = new ArrayList<SchoolMember>();
+            this.lastBattleQuestions = new ArrayList<LastBattleQuestion>();
             setUpGame();
         } catch (IOException e) {
             throw new RuntimeException("An Error Occurred: " + e.getMessage());
@@ -81,7 +81,7 @@ public class CodeChroniclesGame implements Serializable {
      * Getter method for rooms 
      * @return map of key value pairs (integer to room)
      */
-    public ArrayList<Room> getRooms() {
+    public HashMap<String, Room> getRooms() {
         return this.rooms;
     }
 

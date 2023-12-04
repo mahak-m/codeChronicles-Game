@@ -1,5 +1,6 @@
 package InteractingWithPlayer.Player;
 
+import GameModel.Pet.Pet;
 import GameModel.Room;
 import javafx.scene.image.Image;
 
@@ -18,21 +19,20 @@ import javafx.scene.image.Image;
  *  */
 public class Player {
 
-    public Image characterImage;
+    String characterDesc;
+    // The description of the character
     String playerName;
     // The name of the character, allow the character to choose
-    String characterDesc;
-    // The description of the character, allow the character to edit
     Room currLocation;
     // The current location of the character. Must be a Room object.
     String playerType;
     // The type of character [Either Mage, Alchemist or, Warrior]
     boolean isPlayable;
     // Attribute that determines if character is playable
-    private int codeBytes;
+    private Integer codeBytes;
     // keeps track of the current number of code bytes
-    private int lives;
-    // keeps track of the player life
+    private Integer lives;
+    private Pet pet;
 
 
     /**
@@ -41,13 +41,12 @@ public class Player {
      * Initializes attributes
      *
      */
-    public Player(String playerName, String characterDesc, Room myCurrLocation, String myPlayerType) {
+    public Player(String playerName, Room myCurrLocation, String myPlayerType, Integer codeBytes, Integer lives) {
         this.playerName = playerName; // BEFORE the player customizes their name
-        this.characterDesc = characterDesc;
         this.currLocation = myCurrLocation;
         this.playerType = myPlayerType;
-        this.codeBytes = 5; // initial value
-        this.lives = 5; //default value
+        this.codeBytes = codeBytes; // initial value
+        this.lives = lives; //default value
     }
 
     /**
@@ -75,6 +74,13 @@ public class Player {
         return this.currLocation;
     }
 
+    public void setCurrentRoom(Room room) {
+        this.currLocation = room;
+        if (!room.getVisited()) {
+            this.updateCodeBytes(-1);
+        } room.visit();
+    }
+
     /**
      * setCharacterName
      * _________________________
@@ -97,14 +103,14 @@ public class Player {
     /**
      * getCodeBytes
      */
-    public int getCodeBytes() {
+    public Integer getCodeBytes() {
         return this.codeBytes;
     }
 
     /**
      * getLives
      */
-    public int getLives() {return this.lives;
+    public Integer getLives() {return this.lives;
     }
 
     /**
@@ -132,8 +138,8 @@ public class Player {
         // after quest has been implemented, refer to hia for this implementation
     }
 
-    public void setPLayerBytes(int bytes) {
-    }
+    public void setPet(Pet pet) {this.pet = pet;}
+    public Pet getPet() {return this.pet;}
 }
 
 
