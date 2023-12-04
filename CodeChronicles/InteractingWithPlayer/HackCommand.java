@@ -10,10 +10,21 @@ import InteractingWithPlayer.Player.Player;
  * The player uses Hack Command, if the player wishes to hack in the NPC character's mind
  * which the player does not know is a prowler or school member.
  */
-public class HackCommand {
-    // for now
+public class HackCommand implements Command {
 
-    int MINIMUM_BYTES = 2; //the minimum number of code bytes the player should have
+    private Player player;
+    private NPC npc;
+    // for now
+    int minBytes = 2; //the minimum number of code bytes the player should have
+
+    public HackCommand(Player player, NPC npc) {
+        this.player = player;
+        this.npc = npc;
+    }
+
+    public String executeCommand() {
+        return showCharacterIdentity(this.npc, this.player);
+    };
 
 
     /**
@@ -27,11 +38,11 @@ public class HackCommand {
     public String showCharacterIdentity(NPC character, Player player) {
         // check if character type is Prowler, warn the player.
         if (character instanceof Prowler) {
-            return "Danger! You decided to hack a Prowler.";
+            return prowlerQuest(player, character);
         }
         // check if character type is school member, greet the player.
         else {
-            return "You decided to hack a School Member. Hi! You are doing great in the game," ;
+            return "Oh no! You decided to hack a School Member. Hi! You are doing great in the game," ;
         }
 
     }
@@ -53,13 +64,13 @@ public class HackCommand {
      * @param player;
      * @return result of the quest
      */
-    public String prowlerQuest(Player player){
-        if (polymorphicProwler() && player.getCodeBytes() < this.MINIMUM_BYTES) {
-            if (player.getCodeBytes() < this.MINIMUM_BYTES) {
-                return "Danger! You don't have enough code bytes to fight the prowler." +
-                        "Look up for School Members to help you win.";
+    public String prowlerQuest(Player player, NPC npc) {
+        if (npc instanceof Prowler && player.getCodeBytes() < this.minBytes) {
+            if (player.getCodeBytes() < this.minBytes) {
+                return "You don't have enough code bytes to hack this person." +
+                        "Look around for School Members to help you with collecting code bytes.";
             }
-            else if (player.getCodeBytes() >= this.MINIMUM_BYTES) {
+            else if (player.getCodeBytes() >= this.minBytes) {
                 boolean won = player.playQuest();
                 if (won) {
                     return "Congratulations! You won the quest";
@@ -69,12 +80,7 @@ public class HackCommand {
                 }
             }
         }
-
-        return "You are safe. You encountered a School Member.";
+        player.loseLife();
+        return "Oh no!, you are safe but you tried hacking a School Member and lost 1 life.";
     }
-
-    private boolean polymorphicProwler() {
-        return true;
-    }
-
 }

@@ -45,7 +45,7 @@ public class CodeChroniclesGameView {
     Integer fontSize;
     ColourScheme colourScheme;
     Stage stage; //stage on which all is rendered
-    Button avoidButton, trustButton, HackButton; //buttons
+    Button menuButton, instructionsButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
     Boolean mapToggle = false; //is map on display?
     Boolean music;
@@ -168,7 +168,7 @@ public class CodeChroniclesGameView {
         Button playButton = new Button("Play");
         playButton.setId("Play");
         playButton.setAlignment(Pos.CENTER);
-        customizeButton(playButton,100, 50);
+        customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
             if (this.game.player != null) {
@@ -189,7 +189,7 @@ public class CodeChroniclesGameView {
         Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
         alchemistButton.setId("Alchemist Character");
         alchemistButton.setAlignment(Pos.TOP_CENTER);
-        customizeButton(alchemistButton, 280, 550);
+        customizeButton(alchemistButton, 280, 550, this.colourScheme.buttonColour2);
         alchemistButton.wrapTextProperty().setValue(true);
         Image alchemistImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
         ImageView alchemistView = new ImageView(alchemistImage);
@@ -212,7 +212,7 @@ public class CodeChroniclesGameView {
         Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
         mageButton.setId("Mage Character");
         mageButton.setAlignment(Pos.TOP_CENTER);
-        customizeButton(mageButton, 280, 550);
+        customizeButton(mageButton, 280, 550, this.colourScheme.buttonColour2);
         mageButton.wrapTextProperty().setValue(true);
         Image mageImage = new Image("OtherFiles/characterImages/mageCharacter.png");
         ImageView mageView = new ImageView(mageImage);
@@ -235,7 +235,7 @@ public class CodeChroniclesGameView {
         Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
         warriorButton.setId("Warrior Character");
         warriorButton.setAlignment(Pos.TOP_CENTER);
-        customizeButton(warriorButton, 280, 550);
+        customizeButton(warriorButton, 280, 550, this.colourScheme.buttonColour2);
         warriorButton.wrapTextProperty().setValue(true);
         Image warriorImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
         ImageView warriorView = new ImageView(warriorImage);
@@ -296,7 +296,7 @@ public class CodeChroniclesGameView {
         Button playButton = new Button("Play");
         playButton.setId("Play");
         playButton.setAlignment(Pos.CENTER);
-        customizeButton(playButton,100, 50);
+        customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
             if (this.game.player != null) {
@@ -367,32 +367,40 @@ public class CodeChroniclesGameView {
 
     public void addInteractionCommands() {
         // Create Buttons
-        avoidButton = new Button("Avoid");
+        Button avoidButton = new Button("Avoid");
         avoidButton.setId("Avoid");
-        customizeButton(avoidButton, 200, 50);
+        customizeButton(avoidButton, 150, 50, this.colourScheme.buttonColour1);
         makeButtonAccessible(avoidButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
-        addMenuEvent();
+        avoidButton.setOnAction(e -> {
 
-        trustButton = new Button("Trust");
+        });
+
+        Button trustButton = new Button("Trust");
         trustButton.setId("Trust");
-        customizeButton(trustButton, 200, 50);
+        customizeButton(trustButton, 150, 50, this.colourScheme.buttonColour1);
         makeButtonAccessible(trustButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
+        trustButton.setOnAction(e -> {
 
-        HackButton = new Button("Hack");
-        HackButton.setId("Hack");
-        customizeButton(HackButton, 200, 50);
-        makeButtonAccessible(HackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
+        });
+
+        Button hackButton = new Button("Hack");
+        hackButton.setId("Hack");
+        customizeButton(hackButton, 150, 50, this.colourScheme.buttonColour1);
+        makeButtonAccessible(hackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
+        hackButton.setOnAction(e -> {
+
+        });
 
         HBox commandButtons = new HBox();
-        commandButtons.getChildren().addAll(avoidButton, trustButton, HackButton);
+        commandButtons.getChildren().addAll(avoidButton, trustButton, hackButton);
         commandButtons.setSpacing(10);
         commandButtons.setAlignment(Pos.CENTER);
 
         //add all the widgets to the GridPane
-        // gridPane.add(commandButtons, 1, 0, 3, 1 );  // Add buttons
-        // gridPane.setHalignment(commandButtons, HPos.CENTER);
+        this.gridPane.add(commandButtons, 1, 3, 3, 1 );  // Add buttons
+        this.gridPane.setHalignment(commandButtons, HPos.CENTER);
     }
 
     public void setupGridPane(GridPane gridPane) {
@@ -417,26 +425,26 @@ public class CodeChroniclesGameView {
 
     public void addGameHeader(GridPane gridPane) {
         // Create Buttons
-        avoidButton = new Button("Menu");
-        avoidButton.setId("Save");
-        customizeButton(avoidButton, 200, 50);
-        makeButtonAccessible(avoidButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
+        menuButton = new Button("Menu");
+        menuButton.setId("Save");
+        customizeButton(menuButton, 200, 50, this.colourScheme.buttonColour2);
+        makeButtonAccessible(menuButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
         addMenuEvent();
 
-        trustButton = new Button("Instructions");
-        trustButton.setId("Instructions");
-        customizeButton(trustButton, 200, 50);
-        makeButtonAccessible(trustButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
+        instructionsButton = new Button("Instructions");
+        instructionsButton.setId("Instructions");
+        customizeButton(instructionsButton, 200, 50, this.colourScheme.buttonColour2);
+        makeButtonAccessible(instructionsButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
 
-        HackButton = new Button("Map");
-        HackButton.setId("Map");
-        customizeButton(HackButton, 200, 50);
-        makeButtonAccessible(HackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
+        mapButton = new Button("Map");
+        mapButton.setId("Map");
+        customizeButton(mapButton, 200, 50, this.colourScheme.buttonColour2);
+        makeButtonAccessible(mapButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
 
         HBox topButtons = new HBox();
-        topButtons.getChildren().addAll(avoidButton, trustButton, HackButton);
+        topButtons.getChildren().addAll(menuButton, instructionsButton, mapButton);
         topButtons.setSpacing(10);
         topButtons.setAlignment(Pos.CENTER);
 
@@ -506,28 +514,10 @@ public class CodeChroniclesGameView {
      * @param w width
      * @param h height
      */
-    private void customizeButton(Button inputButton, int w, int h) {
+    private void customizeButton(Button inputButton, int w, int h, String colour) {
         inputButton.setPrefSize(w, h);
         inputButton.setFont(new Font("Arial", this.fontSize));
-        inputButton.setStyle("-fx-background-color: " + this.colourScheme.buttonColour2 + "; -fx-text-fill: white;");
-    }
-
-    /**
-     * formatText
-     * __________________________
-     *
-     * Format text for display.
-     * 
-     * @param textToDisplay the text to be formatted for display.
-     */
-    private void formatText(String textToDisplay) {
-        if (textToDisplay == null || textToDisplay.isBlank()) {
-            String roomDesc = this.game.getPlayer().getCurrentRoom().getRoomDescription() + "\n";
-            roomDescLabel.setText(roomDesc);
-        } else roomDescLabel.setText(textToDisplay);
-        roomDescLabel.setStyle("-fx-text-fill: white;");
-        roomDescLabel.setFont(new Font("Arial", this.fontSize));
-        roomDescLabel.setAlignment(Pos.CENTER);
+        inputButton.setStyle("-fx-background-color: " + colour + "; -fx-text-fill: white;");
     }
 
     /*
@@ -620,11 +610,10 @@ public class CodeChroniclesGameView {
     }
 
     /**
-     * This method handles the event related to the
-     * help button.
+     * This method handles the event related to the instructions button.
      */
     public void addInstructionEvent() {
-        trustButton.setOnAction(e -> {
+        instructionsButton.setOnAction(e -> {
             stopArticulation();
             try {
                 showInstructions();
@@ -635,7 +624,7 @@ public class CodeChroniclesGameView {
     }
 
     private void addMenuEvent() {
-        avoidButton.setOnAction(e -> {
+        menuButton.setOnAction(e -> {
             stopArticulation();
             gridPane.requestFocus();
             GameMenu menu = new GameMenu(this);
@@ -643,7 +632,7 @@ public class CodeChroniclesGameView {
     }
 
     private void addMapEvent() {
-        HackButton.setOnAction(e -> {
+        mapButton.setOnAction(e -> {
             stopArticulation();
             try {
                 showMap();
