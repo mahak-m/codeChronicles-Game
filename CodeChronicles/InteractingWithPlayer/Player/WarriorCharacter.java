@@ -27,9 +27,8 @@ import javafx.scene.image.ImageView;
  *  */
 public class WarriorCharacter extends Player {
 
-    String characterDesc;
-    // The description of the character, allow the character to edit
-    public String playerType;
+    String characterDesc = "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.";
+    // The description of the character
 
     /**
      * WarriorCharacter Constructor

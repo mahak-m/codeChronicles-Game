@@ -27,8 +27,8 @@ import javafx.scene.image.ImageView;
  *  */
 public class AlchemistCharacter extends Player {
 
-    String characterDesc;
-    // The description of the character, allow the character to edit
+    String characterDesc = "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.";
+    // The description of the character
 
     /**
      * AlchemistCharacter Constructor

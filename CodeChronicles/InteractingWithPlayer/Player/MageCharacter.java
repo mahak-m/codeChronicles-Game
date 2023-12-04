@@ -21,10 +21,8 @@ import javafx.scene.image.ImageView;
  *  */
 public class MageCharacter extends Player {
 
-    String characterDesc;
-    // The description of the character, allow the character to edit
-
-    public String playerType;
+    String characterDesc = "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.";
+    // The description of the character
 
 
     /**

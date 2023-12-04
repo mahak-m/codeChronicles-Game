@@ -20,6 +20,8 @@ import javafx.scene.image.ImageView;
  *  */
 public abstract class Player {
 
+    String characterDesc;
+    // The description of the character
     String playerName;
     // The name of the character, allow the character to choose
     Room currLocation;
