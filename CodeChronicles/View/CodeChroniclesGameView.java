@@ -383,6 +383,7 @@ public class CodeChroniclesGameView {
         ignoreButton.setOnAction(e -> {
             IgnoreCommand command = new IgnoreCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
+            this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
             pause.setOnFinished(event -> {
                 try {
@@ -403,6 +404,7 @@ public class CodeChroniclesGameView {
         trustButton.setOnAction(e -> {
             TrustCommand command = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
+            this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
             pause.setOnFinished(event -> {
                 try {
@@ -423,6 +425,7 @@ public class CodeChroniclesGameView {
         hackButton.setOnAction(e -> {
             HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC(), this);
             this.roomDescLabel.setText(command.executeCommand());
+            this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
             pause.setOnFinished(event -> {
                 try {
@@ -666,7 +669,7 @@ public class CodeChroniclesGameView {
      * This method handles the event related to the instructions button.
      */
     public void addInstructionEvent() {
-        helpButton.setOnAction(e -> {
+        instructionsButton.setOnAction(e -> {
             playButtonClick(); // add button click audio
             stopArticulation();
             try {
