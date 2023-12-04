@@ -60,8 +60,13 @@ public class CodeChroniclesGameView {
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
     ImageView roomImageView; //to hold room image
-    private MediaPlayer mediaPlayer; //to play audio
-    private boolean mediaPlaying; //to know if the audio is playing
+    // the media players
+    private MediaPlayer backgroundMusicPlayer;
+    private MediaPlayer introductionAudioPlayer;
+    private MediaPlayer roomAudioPlayer;
+    private boolean backgroundMediaPlaying; //to know if the room descriptions are playing
+    private boolean roomMediaPlaying; //to know if the background audio is playing
+    private boolean characterMediaPlaying; //to know if the character audio is playing
 
     // attributes for the background
     Long currentFrame;
@@ -86,7 +91,7 @@ public class CodeChroniclesGameView {
         intiUI();
 
         // call the method to play reduced background music indefinitely
-        // TODO: this.playBackgroundMusic();
+        this.playBackgroundMusic();
     }
 
     /**
@@ -628,9 +633,9 @@ public class CodeChroniclesGameView {
 
         Media sound = new Media(new File(musicFile).toURI().toString());
 
-        mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-        mediaPlaying = true;
+        roomAudioPlayer = new MediaPlayer(sound);
+        roomAudioPlayer.play();
+        roomMediaPlaying = true;
     }
 
     /**
@@ -640,9 +645,9 @@ public class CodeChroniclesGameView {
      * (useful when transitioning to a new room or loading a new game)
      */
     public void stopArticulation() {
-        if (mediaPlaying) {
-            mediaPlayer.stop(); //shush!
-            mediaPlaying = false;
+        if (roomMediaPlaying) {
+            roomAudioPlayer.stop(); //shush!
+            roomMediaPlaying = false;
         }
     }
 
@@ -657,16 +662,16 @@ public class CodeChroniclesGameView {
     public void playBackgroundMusic() {
         //later switched to a "try/catch" format to fix MediaException errors
         try {
-            String musicFile = "audio/backgroundMusicAudio/backgroundMusic";
+            String musicFile = "audio/backgroundMusic/backgroundMusic.wav";
 
             //create a media object and media player
             Media sound = new Media(new File(musicFile).toURI().toString());
-            mediaPlayer = new MediaPlayer(sound);
+            backgroundMusicPlayer = new MediaPlayer(sound);
 
             //self volume to 50% and play in a loop while the view is up
-            mediaPlayer.setVolume(0.5);
-            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-            mediaPlayer.play();
+            backgroundMusicPlayer.setVolume(0.2);
+            backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            backgroundMusicPlayer.play();
 
         } catch (Exception e) {
             System.out.println("Error loading background music: " + e.getMessage());
@@ -684,10 +689,10 @@ public class CodeChroniclesGameView {
     private void playIntroductionAudio(String audioFileName) {
         // changed to a try/catch format to avoid errors
         try {
-            String musicFile = "audio/characterDescriptionAudio" + audioFileName;
+            String musicFile = "audio/characterDescriptionAudio/" + audioFileName;
             Media sound = new Media(new File(musicFile).toURI().toString());
-            mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.play();
+            introductionAudioPlayer = new MediaPlayer(sound);
+            introductionAudioPlayer.play();
         } catch (Exception e) {
             System.out.println("there's an error with the audio: " + e.getMessage());
         }
