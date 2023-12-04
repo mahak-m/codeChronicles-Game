@@ -308,6 +308,7 @@ public class CodeChroniclesGameView {
         customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
+            playButtonClick(); // adds button click sound effect
             if (this.game.player != null) {
                 try {
                     setRoomScene();
@@ -369,6 +370,7 @@ public class CodeChroniclesGameView {
 
         // What happens when the character clicks on the other character in the room?
         NPCButton.setOnAction(e -> {
+            playButtonClick(); // adds button click sound effect
             this.roomDescLabel.setText(this.game.player.getCurrentRoom().getNPC().getIntro());
             this.addInteractionCommands();
         });
@@ -381,6 +383,7 @@ public class CodeChroniclesGameView {
         customizeButton(ignoreButton, 150, 50, this.colourScheme.buttonColour1);
         makeButtonAccessible(ignoreButton, "Ignore button", "This button loads the ignore interaction.", "This button loads the menu and settings. Click it in order to change your settings.");
         ignoreButton.setOnAction(e -> {
+            playButtonClick(); // adds button click sound effect
             IgnoreCommand command = new IgnoreCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
             this.addGameHeader(this.gridPane);
@@ -402,6 +405,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(trustButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
         trustButton.setOnAction(e -> {
+            playButtonClick(); // adds button click sound effect
             TrustCommand command = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
             this.addGameHeader(this.gridPane);
@@ -423,6 +427,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(hackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
         hackButton.setOnAction(e -> {
+            playButtonClick(); // adds button click sound effect
             HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC(), this);
             this.roomDescLabel.setText(command.executeCommand());
             this.addGameHeader(this.gridPane);
