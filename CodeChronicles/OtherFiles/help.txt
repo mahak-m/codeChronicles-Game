@@ -1,21 +1,22 @@
-To play this game you must move between locations and interact with objects by typing one or two word commands.
+INSTRUCTIONS:
 
-Some commands are motion commands.  These will move you from room to room. Motion commands include:
+You must save Hackwards School of Codecraft by defeating the seven Polymorphic Prowlers sent by the Incognito Phantom. However, as per their polymorphic nature, they can shape shift and disguise themselves as students. It is up to you to find them, uncover their identity and defeat them!
 
-UP, DOWN, EAST, WEST, NORTH, SOUTH
+Depending on the character you chose (Mage, Alchemist, Warrior), you will start a different number of lives and code bytes. Code bytes are the games currency. 
 
-Not all motions are possible in every room. In addition, some rooms may have "special" or "secret" motion commands.
+You can use code bytes to purchase pets, which can help you during battle (i.e. providing hints). By default, you will start with a pet.
 
-There are other action commands in the game. These include:
+You can use the map to navigate between different parts of the school. It takes 1 code byte to unlock a room.
 
-COMMANDS: this will print the moves that are legal in a given room.
-HELP: this will display instructions
-INVENTORY: this will print your current inventory.
-LOOK: this will print the description for the current room.
-TAKE <object>: this will take an object from a room and place it in your inventory. Replace <object> with the name of the object to take.  The object must be present in the room in order to take it.
-DROP <object>: this will drop an object in your inventory. Replace <object> with the name of the object to drop. The object must be in your inventory to drop it.
+Each room has a school member, who can either be innocent, or secretly a prowler. You must try to guess which of the two they are. Click on them to interact. 
 
-Some paths may be blocked.  To unblock a path you may need a specific object to be in your inventory.
+You will be prompted with three options:
 
-The game is over when your player reaches the VICTORY room, or when your player DIES.
+(a) Ignore (Requires 5 code bytes): Walk away.
+(b) Hack (Requires 2 code bytes): If you think they are a prowler, you may Hack (engage in battle) which is in the form of programming questions. If you win, you will earn 10 code bytes. If you lose, it will cost you 1 life. If you wrongfully hack an innocent student, it will also cost you 1 life.
+(c) Trust: If you think they are innocent, you may true the school member, which will earn you 10 code bytes. Wrongfully trusting a prowler will cost you 1 life.
+
+Once you have found and defeated all seven prowlers, you must defeat the Incognito Phantom himself!
+
+Good Luck!
 
