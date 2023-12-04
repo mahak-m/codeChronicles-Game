@@ -4,11 +4,11 @@ Front Gate
 
 Crownmark Markuss
 Administrations Office
-"Hey! My name is Crownmark Markuss. You can choose any of the commands below to interact with me."
+"Hi! My name is Crownmark Markuss. You can choose any of the commands below to interact with me."
 
 Professor Zachary
 Library
-"Hey! My name is Professor Zachary. You can choose any of the commands below to interact with me."
+"Hello. My name is Professor Zachary. You can choose any of the commands below to interact with me."
 
 Jake Fukuda
 CodeCraft Classroom

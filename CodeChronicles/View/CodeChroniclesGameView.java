@@ -591,6 +591,7 @@ public class CodeChroniclesGameView {
      */
     public void addInstructionEvent() {
         helpButton.setOnAction(e -> {
+            playButtonClick(); // add button click audio
             stopArticulation();
             try {
                 showInstructions();
@@ -602,6 +603,7 @@ public class CodeChroniclesGameView {
 
     private void addMenuEvent() {
         menuButton.setOnAction(e -> {
+            playButtonClick(); // add button click audio
             stopArticulation();
             gridPane.requestFocus();
             GameMenu menu = new GameMenu(this);
@@ -610,6 +612,7 @@ public class CodeChroniclesGameView {
 
     private void addMapEvent() {
         mapButton.setOnAction(e -> {
+            playButtonClick(); // add button click audio
             stopArticulation();
             try {
                 showMap();
