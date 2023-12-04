@@ -1,6 +1,7 @@
 package InteractingWithPlayer.NonPlayerCharacters;
 
 import GameModel.Room;
+import InteractingWithPlayer.Quest;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -25,6 +26,7 @@ public class NPC {
     Room currLocation;
     // the location of the NPC (the room where they are found)
 
+    Quest quest;
     /**
      * NPC Character Constructor
      * __________________________
@@ -42,6 +44,8 @@ public class NPC {
     public String getIntro(){
         return this.NPCGreeting;
     }
+    public void setQuest(Quest quest) {this.quest = quest;}
+    public Quest getQuest() {return this.quest;}
 }
 
 

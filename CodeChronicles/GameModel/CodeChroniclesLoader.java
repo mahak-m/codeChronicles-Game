@@ -129,11 +129,13 @@ public class CodeChroniclesLoader {
                 System.out.println("Formatting Error!");
             Quest quest = new Quest(questName, questQuestion, options, questAnswer, questHint, questProwler);
             this.game.quests.add(quest);
+            Integer prowlerIndex = this.game.prowlers.indexOf(questProwler);
+            this.game.prowlers.get(prowlerIndex).setQuest(quest);
         }
     }
 
     /**
-     * Parse Quests File
+     * Parse LastBattleQuestions File
      */
     public void parseLastBattleQuestions() throws IOException {
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/lastBattleQuestions.txt"));

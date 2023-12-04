@@ -51,8 +51,8 @@ public class CodeChroniclesGameView {
     Button menuButton, instructionsButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
     Boolean mapToggle = false; //is map on display?
-    public Boolean music;
-    public Boolean audio;
+    Boolean music = true;
+    Boolean audio = true;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
     ImageView roomImageView; //to hold room image
@@ -375,14 +375,14 @@ public class CodeChroniclesGameView {
 
     public void addInteractionCommands() {
         // Create Buttons
-        Button avoidButton = new Button("Avoid");
-        avoidButton.setId("Avoid");
-        customizeButton(avoidButton, 150, 50, this.colourScheme.buttonColour1);
-        makeButtonAccessible(avoidButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
-        avoidButton.setOnAction(e -> {
+        Button ignoreButton = new Button("Ignore");
+        ignoreButton.setId("Ignore");
+        customizeButton(ignoreButton, 150, 50, this.colourScheme.buttonColour1);
+        makeButtonAccessible(ignoreButton, "Ignore button", "This button loads the ignore interaction.", "This button loads the menu and settings. Click it in order to change your settings.");
+        ignoreButton.setOnAction(e -> {
             IgnoreCommand command = new IgnoreCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
-            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+            PauseTransition pause = new PauseTransition(Duration.seconds(5));
             pause.setOnFinished(event -> {
                 try {
                     this.setRoomScene();
@@ -390,6 +390,7 @@ public class CodeChroniclesGameView {
                     throw new RuntimeException(ex);
                 }
             });
+
             pause.play();
         });
 
@@ -401,7 +402,16 @@ public class CodeChroniclesGameView {
         trustButton.setOnAction(e -> {
             TrustCommand command = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
-            this.addGameHeader(this.gridPane);
+            PauseTransition pause = new PauseTransition(Duration.seconds(5));
+            pause.setOnFinished(event -> {
+                try {
+                    this.setRoomScene();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            pause.play();
         });
 
         Button hackButton = new Button("Hack");
@@ -410,13 +420,22 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(hackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
         hackButton.setOnAction(e -> {
-            HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC(), this);
             this.roomDescLabel.setText(command.executeCommand());
-            this.addGameHeader(this.gridPane);
+            PauseTransition pause = new PauseTransition(Duration.seconds(5));
+            pause.setOnFinished(event -> {
+                try {
+                    this.setRoomScene();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            pause.play();
         });
 
         HBox commandButtons = new HBox();
-        commandButtons.getChildren().addAll(avoidButton, trustButton, hackButton);
+        commandButtons.getChildren().addAll(ignoreButton, trustButton, hackButton);
         commandButtons.setSpacing(10);
         commandButtons.setAlignment(Pos.CENTER);
 
@@ -663,8 +682,8 @@ public class CodeChroniclesGameView {
             stopArticulation();
             gridPane.requestFocus();
 //            QuestView view = new QuestView(this, this.game.quests.get(0), this.game.player);
-//            GameMenu menu = new GameMenu(this);
-            LastBattleView view = new LastBattleView(this, this.game.player);
+            GameMenu menu = new GameMenu(this, music, audio, fontSize, colourScheme.colourSchemeName);
+//            LastBattleView view = new LastBattleView(this, this.game.player);
         });
     }
 

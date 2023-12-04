@@ -1,5 +1,6 @@
 package View;
 
+import GameModel.CodeChroniclesGame;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GameMenu {
@@ -31,7 +33,7 @@ public class GameMenu {
     private String saveMusic;
     private Integer saveFontSize;
 
-    public GameMenu(CodeChroniclesGameView gameView) {
+    public GameMenu(CodeChroniclesGameView gameView, boolean ifMusic, boolean ifAudio, Integer sizeOfFont, String colorScheme) {
         this.gameView = gameView;
         this.stage.initModality(Modality.APPLICATION_MODAL);
         this.stage.initOwner(gameView.stage);
@@ -42,36 +44,50 @@ public class GameMenu {
         menu.setFont(new Font("Helvetica", 30));
         menu.setMaxHeight(50);
         menu.setTextFill(Color.web(this.gameView.colourScheme.buttonColour1));
-        // Create Colour Mode ComboBox
+
+        // Create Colour Mode label
         Label colourTheme = new Label("Theme");
         colourTheme.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         colourTheme.setFont(new Font("Helvetica", this.gameView.fontSize));
+
+        // Create colour mode box
         this.colourModeBox = new ComboBox<String>();
         this.colourModeBox.getItems().add("Monochrome");
         this.colourModeBox.getItems().add("Game Theme");
-        this.colourModeBox.setValue("Game Theme");
+        this.colourModeBox.setValue(colorScheme);
         this.colourModeBox.setMaxWidth(150);
-        // Create Font Size Spinner
+
+        // Create Font Size Label
         Label fontSize = new Label("Font Size");
         fontSize.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         fontSize.setFont(new Font("Helvetica", this.gameView.fontSize));
+
+        // Create font size box
         this.fontSizeBox = new Spinner<Integer>(12, 20, 16);
-        // Create Music Toggle Button
+        this.fontSizeBox.getValueFactory().setValue(sizeOfFont);
+
+        // Create Music Label
         Label music = new Label("Music");
         music.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         menu.setFont(new Font("Helvetica", this.gameView.fontSize));
+
+        // Create music box
         this.musicBox = new ComboBox<String>();
         this.musicBox.getItems().add("On");
         this.musicBox.getItems().add("Off");
-        this.musicBox.setValue("On");
-        // Create Audio Toggle Button
+        this.musicBox.setValue((ifMusic) ? "On" : "Off");
+
+        // Create Audio Label
         Label audio = new Label("Audio");
         audio.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         audio.setFont(new Font("Helvetica", this.gameView.fontSize));
+
+        // Create audio box
         this.audioBox = new ComboBox<String>();
         this.audioBox.getItems().add("On");
         this.audioBox.getItems().add("Off");
-        this.audioBox.setValue("On");
+        this.audioBox.setValue((ifAudio) ? "On" : "Off");
+
         // Create Restart Button
         this.restartButton.setId("Restart Game");
         this.restartButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
@@ -149,13 +165,13 @@ public class GameMenu {
         this.saveAudio = this.audioBox.getValue();
         String saveColourScheme = this.colourModeBox.getValue();
         this.saveFontSize = this.fontSizeBox.getValue();
-        this.gameView.game.setUpGame();
-//        this.musicBox.setValue("On");
-//        this.audioBox.setValue("On");
-//        this.colourModeBox.setValue("Game Theme");
-//        this.fontSizeBox.getValueFactory().setValue(16);
-        this.stage.close();
-
+        CodeChroniclesGame newGame = new CodeChroniclesGame(); //change the name of the game if you want to try something bigger!
+        CodeChroniclesGameView gameView = new CodeChroniclesGameView(newGame, new Stage());
+        this.gameView = gameView;
+        this.musicBox.setValue(this.saveMusic);
+        this.audioBox.setValue(this.saveAudio);
+        this.colourModeBox.setValue(this.saveColourScheme);
+        this.fontSizeBox.getValueFactory().setValue(this.saveFontSize);
     }
 
     public void save_changes() {
@@ -163,14 +179,14 @@ public class GameMenu {
         if (this.musicBox.getValue().equals("On")){
             this.gameView.music = true;
         }
-        else{
+        else {
             this.gameView.music = false;
         }
         // check value of audio box, update this.gameView.audio
         if (this.audioBox.getValue().equals("On")){
             this.gameView.audio = true;
         }
-        else{
+        else {
             this.gameView.audio = false;
         }
         // check value of colour scheme box, update this.colourScheme.music
@@ -178,6 +194,13 @@ public class GameMenu {
 
         // check value of font size box, update this.colourScheme.font size
         this.gameView.fontSize = this.fontSizeBox.getValue();
+
+        try {
+            this.gameView.setRoomScene();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
         this.stage.close(); // close the stage after saving the changes
     }
 
