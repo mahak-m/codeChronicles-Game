@@ -627,7 +627,9 @@ public class CodeChroniclesGameView {
         menuButton.setOnAction(e -> {
             stopArticulation();
             gridPane.requestFocus();
-            GameMenu menu = new GameMenu(this);
+//            QuestView view = new QuestView(this, this.game.quests.get(0), this.game.player);
+//            GameMenu menu = new GameMenu(this);
+            LastBattleView view = new LastBattleView(this, this.game.player);
         });
     }
 
