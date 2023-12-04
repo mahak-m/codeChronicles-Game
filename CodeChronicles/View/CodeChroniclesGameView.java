@@ -55,8 +55,6 @@ public class CodeChroniclesGameView {
     Boolean audio;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
-    VBox objectsInRoom = new VBox(); //to hold room items
-    VBox objectsInInventory = new VBox(); //to hold inventory items
     ImageView roomImageView; //to hold room image
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
@@ -394,9 +392,7 @@ public class CodeChroniclesGameView {
     private void formatText(String textToDisplay) {
         if (textToDisplay == null || textToDisplay.isBlank()) {
             String roomDesc = this.game.getPlayer().getCurrentRoom().getRoomDescription() + "\n";
-            String objectString = this.game.getPlayer().getCurrentRoom().getObjectString();
-            if (objectString != null && !objectString.isEmpty()) roomDescLabel.setText(roomDesc + "\n\nObjects in this room:\n" + objectString);
-            else roomDescLabel.setText(roomDesc);
+            roomDescLabel.setText(roomDesc);
         } else roomDescLabel.setText(textToDisplay);
         roomDescLabel.setStyle("-fx-text-fill: white;");
         roomDescLabel.setFont(new Font("Arial", this.fontSize));
@@ -451,7 +447,8 @@ public class CodeChroniclesGameView {
             roomsRow1.setSpacing(10);
             roomsRow2.setSpacing(10);
             allRooms.setSpacing(10);
-            for (Room room : this.game.rooms) {
+            for (String roomName : this.game.rooms.keySet()) {
+                Room room = this.game.rooms.get(roomName);
                 // create room icon
                 RoomIcon roomIcon = new UnvisitedRoomIcon(this.game, this, room);
                 if (room.getVisited()) {

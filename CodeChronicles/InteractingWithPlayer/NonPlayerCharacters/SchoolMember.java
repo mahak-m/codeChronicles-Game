@@ -10,10 +10,9 @@ public class SchoolMember extends NPC {
      *
      * @param characterName
      * @param introText
-     * @param revealText
      * @param characterImage
      */
-    public SchoolMember(String characterName, String introText, String revealText, Image characterImage) {
-        super(characterName, introText, revealText, characterImage);
+    public SchoolMember(String characterName, String introText, Image characterImage) {
+        super(characterName, characterImage, introText);
     }
 }

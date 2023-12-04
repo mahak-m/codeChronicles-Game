@@ -1,11 +1,4 @@
-package GameModel.pet;
-
-import GameModel.Pet;
-
-import java.util.ArrayList;
-import java.util.concurrent.Callable;
-import java.util.HashMap;
-import java.util.List;
+package GameModel.Pet;
 
 /**
  * This class keeps track of the progress

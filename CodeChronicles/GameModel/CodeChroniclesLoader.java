@@ -1,8 +1,13 @@
 package GameModel;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+
+import InteractingWithPlayer.NonPlayerCharacters.Prowler;
+import InteractingWithPlayer.NonPlayerCharacters.SchoolMember;
+import View.ColourScheme;
+import javafx.scene.image.Image;
+import InteractingWithPlayer.Quest;
 
 /**
  * Class AdventureLoader. Loads an adventure from files.
@@ -10,6 +15,7 @@ import java.io.IOException;
 public class CodeChroniclesLoader {
 
     private CodeChroniclesGame game; //the game to return
+    private ColourScheme colourScheme;
 
     /**
      * Adventure Loader Constructor
@@ -26,6 +32,9 @@ public class CodeChroniclesLoader {
      */
     public void loadGame() throws IOException {
         parseRooms();
+        parseProwlers();
+        parseSchoolMembers();
+        parseQuests();
         this.game.setHelpText(parseOtherFile("help"));
     }
 
@@ -45,7 +54,7 @@ public class CodeChroniclesLoader {
             if (separator != null && !separator.isEmpty())
                 System.out.println("Formatting Error!");
             Room newRoom = new Room(roomName, roomXCoord, roomYCoord, roomDescription);
-            this.game.rooms.add(newRoom);
+            this.game.rooms.put(roomName, newRoom);
         }
     }
 
@@ -55,24 +64,73 @@ public class CodeChroniclesLoader {
     public void parseProwlers() throws IOException {
 
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/prowlers.txt"));
-
-
+        while (buff.ready()) {
+            String npcName = buff.readLine();
+            String prowlerName = buff.readLine();
+            String roomName = buff.readLine();
+            String npcGreetings = buff.readLine();
+            FileInputStream inputstreamNPC = new FileInputStream("OtherFiles//npcImages/" + npcName + ".png");
+            Image npcImage = new Image(inputstreamNPC);
+            FileInputStream inputstreamProwler = new FileInputStream("OtherFiles/prowlerImages/" + prowlerName + ".png");
+            Image prowlerImage = new Image(inputstreamProwler);
+            String separator = buff.readLine();
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            Prowler prowler = new Prowler(prowlerName, prowlerImage, npcName, npcImage, npcGreetings);
+            this.game.prowlers.add(prowler);
+            this.game.rooms.get(roomName).setNPC(prowler);
+        }
     }
 
     /**
      * Parse School Members File
      */
     public void parseSchoolMembers() throws IOException {
-
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/schoolmembers.txt"));
-
-
+        String npcName = buff.readLine();
+        String roomName = buff.readLine();
+        String npcGreetings = buff.readLine();
+        FileInputStream inputstreamNPC = new FileInputStream("OtherFiles/npcImages/" + npcName + ".png");
+        Image npcImage = new Image(inputstreamNPC);
+        String separator = buff.readLine();
+        if (separator != null && !separator.isEmpty())
+            System.out.println("Formatting Error!");
+        SchoolMember schoolMember = new SchoolMember(npcName, npcGreetings, npcImage);
+        this.game.schoolMembers.add(schoolMember);
+        this.game.rooms.get(roomName).setNPC(schoolMember);
     }
 
-
+    /**
+     * Parse Quests File
+     */
+    public void parseQuests() throws IOException {
+        BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/quests.txt"));
+        String questName = buff.readLine();
+        String questQuestion = buff.readLine();
+        String optionA = buff.readLine();
+        String optionB = buff.readLine();
+        String optionC = buff.readLine();
+        String optionD = buff.readLine();
+        ArrayList<String> options = new ArrayList<String>();
+        options.add(optionA); options.add(optionB); options.add(optionC); options.add(optionD);
+        String questAnswer = buff.readLine();
+        String questHint = buff.readLine();
+        String prowlerName = buff.readLine();
+        String separator = buff.readLine();
+        Prowler questProwler = null;
+        for (Prowler prowler : this.game.prowlers) {
+            if (prowler.getName() == prowlerName) {
+                questProwler = prowler;
+            }
+        }
+        if (separator != null && !separator.isEmpty())
+            System.out.println("Formatting Error!");
+        Quest quest = new Quest(questName, questQuestion, options, questAnswer, questHint, questProwler);
+        this.game.quests.add(quest);
+    }
 
     /**
-     * Parse Files other than Rooms, Prowlers and SchoolMembers
+     * Parse all other files
      *
      * @param fileName the file to parse
      */

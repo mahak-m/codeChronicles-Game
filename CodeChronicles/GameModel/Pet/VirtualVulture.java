@@ -1,8 +1,4 @@
-package GameModel.pet;
-
-import GameModel.Pet;
-
-import java.util.HashMap;
+package GameModel.Pet;
 
 /**
  * This class keeps track of the progress
