@@ -31,41 +31,60 @@ public class VisitedRoomIcon implements RoomIcon{
     CodeChroniclesGame game;
     CodeChroniclesGameView gameView;
     Button iconButton;
-    ImageView roomImage;
-    String description;
+    Image roomImage;
+    String previewText;
 
     public VisitedRoomIcon(CodeChroniclesGame game, CodeChroniclesGameView gameView, Room room) {
         this.room = room;
         this.game = game;
         this.gameView = gameView;
         this.iconButton = new Button(room.getRoomName());
-        this.description = room.getRoomDescription();
+        this.previewText = room.getRoomDescription();
         String roomName = room.getRoomName().replaceAll("\\s", "");
-        Image image = new Image("OtherFiles/Images/" + this.gameView.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg");
-        this.roomImage = new ImageView(image);
+        this.roomImage = new Image("OtherFiles/Images/" + this.gameView.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg");
+        this.formatIcon();
     }
 
     public void formatIcon() {
-        this.roomImage.setFitWidth(170);
-        this.roomImage.setFitHeight(50);
+        // Format Visuals
         this.iconButton.setMinWidth(175);
         this.iconButton.setMinHeight(200);
         this.iconButton.setId(this.room.getRoomName());
-        this.iconButton.setGraphic(this.roomImage);
+        this.iconButton.setGraphic(this.getRoomImage());
+        this.iconButton.setContentDisplay(TOP);
+        this.iconButton.setStyle("-fx-background-color: "+ this.gameView.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         this.iconButton.setAlignment(Pos.CENTER);
+        // Create preview of room is player clicks on room button.
+        this.iconButton.setOnAction(e -> {
+            RoomPreview preview = new RoomPreview(this, this.gameView);
+        });
     }
 
     public Button getRoomButton() {
         return this.iconButton;
     }
 
+    public ImageView getRoomImage() {
+        ImageView view = new ImageView(this.roomImage);
+        view.setFitWidth(170);
+        view.setFitHeight(150);
+        return view;
+    };
+
+    public Room getRoom() {
+        return this.room;
+    };
+
+    public String getPreviewName() {
+        return this.room.getRoomName();
+    };
+
+    public String getPreviewText() {
+        return this.previewText;
+    };
+
     public void movePlayerToRoom() {
 
     }
-
-    public void showRoomPreview() {
-
-    }
-
 
 }

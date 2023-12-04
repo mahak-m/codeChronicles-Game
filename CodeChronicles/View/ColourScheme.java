@@ -19,17 +19,17 @@ public class ColourScheme {
             this.buttonColour2 = "";
         } else if (colourScheme.equals("Monochrome")) {
             this.colourSchemeName = "Monochrome";
-            this.backgroundColour = "";
-            this.regularFontColour = "";
-            this.headingsFontColour = "";
-            this.buttonColour1 = "";
-            this.buttonColour2 = "";
+            this.backgroundColour = "#1A1A1A";
+            this.regularFontColour = "#FFFFFF";
+            this.headingsFontColour = "#FFFFFF";
+            this.buttonColour1 = "#4F4F4F";
+            this.buttonColour2 = "#333333";
         } else { // default is "Game Theme"
             this.colourSchemeName = "GameTheme";
             this.backgroundColour = "#210776";
-            this.regularFontColour = "#5CE1E6";
-            this.headingsFontColour = "#FFFFFF";
-            this.buttonColour1 = "#5CE1E6";
+            this.regularFontColour = "#FFFFFF";
+            this.headingsFontColour = "#5CE1E6";
+            this.buttonColour1 = "#4264D4";
             this.buttonColour2 = "#8C52FF";
         }
     }
