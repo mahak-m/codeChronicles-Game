@@ -48,7 +48,6 @@ public class GameMenu {
         colourTheme.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         colourTheme.setFont(new Font("Helvetica", this.gameView.fontSize));
         this.colourModeBox = new ComboBox<String>();
-        // this.colourModeBox.getItems().add("High Contrast");
         this.colourModeBox.getItems().add("Monochrome");
         this.colourModeBox.getItems().add("Game Theme");
         this.colourModeBox.setValue("Game Theme");
@@ -85,7 +84,7 @@ public class GameMenu {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-        }); //TODO! Restart Game!
+        });
         CodeChroniclesGameView.makeButtonAccessible(this.restartButton, "Restart Game", "This is a button to restart the game", "Use this button to restart the game. It will load the game from the beginning, and you will lose your progress.");
 
         // Create Save Changes Button
@@ -93,7 +92,7 @@ public class GameMenu {
         this.saveChangesButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
         this.saveChangesButton.setPrefSize(200, 50);
         this.saveChangesButton.setFont(new Font(16));
-        this.saveChangesButton.setOnAction(e ->this.save_changes()); // TODO! Implement Method to Save Changes!
+        this.saveChangesButton.setOnAction(e ->this.save_changes());
         CodeChroniclesGameView.makeButtonAccessible(this.saveChangesButton, "Save Changes", "This is a button to save your game's settings", "Use this button to save your game's settings. It will update the game based on the changes you have made.");
 
         // Add Buttons to Horizontal Box
@@ -167,7 +166,6 @@ public class GameMenu {
         // check value of font size box, update this.colourScheme.font size
         this.gameView.fontSize = this.fontSizeBox.getValue();
         this.stage.close(); // close the stage after saving the changes
-
     }
 
 }

@@ -10,14 +10,7 @@ public class ColourScheme {
     String buttonColour2;
 
     public ColourScheme (String colourScheme) {
-        if (colourScheme.equals("High Contrast")) {
-            this.colourSchemeName = "HighContrast";
-            this.backgroundColour = "";
-            this.regularFontColour = "";
-            this.headingsFontColour = "";
-            this.buttonColour1 = "";
-            this.buttonColour2 = "";
-        } else if (colourScheme.equals("Monochrome")) {
+        if (colourScheme.equals("Monochrome")) {
             this.colourSchemeName = "Monochrome";
             this.backgroundColour = "#1A1A1A";
             this.regularFontColour = "#FFFFFF";
