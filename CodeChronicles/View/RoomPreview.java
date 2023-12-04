@@ -11,6 +11,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+
 import static View.CodeChroniclesGameView.makeButtonAccessible;
 
 public class RoomPreview {
@@ -42,7 +44,13 @@ public class RoomPreview {
         goButton.setStyle("-fx-background-color: " + this.gameView.colourScheme.buttonColour2 + "; -fx-text-fill: white;");
         makeButtonAccessible(goButton, "Go", "Go Here", "Click to go to the place previewed.");
         goButton.setOnAction(e -> {
-            icon.movePlayerToRoom();
+            this.gameView.game.getPlayer().setCurrentRoom(icon.getRoom());
+            try {
+                this.gameView.setRoomScene();
+                dialog.close();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         // Adding Content to VBox

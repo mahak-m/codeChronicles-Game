@@ -35,7 +35,7 @@ public class TrustCommand implements Command {
         }
         else {
             player.updateCodeBytes(10);
-            return "You decided to trust a School Member. \n Hi" + player.getPlayerName() + "! I am so happy to hear you're helping us defeat the Polymorphic prowlers. Here are 10 code bytes to help you with your mission.";
+            return "You decided to trust a School Member. \n Hi " + player.getPlayerName() + "! I am so happy to hear you're helping us defeat the Polymorphic prowlers. Here are 10 code bytes to help you with your mission.";
         }
     }
 }

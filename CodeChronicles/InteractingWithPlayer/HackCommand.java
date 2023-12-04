@@ -42,7 +42,8 @@ public class HackCommand implements Command {
         }
         // check if character type is school member, greet the player.
         else {
-            return "Oh no! You decided to hack a School Member. Hi! You are doing great in the game," ;
+            player.loseLife();
+            return "Oh no! You tried to hack a School Member, and lost 1 life." ;
         }
 
     }

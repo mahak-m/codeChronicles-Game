@@ -1,5 +1,6 @@
 package GameModel;
 
+import InteractingWithPlayer.LastBattleQuestion;
 import InteractingWithPlayer.NonPlayerCharacters.NPC;
 import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.NonPlayerCharacters.SchoolMember;
@@ -21,6 +22,7 @@ public class CodeChroniclesGame implements Serializable {
     public ArrayList<Prowler> prowlers; // The list of all the prowlers.
     public ArrayList<SchoolMember> schoolMembers; // The list of all the School Members.
     public ArrayList<Quest> quests; // The list of all the quests.
+    public ArrayList<LastBattleQuestion> lastBattleQuestions; // The list of all the questions in the last battle.
 
 
 
@@ -36,6 +38,7 @@ public class CodeChroniclesGame implements Serializable {
             this.prowlers = new ArrayList<Prowler>();
             this.quests = new ArrayList<Quest>();
             this.schoolMembers = new ArrayList<SchoolMember>();
+            this.lastBattleQuestions = new ArrayList<LastBattleQuestion>();
             setUpGame();
         } catch (IOException e) {
             throw new RuntimeException("An Error Occurred: " + e.getMessage());

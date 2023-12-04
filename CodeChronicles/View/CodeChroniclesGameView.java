@@ -2,10 +2,13 @@ package View;
 
 import GameModel.CodeChroniclesGame;
 import GameModel.Room;
+import InteractingWithPlayer.HackCommand;
+import InteractingWithPlayer.IgnoreCommand;
 import InteractingWithPlayer.NonPlayerCharacters.NPC;
 import InteractingWithPlayer.Player.AlchemistCharacter;
 import InteractingWithPlayer.Player.MageCharacter;
 import InteractingWithPlayer.Player.WarriorCharacter;
+import InteractingWithPlayer.TrustCommand;
 import javafx.animation.PauseTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -187,7 +190,7 @@ public class CodeChroniclesGameView {
         // CHARACTER SELECTION BUTTONS
 
         // Alchemist Player
-        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
+        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe. \n \n Lives: 5 \n Code Bytes: 10");
         alchemistButton.setId("Alchemist Character");
         alchemistButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(alchemistButton, 280, 550, this.colourScheme.buttonColour2);
@@ -210,7 +213,7 @@ public class CodeChroniclesGameView {
         });
 
         // Mage Player
-        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
+        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air. \n \n \n Lives: 7 \n Code Bytes: 7");
         mageButton.setId("Mage Character");
         mageButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(mageButton, 280, 550, this.colourScheme.buttonColour2);
@@ -233,7 +236,7 @@ public class CodeChroniclesGameView {
         });
 
         // Warrior Player
-        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
+        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles. \n \n \n Lives: 10 \n Code Bytes: 5");
         warriorButton.setId("Warrior Character");
         warriorButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(warriorButton, 280, 550, this.colourScheme.buttonColour2);
@@ -373,7 +376,17 @@ public class CodeChroniclesGameView {
         customizeButton(avoidButton, 150, 50, this.colourScheme.buttonColour1);
         makeButtonAccessible(avoidButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
         avoidButton.setOnAction(e -> {
-
+            IgnoreCommand command = new IgnoreCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command.executeCommand());
+            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+            pause.setOnFinished(event -> {
+                try {
+                    this.setRoomScene();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            pause.play();
         });
 
         Button trustButton = new Button("Trust");
@@ -382,7 +395,8 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(trustButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
         trustButton.setOnAction(e -> {
-
+            TrustCommand command = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command.executeCommand());
         });
 
         Button hackButton = new Button("Hack");
@@ -391,7 +405,8 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(hackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
         hackButton.setOnAction(e -> {
-
+            HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command.executeCommand());
         });
 
         HBox commandButtons = new HBox();
@@ -444,14 +459,19 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(mapButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
 
-        HBox topButtons = new HBox();
-        topButtons.getChildren().addAll(menuButton, instructionsButton, mapButton);
-        topButtons.setSpacing(10);
-        topButtons.setAlignment(Pos.CENTER);
+        // Player Stats
+        Label stats = new Label("Lives: " + this.game.player.getLives() + "\nCode Bytes: " + this.game.player.getCodeBytes());
+        stats.setFont(new Font("Helvetica", this.fontSize));
+        stats.setTextFill(Color.web(this.colourScheme.regularFontColour));
+
+        HBox header = new HBox();
+        header.getChildren().addAll(menuButton, instructionsButton, mapButton, stats);
+        header.setSpacing(10);
+        header.setAlignment(Pos.CENTER);
 
         //add all the widgets to the GridPane
-        gridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
-        gridPane.setHalignment(topButtons, HPos.CENTER);
+        gridPane.add(header, 1, 0, 3, 1 );  // Add buttons
+        gridPane.setHalignment(header, HPos.CENTER);
     }
 
     public ImageView getCharacterImageView() {
@@ -594,7 +614,7 @@ public class CodeChroniclesGameView {
                     roomsRow2.getChildren().add(roomIcon.getRoomButton());
                 }
             } allRooms.getChildren().addAll(roomsRow0, roomsRow1, roomsRow2);
-            this.gridPane.add(allRooms, 1, 2, 5, 1);
+            this.gridPane.add(allRooms, 1, 2, 5, 2);
             this.gridPane.setHalignment(allRooms, HPos.CENTER);
             var scene = new Scene( this.gridPane ,  1000, 800);
             scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
@@ -628,7 +648,9 @@ public class CodeChroniclesGameView {
         menuButton.setOnAction(e -> {
             stopArticulation();
             gridPane.requestFocus();
-            GameMenu menu = new GameMenu(this);
+//            QuestView view = new QuestView(this, this.game.quests.get(0), this.game.player);
+//            GameMenu menu = new GameMenu(this);
+            LastBattleView view = new LastBattleView(this, this.game.player);
         });
     }
 
