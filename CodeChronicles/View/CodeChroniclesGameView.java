@@ -196,7 +196,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "DESCRIPTION");
         alchemistButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Alchemist Character");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get(1), "", "");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "", "");
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("alchemistDescription.wav");
         });
@@ -218,7 +218,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "DESCRIPTION");
         mageButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Mage Character");
-            this.game.player = new MageCharacter(this.game.rooms.get(1), "", "");
+            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "", "");
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("mageDescription.wav");
         });
@@ -240,7 +240,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "DESCRIPTION");
         warriorButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Warrior Character");
-            this.game.player = new WarriorCharacter(this.game.rooms.get(1), "", "");
+            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "", "");
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("warriorDescription.wav");
         });
