@@ -1,15 +1,18 @@
 package InteractingWithPlayer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 
-public class Quest {
+public class Quest implements Serializable {
     public String questName; // The quest's name.
     public String questQuestion; // The quest's question.
     public ArrayList<String> questionOptions; // The options of the MCQ.
     protected String questAnswer; // The answer to the question.
     protected String questHint; // The hint for the question.
     public Prowler prowler; // The prowler who proposes this question.
+    private boolean withHint; // did the player solve the question with a hint?
+    private boolean withAnswer; // did the player have to reveal the answer?
 
     /**
      * Quest Constructor
@@ -28,7 +31,30 @@ public class Quest {
         this.questAnswer = answer;
         this.questHint = hint;
         this.prowler = prowler;
+        this.withHint = false; this.withAnswer = false;
     }
 
-    // incomplete right now
+    public String getQuestAnswer() {
+        return questAnswer;
+    }
+
+    public String getQuestHint() {
+        return questHint;
+    }
+
+    public void usedHint() {
+        this.withHint = true;
+    }
+
+    public void usedAnswer() {
+        this.withAnswer = true;
+    }
+
+    public boolean isWithHint() {
+        return withHint;
+    }
+
+    public boolean isWithAnswer() {
+        return withAnswer;
+    }
 }

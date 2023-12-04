@@ -1,5 +1,6 @@
 package InteractingWithPlayer.Player;
 
+import GameModel.Pet.Pet;
 import GameModel.Room;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,6 +34,7 @@ public abstract class Player {
     private int codeBytes;
     // keeps track of the current number of code bytes
     private int lives;
+    private Pet pet;
 
 
     /**
@@ -131,6 +133,9 @@ public abstract class Player {
     public boolean playQuest() { return true;
         // after quest has been implemented, refer to hia for this implementation
     }
+
+    public void setPet(Pet pet) {this.pet = pet;}
+    public Pet getPet() {return this.pet;}
 }
 
 

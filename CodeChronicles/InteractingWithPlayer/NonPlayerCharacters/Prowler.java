@@ -41,6 +41,9 @@ public class Prowler extends NPC {
     public String getName(){
         return name;
     }
+    public String getProwlerName() {
+        return this.prowlerName;
+    }
 
 }
 
