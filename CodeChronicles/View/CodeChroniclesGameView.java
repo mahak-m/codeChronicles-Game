@@ -59,7 +59,6 @@ public class CodeChroniclesGameView {
     Boolean audio;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
-    ImageView roomImageView; //to hold room image
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
 
@@ -116,7 +115,7 @@ public class CodeChroniclesGameView {
         this.stage.show();
 
         // AFTER LOADING SCREEN SHOW CHARACTER CUSTOMIZATION SCREEN
-        PauseTransition pause = new PauseTransition(Duration.seconds(4));
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(event -> {
             this.stage.setScene(this.setCharacterCustomizationScene());
         });
@@ -204,7 +203,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
         alchemistButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Alchemist Character");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "Harry Potter"); //TODO: PLAYER NAME
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("alchemistDescription.wav");
         });
@@ -227,7 +226,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
         mageButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Mage Character");
-            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "");
+            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "Harry Potter"); //TODO: PLAYER NAME
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("mageDescription.wav");
         });
@@ -250,7 +249,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
         warriorButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Warrior Character");
-            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "");
+            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "Harry Potter"); //TODO: PLAYER NAME
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("warriorDescription.wav");
         });
@@ -326,17 +325,27 @@ public class CodeChroniclesGameView {
         // add characters and NPCs to the GridPane
         ImageView characterView = this.getCharacterImageView();
         ImageView NPCView = this.getNPCImageView(this.game.player.getCurrentRoom().getNPC());
+        Button NPCButton = new Button();
+        NPCButton.setGraphic(NPCView);
+        NPCButton.setBackground(null);
         roomPane.add(characterView, 3, 2);
-        roomPane.add(NPCView, 1, 2);
-        roomPane.setValignment(this.getCharacterImageView(), VPos.BOTTOM);
-
+        roomPane.add(NPCButton, 1, 2);
+        roomPane.setValignment(characterView, VPos.CENTER);
+        roomPane.setHalignment(characterView, HPos.CENTER);
+        roomPane.setValignment(NPCButton, VPos.CENTER);
+        roomPane.setHalignment(NPCButton, HPos.CENTER);
 
         // add room description to GridPane
-        Label roomLabel= new Label(this.game.player.getCurrentRoom().getRoomDescription());
-        roomLabel.setMinWidth(940);
-        roomLabel.setMinHeight(250);
-        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
-        roomPane.add(roomLabel, 1, 3, 5, 1);
+        this.roomDescLabel.setText(this.game.player.getCurrentRoom().getRoomDescription());
+        this.roomDescLabel.setWrapText(true);
+        this.roomDescLabel.setPadding(new Insets(30));
+        this.roomDescLabel.setAlignment(Pos.TOP_CENTER);
+        this.roomDescLabel.setFont(new Font("Helvetica", this.fontSize));
+        this.roomDescLabel.setTextFill(Color.web(this.colourScheme.regularFontColour));
+        this.roomDescLabel.setMinWidth(1000);
+        this.roomDescLabel.setMinHeight(350);
+        this.roomDescLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
+        roomPane.add(this.roomDescLabel, 0, 3, 5, 1);
 
         // add background
         String roomName = this.game.player.getCurrentRoom().getRoomName().replaceAll("\\s", "");
@@ -348,6 +357,11 @@ public class CodeChroniclesGameView {
         this.stage.setScene(scene);
         this.stage.setResizable(false);
         this.stage.show();
+
+        // What happens when the character clicks on the other character in the room?
+        NPCButton.setOnAction(e -> {
+            this.roomDescLabel.setText(this.game.player.getCurrentRoom().getNPC().getIntro());
+        });
     }
 
     public void setupGridPane(GridPane gridPane) {
@@ -364,8 +378,8 @@ public class CodeChroniclesGameView {
         ColumnConstraints column5 = new ColumnConstraints(30);
         RowConstraints row1 = new RowConstraints(80);
         RowConstraints row2 = new RowConstraints( 20);
-        RowConstraints row3 = new RowConstraints(600);
-        RowConstraints row4 = new RowConstraints(100);
+        RowConstraints row3 = new RowConstraints(500);
+        RowConstraints row4 = new RowConstraints(200);
         gridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
         gridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
     }
@@ -423,7 +437,7 @@ public class CodeChroniclesGameView {
     }
 
     public ImageView getNPCImageView(NPC character) throws FileNotFoundException {
-        FileInputStream path = new FileInputStream("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/npcImages/" + "Freya Frostfall" + ".png");
+        FileInputStream path = new FileInputStream("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/npcImages/" + this.game.player.getCurrentRoom().getNPC().getName() + ".png");
         Image image = new Image(path);
         ImageView view = new ImageView(image);
         view.setFitWidth(400);
