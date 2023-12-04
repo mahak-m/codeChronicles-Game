@@ -326,6 +326,7 @@ public class QuestView {
 
         // Create a hintButton
         Button hintButton = new Button("Hint");
+        makeButtonAccessible(hintButton, "Hint", "This is a hint to the question.", this.quest.getQuestHint());
         hintButton.setMinHeight(80);
         hintButton.setMinWidth(250);
         hintButton.setFont(new Font("Georgia", 18));
@@ -341,6 +342,7 @@ public class QuestView {
 
         // Create a revealAnswerButton
         Button revealAnswerButton = new Button("Reveal Answer");
+        makeButtonAccessible(revealAnswerButton, "Reveal Answer", "This is the answer to the question", "Please click on the button to see the answer");
         revealAnswerButton.setMinHeight(80);
         revealAnswerButton.setMinWidth(250);
         revealAnswerButton.setFont(new Font("Georgia", 18));
@@ -375,7 +377,7 @@ public class QuestView {
         back.setMinWidth(100);
         back.setMinHeight(30);
         back.setFont(new Font("Georgia", 16));
-        makeButtonAccessible(back, "Exit", "Exit the quest", "Exit the quest and return to the room.");
+        makeButtonAccessible(back, "Back", "Back to the question", "Go back to the question using this button.");
         back.setOnAction(e -> {
             if (this.quest.isWithHint() || this.quest.isWithAnswer()) {
                 setQuestionScene(true);
