@@ -58,10 +58,10 @@ public class CodeChroniclesGameView {
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
     ImageView roomImageView; //to hold room image
     // the media players
-    private MediaPlayer backgroundMusicPlayer;
-    private MediaPlayer introductionAudioPlayer;
-    private MediaPlayer roomAudioPlayer;
-    private MediaPlayer buttonClickPlayer;
+    private MediaPlayer backgroundMusicPlayer; // for the background music
+    private MediaPlayer introductionAudioPlayer; // for the character introductions + NPC voices
+    private MediaPlayer roomAudioPlayer; // for room articulations
+    private MediaPlayer buttonClickPlayer; // for button sound
     private boolean backgroundMediaPlaying; //to know if the room descriptions are playing
     private boolean roomMediaPlaying; //to know if the background audio is playing
 
@@ -726,18 +726,15 @@ public class CodeChroniclesGameView {
      * in the sub folders audio --> roomDescriptions
      */
     public void articulateRoomDescription() {
+
+        // do the same for help.txt audio
+
         String musicFile;
         String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
         System.out.println("room name " + roomName);
 
         musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.wav";
-
-        System.out.println("room name again" + roomName);
-
-        // if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.mp3" ;
-        // ^^ the "long" files have the description
-        // else musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-short.wav" ;
-        // ^^ the "short" files have the room names
+        // System.out.println("room name again" + roomName);
         musicFile = musicFile.replace(" ","-");
 
         Media sound = new Media(new File(musicFile).toURI().toString());
@@ -861,9 +858,10 @@ public class CodeChroniclesGameView {
             String musicFile = "audio/npcAudio/" + audioFileName + ".wav";
             Media sound = new Media(new File(musicFile).toURI().toString());
 
-            // check to see if there is any audio playing and stop it
-            if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
-                introductionAudioPlayer.stop();
+            // check to see if there is any audio "room" playing and stop it before playing
+            // the NPC audio
+            if (roomAudioPlayer != null && roomAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                roomAudioPlayer.stop();
             }
 
             introductionAudioPlayer = new MediaPlayer(sound);
