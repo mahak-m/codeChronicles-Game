@@ -23,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import javafx.scene.AccessibleRole;
+import InteractingWithPlayer.Quest;
 
 import java.io.File;
 

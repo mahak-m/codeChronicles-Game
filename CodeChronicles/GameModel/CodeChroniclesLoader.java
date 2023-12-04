@@ -71,7 +71,8 @@ public class CodeChroniclesLoader {
             String npcGreetings = buff.readLine();
             FileInputStream inputstreamNPC = new FileInputStream("OtherFiles//npcImages/" + npcName + ".png");
             Image npcImage = new Image(inputstreamNPC);
-            FileInputStream inputstreamProwler = new FileInputStream("OtherFiles/prowlerImages/" + prowlerName + ".png");
+            FileInputStream inputstreamProwler = new FileInputStream("OtherFiles/prowlerImages/" +
+                    prowlerName + ".png");
             Image prowlerImage = new Image(inputstreamProwler);
             String separator = buff.readLine();
             if (separator != null && !separator.isEmpty())
@@ -105,28 +106,33 @@ public class CodeChroniclesLoader {
      */
     public void parseQuests() throws IOException {
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/quests.txt"));
-        String questName = buff.readLine();
-        String questQuestion = buff.readLine();
-        String optionA = buff.readLine();
-        String optionB = buff.readLine();
-        String optionC = buff.readLine();
-        String optionD = buff.readLine();
-        ArrayList<String> options = new ArrayList<String>();
-        options.add(optionA); options.add(optionB); options.add(optionC); options.add(optionD);
-        String questAnswer = buff.readLine();
-        String questHint = buff.readLine();
-        String prowlerName = buff.readLine();
-        String separator = buff.readLine();
-        Prowler questProwler = null;
-        for (Prowler prowler : this.game.prowlers) {
-            if (prowler.getName() == prowlerName) {
-                questProwler = prowler;
+        while (buff.ready()) {
+            String questName = buff.readLine();
+            String questQuestion = buff.readLine();
+            String optionA = buff.readLine();
+            String optionB = buff.readLine();
+            String optionC = buff.readLine();
+            String optionD = buff.readLine();
+            ArrayList<String> options = new ArrayList<String>();
+            options.add(optionA);
+            options.add(optionB);
+            options.add(optionC);
+            options.add(optionD);
+            String questAnswer = buff.readLine();
+            String questHint = buff.readLine();
+            String prowlerName = buff.readLine();
+            String separator = buff.readLine();
+            Prowler questProwler = null;
+            for (Prowler prowler : this.game.prowlers) {
+                if (prowler.getProwlerName().equals(prowlerName)) {
+                    questProwler = prowler;
+                }
             }
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            Quest quest = new Quest(questName, questQuestion, options, questAnswer, questHint, questProwler);
+            this.game.quests.add(quest);
         }
-        if (separator != null && !separator.isEmpty())
-            System.out.println("Formatting Error!");
-        Quest quest = new Quest(questName, questQuestion, options, questAnswer, questHint, questProwler);
-        this.game.quests.add(quest);
     }
 
     /**

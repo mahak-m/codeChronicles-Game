@@ -1,4 +1,4 @@
-package week3.group_project.group_99.CodeChronicles.music;
+package music;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class AudioTest
     {
         try
         {
-            filePath = "/Users/mak/CSC207/mishr144/group_project/group_99/CodeChronicles/music";
+            filePath = "CodeChronicles/music";
 
             AudioTest audioPlayer =
                     new AudioTest();

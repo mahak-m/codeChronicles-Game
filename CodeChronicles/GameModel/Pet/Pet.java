@@ -1,6 +1,7 @@
 package GameModel.Pet;
 import GameModel.Room;
 import InteractingWithPlayer.Player.Player;
+import javafx.scene.image.Image;
 
 import java.io.Serializable;
 
@@ -14,12 +15,14 @@ public abstract class Pet implements Serializable {
     public boolean chosen; // is the pet chosen by the player?
     protected String description; // A brief summary of the pet
     protected Player player; // the player that has chosen this pet
+    public Image petImage; // The picture of the pet
 
     /**
      * CodeChronicles Pet Constructor
      */
-    public Pet() {
+    public Pet(String name) {
         this.chosen = false;
+        this.name = name;
     }
 
     /**
