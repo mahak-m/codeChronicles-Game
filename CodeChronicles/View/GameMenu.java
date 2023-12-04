@@ -27,7 +27,6 @@ public class GameMenu {
     private Button saveChangesButton = new Button("Save Changes");
 
     private CodeChroniclesGameView gameView;
-    private String saveColourScheme;
     private String saveAudio;
     private String saveMusic;
     private Integer saveFontSize;
@@ -130,12 +129,26 @@ public class GameMenu {
         this.stage.setResizable(false);
         this.stage.show();
     }
+    // getter methods for music, audio, font
+    public ComboBox<String> getMusicBox(){
+        return this.musicBox;
+    }
+    public ComboBox<String> getAudioBox(){
+        return this.audioBox;
+    }
+    public ComboBox<String> getColourModeBox(){
+        return this.colourModeBox;
+    }
+    public Spinner<Integer> getFontSizeBox(){
+        return this.fontSizeBox;
+    }
 
-    private void restart() throws IOException {
+
+    public void restart() throws IOException {
         //restart the game
         this.saveMusic = this.musicBox.getValue();
         this.saveAudio = this.audioBox.getValue();
-        this.saveColourScheme = this.colourModeBox.getValue();
+        String saveColourScheme = this.colourModeBox.getValue();
         this.saveFontSize = this.fontSizeBox.getValue();
         this.gameView.game.setUpGame();
 //        this.musicBox.setValue("On");
@@ -146,7 +159,7 @@ public class GameMenu {
 
     }
 
-    private void save_changes() {
+    public void save_changes() {
         // check value of music box, update this.gameView.music
         if (this.musicBox.getValue().equals("On")){
             this.gameView.music = true;

@@ -10,7 +10,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.media.Media;
@@ -27,8 +26,6 @@ import javafx.scene.AccessibleRole;
 import java.io.File;
 
 import static javafx.scene.control.ContentDisplay.TOP;
-import static javafx.scene.layout.GridPane.getColumnIndex;
-import static javafx.scene.layout.GridPane.getRowIndex;
 import static jdk.dynalink.linker.support.Guards.isInstance;
 
 /**
@@ -39,14 +36,14 @@ import static jdk.dynalink.linker.support.Guards.isInstance;
 public class CodeChroniclesGameView {
 
     CodeChroniclesGame game; //model of the game
-    Integer fontSize;
-    ColourScheme colourScheme;
+    public Integer fontSize;
+    public ColourScheme colourScheme;
     Stage stage; //stage on which all is rendered
     Button menuButton, helpButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
     Boolean mapToggle = false; //is map on display?
-    Boolean music;
-    Boolean audio;
+    public Boolean music;
+    public Boolean audio;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
     VBox objectsInRoom = new VBox(); //to hold room items
@@ -507,5 +504,6 @@ public class CodeChroniclesGameView {
             mediaPlaying = false;
         }
     }
+
 }
 

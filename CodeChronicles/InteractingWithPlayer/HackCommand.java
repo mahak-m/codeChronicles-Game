@@ -44,7 +44,7 @@ public class HackCommand {
      */
 
     public String countBytes(Player player) {
-        return "You have " + player.getCodeBytes() + "code bytes";
+        return "You have " + player.getCodeBytes() + " code bytes";
     }
 
     /**

@@ -2,7 +2,6 @@ package InteractingWithPlayer.Player;
 
 import GameModel.Room;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 /**
  * Character class
@@ -17,7 +16,7 @@ import javafx.scene.image.ImageView;
  * At the start of the game the player will be able to choose the
  * character "type" as indicated by the subclasses.
  *  */
-public abstract class Player {
+public class Player {
 
     public Image characterImage;
     String playerName;
@@ -33,6 +32,7 @@ public abstract class Player {
     private int codeBytes;
     // keeps track of the current number of code bytes
     private int lives;
+    // keeps track of the player life
 
 
     /**
@@ -130,6 +130,9 @@ public abstract class Player {
      */
     public boolean playQuest() { return true;
         // after quest has been implemented, refer to hia for this implementation
+    }
+
+    public void setPLayerBytes(int bytes) {
     }
 }
 
