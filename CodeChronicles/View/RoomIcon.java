@@ -37,10 +37,10 @@ public interface RoomIcon {
 
    public Room getRoom();
 
+   public String getPreviewName();
+
    public String getPreviewText();
 
    public void movePlayerToRoom();
-
-   public void showRoomPreview();
 
 }

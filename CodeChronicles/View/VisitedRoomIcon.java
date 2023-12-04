@@ -75,6 +75,10 @@ public class VisitedRoomIcon implements RoomIcon{
         return this.room;
     };
 
+    public String getPreviewName() {
+        return this.room.getRoomName();
+    };
+
     public String getPreviewText() {
         return this.previewText;
     };
@@ -82,10 +86,5 @@ public class VisitedRoomIcon implements RoomIcon{
     public void movePlayerToRoom() {
 
     }
-
-    public void showRoomPreview() {
-
-    }
-
 
 }

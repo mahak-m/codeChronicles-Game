@@ -60,15 +60,15 @@ public class UnvisitedRoomIcon implements RoomIcon {
         return this.room;
     };
 
+    public String getPreviewName() {
+        return "Unknown Place";
+    }
+
     public String getPreviewText() {
         return this.previewText;
     };
 
     public void movePlayerToRoom() {
-
-    }
-
-    public void showRoomPreview() {
 
     }
 
