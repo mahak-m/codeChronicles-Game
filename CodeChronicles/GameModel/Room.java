@@ -22,8 +22,6 @@ public class Room implements Serializable {
 
     private String roomDescription; // The description of the room.
 
-    public ArrayList<AdventureObject> objectsInRoom = new ArrayList<AdventureObject>(); // The list of objects in the room.
-
     private boolean isVisited; // A boolean to store if the room has been visited or not.
 
     /**
@@ -40,39 +38,6 @@ public class Room implements Serializable {
         this.yCoord = yCoord;
         this.roomDescription = roomDescription;
         this.isVisited = false;
-    }
-
-    /**
-     * Returns a comma delimited list of every
-     * object's description that is in the given room,
-     * e.g. "a can of tuna, a beagle, a lamp".
-     *
-     * @return delimited string of object descriptions
-     */
-    public String getObjectString() {
-        if (!this.objectsInRoom.isEmpty()) {
-            String objects = "";
-            for (AdventureObject o:this.objectsInRoom) {
-                objects = objects + o.getDescription() + ", ";
-            } objects = objects.substring(0, objects.length()-2);
-            return objects;
-        } else {
-            return "";
-        }
-
-    }
-
-    /**
-     * This method checks if an object is in the room.
-     *
-     * @param objectName Name of the object to be checked.
-     * @return true if the object is present in the room, false otherwise.
-     */
-    public boolean checkIfObjectInRoom(String objectName){
-        for(int i = 0; i<objectsInRoom.size();i++){
-            if(this.objectsInRoom.get(i).getName().equals(objectName)) return true;
-        }
-        return false;
     }
 
     /**
@@ -109,6 +74,13 @@ public class Room implements Serializable {
      */
     public boolean getVisited(){
         return this.isVisited;
+    }
+
+    /**
+     * Sets the room's NPC attribute.
+     */
+    public void setNPC(NPC npc){
+        this.characterInRoom = npc;
     }
 
 }

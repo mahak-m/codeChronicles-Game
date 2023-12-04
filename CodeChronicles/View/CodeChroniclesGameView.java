@@ -32,6 +32,12 @@ import static javafx.scene.layout.GridPane.getColumnIndex;
 import static javafx.scene.layout.GridPane.getRowIndex;
 import static jdk.dynalink.linker.support.Guards.isInstance;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 /**
  * Class AdventureGameView.
  *
@@ -50,11 +56,19 @@ public class CodeChroniclesGameView {
     Boolean audio;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
-    VBox objectsInRoom = new VBox(); //to hold room items
-    VBox objectsInInventory = new VBox(); //to hold inventory items
     ImageView roomImageView; //to hold room image
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
+
+    // attributes for the background
+    Long currentFrame;
+    Clip clip;
+
+    // current status of clip
+    String status;
+
+    AudioInputStream audioInputStream;
+    static String filePath;
 
     /**
      * Adventure Game View Constructor
@@ -67,6 +81,9 @@ public class CodeChroniclesGameView {
         this.colourScheme = new ColourScheme("Game Theme");
         this.fontSize = 16;
         intiUI();
+
+        // call the method to play reduced background music indefinitely
+        this.playBackgroundMusic();
     }
 
     /**
@@ -96,7 +113,7 @@ public class CodeChroniclesGameView {
         this.stage.show();
 
         // AFTER LOADING SCREEN SHOW CHARACTER CUSTOMIZATION SCREEN
-        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(event -> {
             this.stage.setScene(this.setCharacterCustomizationScene());
         });
@@ -107,7 +124,6 @@ public class CodeChroniclesGameView {
 
         // SETUP GRID PANE
         GridPane characterGridPane = new GridPane();
-        // characterGridPane.setPadding(new Insets(20));
         characterGridPane.setBackground(new Background(new BackgroundFill(
                 Color.valueOf(this.colourScheme.backgroundColour),
                 new CornerRadii(0),
@@ -180,7 +196,9 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "DESCRIPTION");
         alchemistButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Alchemist Character");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get(1), "", "");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "", "");
+            // play introduction audio if selected by passing audio file to method
+            playIntroductionAudio("alchemistDescription.wav");
         });
 
         // Mage Player
@@ -200,7 +218,9 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "DESCRIPTION");
         mageButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Mage Character");
-            this.game.player = new MageCharacter(this.game.rooms.get(1), "", "");
+            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "", "");
+            // play introduction audio if selected by passing audio file to method
+            playIntroductionAudio("mageDescription.wav");
         });
 
         // Warrior Player
@@ -220,8 +240,12 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "DESCRIPTION");
         warriorButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Warrior Character");
-            this.game.player = new WarriorCharacter(this.game.rooms.get(1), "", "");
+            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "", "");
+            // play introduction audio if selected by passing audio file to method
+            playIntroductionAudio("warriorDescription.wav");
         });
+
+        this.game.rooms.get("Front Gate").visit();
 
         // Add character buttons to grid pane.
         characterGridPane.add(alchemistButton, 1, 2, 1, 1 );
@@ -237,8 +261,85 @@ public class CodeChroniclesGameView {
         return scene;
     }
 
+    public void showAnimalAlert() {
+
+        // SETUP GRID PANE
+        GridPane animalGridPane = new GridPane();
+        animalGridPane.setBackground(new Background(new BackgroundFill(
+                Color.valueOf(this.colourScheme.backgroundColour),
+                new CornerRadii(0),
+                new Insets(0)
+        )));
+        // Row and Column Constraints
+        ColumnConstraints column1 = new ColumnConstraints(50);
+        ColumnConstraints column2 = new ColumnConstraints(300);
+        ColumnConstraints column3 = new ColumnConstraints(300);
+        ColumnConstraints column4 = new ColumnConstraints(300);
+        ColumnConstraints column5 = new ColumnConstraints(50);
+        RowConstraints row1 = new RowConstraints(50);
+        RowConstraints row2 = new RowConstraints( 30);
+        RowConstraints row3 = new RowConstraints(600);
+        RowConstraints row4 = new RowConstraints(120);
+        animalGridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
+        animalGridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
+
+        // Play Game Button
+        Button playButton = new Button("Play");
+        playButton.setId("Play");
+        playButton.setAlignment(Pos.CENTER);
+        customizeButton(playButton,100, 50);
+        makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
+        playButton.setOnAction(e -> {
+            if (this.game.player != null) {
+                setRoomScene();
+            }
+        });
+        animalGridPane.add(playButton, 3, 3, 1, 1);
+        animalGridPane.setHalignment(playButton, HPos.RIGHT);
+
+        // SETUP SCENE
+        Scene scene = new Scene(animalGridPane ,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+        // return scene;
+    }
+
     public void setRoomScene() {
 
+        GridPane roomPane = new GridPane();
+        this.setupGridPane(roomPane);
+        this.addGameHeader(roomPane);
+
+        // add characters and NPCs to the GridPane
+        ImageView characterView = this.getCharacterImageView();
+        roomPane.add(characterView, 3, 2);
+        roomPane.setValignment(this.getCharacterImageView(), VPos.BOTTOM);
+
+
+        // add room description to GridPane
+        Label roomLabel= new Label(this.game.player.getCurrentRoom().getRoomDescription());
+        roomLabel.setMinWidth(940);
+        roomLabel.setMinHeight(250);
+        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
+        roomPane.add(roomLabel, 1, 3, 5, 1);
+
+        // add background
+        String roomName = this.game.player.getCurrentRoom().getRoomName().replaceAll("\\s", "");
+        roomPane.setStyle("-fx-background-image: url('OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg');");
+
+        this.gridPane = roomPane;
+        var scene = new Scene( this.gridPane ,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+        this.stage.setScene(scene);
+        this.stage.setResizable(false);
+        this.stage.show();
+    }
+
+    public void setupGridPane(GridPane gridPane) {
+        gridPane.setBackground(new Background(new BackgroundFill(
+                Color.valueOf(this.colourScheme.backgroundColour),
+                new CornerRadii(0),
+                new Insets(0)
+        )));
         // Row and Column Constraints
         ColumnConstraints column1 = new ColumnConstraints(30);
         ColumnConstraints column2 = new ColumnConstraints(320);
@@ -249,10 +350,12 @@ public class CodeChroniclesGameView {
         RowConstraints row2 = new RowConstraints( 20);
         RowConstraints row3 = new RowConstraints(600);
         RowConstraints row4 = new RowConstraints(100);
-        this.gridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
-        this.gridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
+        gridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
+        gridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
+    }
 
-        // Buttons
+    public void addGameHeader(GridPane gridPane) {
+        // Create Buttons
         menuButton = new Button("Menu");
         menuButton.setId("Save");
         customizeButton(menuButton, 200, 50);
@@ -277,30 +380,8 @@ public class CodeChroniclesGameView {
         topButtons.setAlignment(Pos.CENTER);
 
         //add all the widgets to the GridPane
-        this.gridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
-        this.gridPane.setHalignment(topButtons, HPos.CENTER);
-
-        // add characters and NPCs to the GridPane
-        ImageView characterView = this.getCharacterImageView();
-        this.gridPane.add(characterView, 3, 2);
-        this.gridPane.setValignment(this.getCharacterImageView(), VPos.BOTTOM);
-
-        // add room description to GridPane
-        Label roomLabel= new Label(this.game.player.getCurrentRoom().getRoomDescription());
-        roomLabel.setMinWidth(940);
-        roomLabel.setMinHeight(250);
-        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
-        this.gridPane.add(roomLabel, 1, 3, 5, 1);
-
-        // add background
-        String roomName = this.game.player.getCurrentRoom().getRoomName().replaceAll("\\s", "");
-        this.gridPane.setStyle("-fx-background-image: url('OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/roomImages/" + roomName + ".jpg');");
-
-        var scene = new Scene( this.gridPane ,  1000, 800);
-        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
-        this.stage.setScene(scene);
-        this.stage.setResizable(false);
-        this.stage.show();
+        gridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
+        gridPane.setHalignment(topButtons, HPos.CENTER);
     }
 
     public ImageView getCharacterImageView() {
@@ -323,6 +404,11 @@ public class CodeChroniclesGameView {
             imageView.setFitHeight(500);
             return imageView;
         }
+    }
+
+    public ImageView getNPCImageView() {
+        ImageView view = new ImageView();
+        return view;
     }
 
 
@@ -356,7 +442,7 @@ public class CodeChroniclesGameView {
     private void customizeButton(Button inputButton, int w, int h) {
         inputButton.setPrefSize(w, h);
         inputButton.setFont(new Font("Arial", this.fontSize));
-        inputButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        inputButton.setStyle("-fx-background-color: " + this.colourScheme.buttonColour2 + "; -fx-text-fill: white;");
     }
 
     /**
@@ -370,9 +456,7 @@ public class CodeChroniclesGameView {
     private void formatText(String textToDisplay) {
         if (textToDisplay == null || textToDisplay.isBlank()) {
             String roomDesc = this.game.getPlayer().getCurrentRoom().getRoomDescription() + "\n";
-            String objectString = this.game.getPlayer().getCurrentRoom().getObjectString();
-            if (objectString != null && !objectString.isEmpty()) roomDescLabel.setText(roomDesc + "\n\nObjects in this room:\n" + objectString);
-            else roomDescLabel.setText(roomDesc);
+            roomDescLabel.setText(roomDesc);
         } else roomDescLabel.setText(textToDisplay);
         roomDescLabel.setStyle("-fx-text-fill: white;");
         roomDescLabel.setFont(new Font("Arial", this.fontSize));
@@ -419,15 +503,25 @@ public class CodeChroniclesGameView {
     public void showMap() {
         // If the mapToggle is false, show the map on the grid pane.
         if (!this.mapToggle) {
+            // Create map background.
+            this.gridPane = new GridPane();
+            this.setupGridPane(this.gridPane);
+            this.addGameHeader(this.gridPane);
+
+            // Populate the room icons.
             HBox roomsRow0 = new HBox();
             HBox roomsRow1 = new HBox();
             HBox roomsRow2 = new HBox();
             VBox allRooms = new VBox();
+            roomsRow0.setAlignment(Pos.CENTER);
+            roomsRow1.setAlignment(Pos.CENTER);
+            roomsRow2.setAlignment(Pos.CENTER);
             roomsRow0.setSpacing(10);
             roomsRow1.setSpacing(10);
             roomsRow2.setSpacing(10);
             allRooms.setSpacing(10);
-            for (Room room : this.game.rooms) {
+            for (String roomName : this.game.rooms.keySet()) {
+                Room room = this.game.rooms.get(roomName);
                 // create room icon
                 RoomIcon roomIcon = new UnvisitedRoomIcon(this.game, this, room);
                 if (room.getVisited()) {
@@ -442,12 +536,19 @@ public class CodeChroniclesGameView {
                     roomsRow2.getChildren().add(roomIcon.getRoomButton());
                 }
             } allRooms.getChildren().addAll(roomsRow0, roomsRow1, roomsRow2);
-            this.gridPane.add(allRooms, 2, 2, 3, 1);
+            this.gridPane.add(allRooms, 1, 2, 5, 1);
+            this.gridPane.setHalignment(allRooms, HPos.CENTER);
+            var scene = new Scene( this.gridPane ,  1000, 800);
+            scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+            this.stage.setScene(scene);
+            this.stage.setResizable(false);
+            this.stage.show();
+            this.mapToggle = true;
         }
         // If mapToggle is true, shoe the room scene again.
         else {
             this.setRoomScene();
-            this.helpToggle = false;
+            this.mapToggle = false;
         }
     }
 
@@ -479,15 +580,21 @@ public class CodeChroniclesGameView {
     }
 
 
+    // these method is for playing the room descriptions (long and short)
     /**
      * This method articulates Room Descriptions
+     * ____________________
+     * Each room has a "short" and "long" audio that can be found
+     * in the sub folders audio --> roomDescriptions
      */
     public void articulateRoomDescription() {
         String musicFile;
         String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
 
-        if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-long.mp3" ;
+        if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.mp3" ;
+        // ^^ the "long" files have the description
         else musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-short.mp3" ;
+        // ^^ the "short" files have the room names
         musicFile = musicFile.replace(" ","-");
 
         Media sound = new Media(new File(musicFile).toURI().toString());
@@ -495,10 +602,11 @@ public class CodeChroniclesGameView {
         mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
         mediaPlaying = true;
-
     }
 
     /**
+     * stopArticulation()
+     * ______________________
      * This method stops articulations 
      * (useful when transitioning to a new room or loading a new game)
      */
@@ -506,6 +614,53 @@ public class CodeChroniclesGameView {
         if (mediaPlaying) {
             mediaPlayer.stop(); //shush!
             mediaPlaying = false;
+        }
+    }
+
+    // these methods are for the main background music
+    /**
+     * playBackgroundMusic
+     * ______________________
+     * This method controls the main background music for the game.
+     * It plays at 50% volume and runs indefinitely for the duration of the game.
+     * The background music should be found in audio -> backgroundMusic -> backgroundMusic.wav
+     */
+    public void playBackgroundMusic() {
+        //later switched to a "try/catch" format to fix MediaException errors
+        try {
+            String musicFile = "audio/backgroundMusicAudio/backgroundMusic.wav";
+
+            //create a media object and media player
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            mediaPlayer = new MediaPlayer(sound);
+
+            //self volume to 50% and play in a loop while the view is up
+            mediaPlayer.setVolume(0.5);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.play();
+
+        } catch (Exception e) {
+            System.out.println("Error loading background music: " + e.getMessage());
+        }
+    }
+
+    // these methods are for the character introduction audio (during character selection)
+    /**
+     * playIntroductionAudio
+     * ______________________
+     * This method plays the character description audio for a character when they are
+     * selected in the character customization screen.
+     *
+     */
+    private void playIntroductionAudio(String audioFileName) {
+        // changed to a try/catch format to avoid errors
+        try {
+            String musicFile = "audio/characterDescriptionAudio" + audioFileName;
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.out.println("there's an error with the audio: " + e.getMessage());
         }
     }
 }
