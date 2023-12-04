@@ -18,8 +18,8 @@ public class Prowler extends NPC {
     /**
      * Constructor
      */
-    public Prowler(String prowlerName, String npcName, String npcGreetings) {
-        super( npcName, npcGreetings);
+    public Prowler(String npcName, String prowlerName, String npcGreetings) {
+        super(npcName, npcGreetings);
         this.prowlerName = prowlerName;
         this.defeated = false;
 
@@ -32,9 +32,6 @@ public class Prowler extends NPC {
         this.defeated = defeated;
     }
 
-    public String getName(){
-        return name;
-    }
     public String getProwlerName() {
         return this.prowlerName;
     }

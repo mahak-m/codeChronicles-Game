@@ -56,7 +56,6 @@ public class Room implements Serializable {
         return this.roomDescription.replace("\n", " ");
     }
 
-
     /**
      * Getter method for the name attribute.
      *
@@ -65,7 +64,6 @@ public class Room implements Serializable {
     public String getRoomName(){
         return this.roomName;
     }
-
 
     /**
      * Getter method for the visit attribute.
@@ -81,6 +79,13 @@ public class Room implements Serializable {
      */
     public void setNPC(NPC npc){
         this.characterInRoom = npc;
+    }
+
+    /**
+     * Getter for the room's NPC attribute.
+     */
+    public NPC getNPC(){
+        return this.characterInRoom;
     }
 
 }

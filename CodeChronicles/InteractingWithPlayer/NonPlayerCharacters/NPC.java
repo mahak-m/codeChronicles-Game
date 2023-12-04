@@ -34,6 +34,14 @@ public class NPC {
         this.name = npcName;
         this.NPCGreeting = npcGreetings;
     }
+
+    public String getName(){
+        return this.npcName;
+    }
+
+    public String getIntro(){
+        return this.NPCGreeting;
+    }
 }
 
 

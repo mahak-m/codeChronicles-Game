@@ -72,7 +72,7 @@ public class CodeChroniclesLoader {
             String separator = buff.readLine();
             if (separator != null && !separator.isEmpty())
                 System.out.println("Formatting Error!");
-            Prowler prowler = new Prowler(prowlerName, npcName, npcGreetings);
+            Prowler prowler = new Prowler(npcName, prowlerName, npcGreetings);
             this.game.prowlers.add(prowler);
             this.game.rooms.get(roomName).setNPC(prowler);
         }

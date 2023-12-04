@@ -2,6 +2,7 @@ package View;
 
 import GameModel.CodeChroniclesGame;
 import GameModel.Room;
+import InteractingWithPlayer.NonPlayerCharacters.NPC;
 import InteractingWithPlayer.Player.AlchemistCharacter;
 import InteractingWithPlayer.Player.MageCharacter;
 import InteractingWithPlayer.Player.WarriorCharacter;
@@ -26,6 +27,8 @@ import javafx.scene.AccessibleRole;
 import InteractingWithPlayer.Quest;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import static javafx.scene.control.ContentDisplay.TOP;
 import static javafx.scene.layout.GridPane.getColumnIndex;
@@ -171,7 +174,11 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
             if (this.game.player != null) {
-                setRoomScene();
+                try {
+                    setRoomScene();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         characterGridPane.add(playButton, 3, 3, 1, 1);
@@ -180,20 +187,21 @@ public class CodeChroniclesGameView {
         // CHARACTER SELECTION BUTTONS
 
         // Alchemist Player
-        Button alchemistButton = new Button("ALCHEMIST CHARACTER \n \n character description here");
+        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
         alchemistButton.setId("Alchemist Character");
-        alchemistButton.setAlignment(Pos.CENTER);
+        alchemistButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(alchemistButton, 280, 550);
+        alchemistButton.wrapTextProperty().setValue(true);
         Image alchemistImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
         ImageView alchemistView = new ImageView(alchemistImage);
         alchemistView.setFitHeight(300);
         alchemistView.setFitWidth(250);
         alchemistView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        alchemistView.setAccessibleText("DESCRIPTION");
+        alchemistView.setAccessibleText("As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
         alchemistButton.setGraphic(alchemistView);
         alchemistButton.setContentDisplay(TOP);
-        alchemistButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
-        makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "DESCRIPTION");
+        alchemistButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
+        makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
         alchemistButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Alchemist Character");
             this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "");
@@ -202,20 +210,21 @@ public class CodeChroniclesGameView {
         });
 
         // Mage Player
-        Button mageButton = new Button("   MAGE CHARACTER \n \n character description here");
+        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
         mageButton.setId("Mage Character");
-        mageButton.setAlignment(Pos.CENTER);
+        mageButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(mageButton, 280, 550);
+        mageButton.wrapTextProperty().setValue(true);
         Image mageImage = new Image("OtherFiles/characterImages/mageCharacter.png");
         ImageView mageView = new ImageView(mageImage);
         mageView.setFitHeight(300);
         mageView.setFitWidth(250);
         mageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        mageView.setAccessibleText("DESCRIPTION");
+        mageView.setAccessibleText("As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
         mageButton.setGraphic(mageView);
         mageButton.setContentDisplay(TOP);
-        mageButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
-        makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "DESCRIPTION");
+        mageButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
+        makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
         mageButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Mage Character");
             this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "");
@@ -224,20 +233,21 @@ public class CodeChroniclesGameView {
         });
 
         // Warrior Player
-        Button warriorButton = new Button("WARRIOR CHARACTER \n \n character description here");
+        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
         warriorButton.setId("Warrior Character");
-        warriorButton.setAlignment(Pos.CENTER);
+        warriorButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(warriorButton, 280, 550);
+        warriorButton.wrapTextProperty().setValue(true);
         Image warriorImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
         ImageView warriorView = new ImageView(warriorImage);
         warriorView.setFitHeight(300);
         warriorView.setFitWidth(250);
         warriorView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
-        warriorView.setAccessibleText("DESCRIPTION");
+        warriorView.setAccessibleText("As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
         warriorButton.setGraphic(warriorView);
         warriorButton.setContentDisplay(TOP);
-        warriorButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
-        makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "DESCRIPTION");
+        warriorButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
+        makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
         warriorButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Warrior Character");
             this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "");
@@ -291,7 +301,11 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
             if (this.game.player != null) {
-                setRoomScene();
+                try {
+                    setRoomScene();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         animalGridPane.add(playButton, 3, 3, 1, 1);
@@ -303,7 +317,7 @@ public class CodeChroniclesGameView {
         // return scene;
     }
 
-    public void setRoomScene() {
+    public void setRoomScene() throws FileNotFoundException {
 
         GridPane roomPane = new GridPane();
         this.setupGridPane(roomPane);
@@ -311,7 +325,9 @@ public class CodeChroniclesGameView {
 
         // add characters and NPCs to the GridPane
         ImageView characterView = this.getCharacterImageView();
+        ImageView NPCView = this.getNPCImageView(this.game.player.getCurrentRoom().getNPC());
         roomPane.add(characterView, 3, 2);
+        roomPane.add(NPCView, 1, 2);
         roomPane.setValignment(this.getCharacterImageView(), VPos.BOTTOM);
 
 
@@ -406,8 +422,14 @@ public class CodeChroniclesGameView {
         }
     }
 
-    public ImageView getNPCImageView() {
-        ImageView view = new ImageView();
+    public ImageView getNPCImageView(NPC character) throws FileNotFoundException {
+        FileInputStream path = new FileInputStream("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/npcImages/" + "Freya Frostfall" + ".png");
+        Image image = new Image(path);
+        ImageView view = new ImageView(image);
+        view.setFitWidth(400);
+        view.setFitHeight(500);
+        view.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        view.setAccessibleText(character.getIntro());
         return view;
     }
 
@@ -477,7 +499,7 @@ public class CodeChroniclesGameView {
      * -- set the helpToggle to FALSE
      * -- Again, REMOVE whatever nodes are within the cell beforehand!
      */
-    public void showInstructions() {
+    public void showInstructions() throws FileNotFoundException {
         // If helpToggle is false, add instructions to the grid pane.
         if (!this.helpToggle) {
             Label instrLabel =  new Label(this.game.getInstructions());
@@ -500,7 +522,7 @@ public class CodeChroniclesGameView {
         }
     }
 
-    public void showMap() {
+    public void showMap() throws FileNotFoundException {
         // If the mapToggle is false, show the map on the grid pane.
         if (!this.mapToggle) {
             // Create map background.
@@ -545,13 +567,12 @@ public class CodeChroniclesGameView {
             this.stage.show();
             this.mapToggle = true;
         }
-        // If mapToggle is true, shoe the room scene again.
+        // If mapToggle is true, show the room scene again.
         else {
             this.setRoomScene();
             this.mapToggle = false;
         }
     }
-
 
     /**
      * This method handles the event related to the
@@ -560,7 +581,11 @@ public class CodeChroniclesGameView {
     public void addInstructionEvent() {
         helpButton.setOnAction(e -> {
             stopArticulation();
-            showInstructions();
+            try {
+                showInstructions();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
     }
 
@@ -575,7 +600,11 @@ public class CodeChroniclesGameView {
     private void addMapEvent() {
         mapButton.setOnAction(e -> {
             stopArticulation();
-            showMap();
+            try {
+                showMap();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
     }
 
