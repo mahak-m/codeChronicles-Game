@@ -345,6 +345,8 @@ public class CodeChroniclesGameView {
         roomPane.setValignment(NPCButton, VPos.CENTER);
         roomPane.setHalignment(NPCButton, HPos.CENTER);
 
+        articulateRoomDescription(); // try this rn
+
         // add room description to GridPane
         this.roomDescLabel.setText(this.game.player.getCurrentRoom().getRoomDescription());
         this.roomDescLabel.setWrapText(true);
@@ -371,7 +373,14 @@ public class CodeChroniclesGameView {
         // What happens when the character clicks on the other character in the room?
         NPCButton.setOnAction(e -> {
             playButtonClick(); // adds button click sound effect
+            String theNpcName = this.game.player.getCurrentRoom().getNPC().getName();
+            // formatting is different, change that (remove all spaces)
+            theNpcName = theNpcName.replace(" ","");
+            System.out.println("nameeee " + theNpcName);
+            playNpcAudio(theNpcName); // play that npc audio
+
             this.roomDescLabel.setText(this.game.player.getCurrentRoom().getNPC().getIntro());
+
             this.addInteractionCommands();
         });
     }
@@ -719,10 +728,15 @@ public class CodeChroniclesGameView {
     public void articulateRoomDescription() {
         String musicFile;
         String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
+        System.out.println("room name " + roomName);
 
-        if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.mp3" ;
+        musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.wav";
+
+        System.out.println("room name again" + roomName);
+
+        // if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.mp3" ;
         // ^^ the "long" files have the description
-        else musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-short.mp3" ;
+        // else musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-short.wav" ;
         // ^^ the "short" files have the room names
         musicFile = musicFile.replace(" ","-");
 
@@ -764,7 +778,7 @@ public class CodeChroniclesGameView {
             backgroundMusicPlayer = new MediaPlayer(sound);
 
             //self volume to 50% and play in a loop while the view is up
-            backgroundMusicPlayer.setVolume(0.2);
+            backgroundMusicPlayer.setVolume(0.1);
             backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             backgroundMusicPlayer.play();
 
@@ -831,6 +845,33 @@ public class CodeChroniclesGameView {
 
         } catch (Exception e) {
             System.out.println("Error loading button click audio: " + e.getMessage());
+        }
+    }
+
+    /**
+     * playNpcAudio
+     * ______________________
+     * This method plays the character description audio for a character when they are
+     * selected in the character customization screen.
+     *
+     */
+    private void playNpcAudio(String audioFileName) {
+        // changed to a try/catch format to avoid errors
+        try {
+            String musicFile = "audio/npcAudio/" + audioFileName + ".wav";
+            Media sound = new Media(new File(musicFile).toURI().toString());
+
+            // check to see if there is any audio playing and stop it
+            if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                introductionAudioPlayer.stop();
+            }
+
+            introductionAudioPlayer = new MediaPlayer(sound);
+            // ^^ that creates a new media player
+            introductionAudioPlayer.play();
+            // ^^ that plays the new media player
+        } catch (Exception e) {
+            System.out.println("There's an error with the audio: " + e.getMessage());
         }
     }
 }

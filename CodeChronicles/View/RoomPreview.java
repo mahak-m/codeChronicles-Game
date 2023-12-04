@@ -31,6 +31,8 @@ public class RoomPreview {
         dialogVbox.setPadding(new Insets(20, 20, 20, 20));
         dialogVbox.setStyle("-fx-background-color: " + this.gameView.colourScheme.backgroundColour + ";");
 
+        this.gameView.articulateRoomDescription(); // try this rn
+
         // Creating Preview Text Content
         this.previewText = new Label(icon.getPreviewName() + "\n\n" + icon.getPreviewText());
 
