@@ -20,10 +20,7 @@ public class NPC {
     // a short description in case the user would like to know more about the NPC
     String NPCGreeting;
     // a short description in case the user would like to know more about the NPC
-    Image image;
-    // the image assigned to the NPC
     String npcName;
-    Image npcImage;
     String npcGreetings;
     Room currLocation;
     // the location of the NPC (the room where they are found)
@@ -33,21 +30,10 @@ public class NPC {
      * __________________________
      * Initializes attributes
      */
-    public NPC(String npcName, Image npcImage, String npcGreetings) {
+    public NPC(String npcName, String npcGreetings) {
         this.name = npcName;
-        this.image = npcImage;
         this.NPCGreeting = npcGreetings;
-
     }
-
-    public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(image);
-        // default (change these later as needed):
-        imageView.setFitHeight(100);
-        return imageView;
-    }
-    // IMPORTANT: to use the image in UI (i.e. in pane, panel):
-    // ImageView mageImageView = mageCharacter.getCharacterImageView();
 }
 
 

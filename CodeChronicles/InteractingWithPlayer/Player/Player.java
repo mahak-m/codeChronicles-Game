@@ -23,8 +23,6 @@ public abstract class Player {
     public Image characterImage;
     String playerName;
     // The name of the character, allow the character to choose
-    String characterDesc;
-    // The description of the character, allow the character to edit
     Room currLocation;
     // The current location of the character. Must be a Room object.
     String playerType;
@@ -43,9 +41,8 @@ public abstract class Player {
      * Initializes attributes
      *
      */
-    public Player(String playerName, String characterDesc, Room myCurrLocation, String myPlayerType) {
+    public Player(String playerName, Room myCurrLocation, String myPlayerType) {
         this.playerName = playerName; // BEFORE the player customizes their name
-        this.characterDesc = characterDesc;
         this.currLocation = myCurrLocation;
         this.playerType = myPlayerType;
         this.codeBytes = 5; // initial value

@@ -69,15 +69,10 @@ public class CodeChroniclesLoader {
             String prowlerName = buff.readLine();
             String roomName = buff.readLine();
             String npcGreetings = buff.readLine();
-            FileInputStream inputstreamNPC = new FileInputStream("OtherFiles//npcImages/" + npcName + ".png");
-            Image npcImage = new Image(inputstreamNPC);
-            FileInputStream inputstreamProwler = new FileInputStream("OtherFiles/prowlerImages/" +
-                    prowlerName + ".png");
-            Image prowlerImage = new Image(inputstreamProwler);
             String separator = buff.readLine();
             if (separator != null && !separator.isEmpty())
                 System.out.println("Formatting Error!");
-            Prowler prowler = new Prowler(prowlerName, prowlerImage, npcName, npcImage, npcGreetings);
+            Prowler prowler = new Prowler(prowlerName, npcName, npcGreetings);
             this.game.prowlers.add(prowler);
             this.game.rooms.get(roomName).setNPC(prowler);
         }
@@ -88,17 +83,17 @@ public class CodeChroniclesLoader {
      */
     public void parseSchoolMembers() throws IOException {
         BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/schoolmembers.txt"));
-        String npcName = buff.readLine();
-        String roomName = buff.readLine();
-        String npcGreetings = buff.readLine();
-        FileInputStream inputstreamNPC = new FileInputStream("OtherFiles/npcImages/" + npcName + ".png");
-        Image npcImage = new Image(inputstreamNPC);
-        String separator = buff.readLine();
-        if (separator != null && !separator.isEmpty())
-            System.out.println("Formatting Error!");
-        SchoolMember schoolMember = new SchoolMember(npcName, npcGreetings, npcImage);
-        this.game.schoolMembers.add(schoolMember);
-        this.game.rooms.get(roomName).setNPC(schoolMember);
+        while (buff.ready()) {
+            String npcName = buff.readLine();
+            String roomName = buff.readLine();
+            String npcGreetings = buff.readLine();
+            String separator = buff.readLine();
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            SchoolMember schoolMember = new SchoolMember(npcName, npcGreetings);
+            this.game.schoolMembers.add(schoolMember);
+            this.game.rooms.get(roomName).setNPC(schoolMember);
+        }
     }
 
     /**

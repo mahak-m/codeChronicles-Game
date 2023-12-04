@@ -27,7 +27,8 @@ import javafx.scene.image.ImageView;
  *  */
 public class AlchemistCharacter extends Player {
 
-    public Image characterImage;
+    String characterDesc;
+    // The description of the character, allow the character to edit
 
     /**
      * AlchemistCharacter Constructor
@@ -35,23 +36,11 @@ public class AlchemistCharacter extends Player {
      * Initializes attributes
      *
      */
-    public AlchemistCharacter(Room myCurrLocation, String playerName, String playerDesc) {
-        super(playerName, playerDesc, myCurrLocation, "Alchemist");
+    public AlchemistCharacter(Room myCurrLocation, String playerName) {
+        super(playerName, myCurrLocation, "Alchemist");
         isPlayable = true;
-        // load the image
-        characterImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
         // change playerType
         playerType = "Alchemist";
     }
-
-    public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(characterImage);
-        // default (change these later as needed):
-        imageView.setFitHeight(100);
-        return imageView;
-    }
-    // IMPORTANT: to use the image in UI (i.e. in pane, panel):
-    // ImageView mageImageView = mageCharacter.getCharacterImageView();
-
 }
 

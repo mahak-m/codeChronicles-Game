@@ -21,8 +21,9 @@ import javafx.scene.image.ImageView;
  *  */
 public class MageCharacter extends Player {
 
-    public Image characterImage;
-    // The image associated with the MageCharacter
+    String characterDesc;
+    // The description of the character, allow the character to edit
+
     public String playerType;
 
 
@@ -32,20 +33,8 @@ public class MageCharacter extends Player {
      * Initializes attributes
      *
      */
-    public MageCharacter(Room myCurrLocation, String playerName, String playerDesc) {
-        super(playerName, playerDesc, myCurrLocation, "Mage");
+    public MageCharacter(Room myCurrLocation, String playerName) {
+        super(playerName, myCurrLocation, "Mage");
         isPlayable = true;
-        // load the image
-        this.characterImage = new Image("OtherFiles/characterImages/mageCharacter.png");
     }
-
-    public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(characterImage);
-        // default (change these later as needed):
-        imageView.setFitHeight(100);
-        return imageView;
-    }
-    // IMPORTANT: to use the image in UI (i.e. in pane, panel):
-    // ImageView mageImageView = mageCharacter.getCharacterImageView();
-
 }

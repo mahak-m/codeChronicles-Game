@@ -27,7 +27,8 @@ import javafx.scene.image.ImageView;
  *  */
 public class WarriorCharacter extends Player {
 
-    public Image characterImage;
+    String characterDesc;
+    // The description of the character, allow the character to edit
     public String playerType;
 
     /**
@@ -36,20 +37,8 @@ public class WarriorCharacter extends Player {
      * Initializes attributes
      *
      */
-    public WarriorCharacter(Room myCurrLocation, String playerName, String playerDesc) {
-        super(playerName, playerDesc, myCurrLocation, "Warrior");
+    public WarriorCharacter(Room myCurrLocation, String playerName) {
+        super(playerName, myCurrLocation, "Warrior");
         this.isPlayable = true;
-        // load the image
-        characterImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
     }
-
-    public ImageView getCharacterImageView() {
-        ImageView imageView = new ImageView(characterImage);
-        // default (change these later as needed):
-        imageView.setFitHeight(100);
-        return imageView;
-    }
-    // IMPORTANT: to use the image in UI (i.e. in pane, panel):
-    // ImageView mageImageView = mageCharacter.getCharacterImageView();
-
 }
