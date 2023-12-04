@@ -14,6 +14,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.media.Media;
@@ -396,6 +397,7 @@ public class CodeChroniclesGameView {
         trustButton.setOnAction(e -> {
             TrustCommand command = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
+            this.addGameHeader(this.gridPane);
         });
 
         Button hackButton = new Button("Hack");
@@ -406,6 +408,7 @@ public class CodeChroniclesGameView {
         hackButton.setOnAction(e -> {
             HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
+            this.addGameHeader(this.gridPane);
         });
 
         HBox commandButtons = new HBox();
@@ -439,6 +442,13 @@ public class CodeChroniclesGameView {
     }
 
     public void addGameHeader(GridPane gridPane) {
+
+        for (Node node : gridPane.getChildren()) {
+            if(node instanceof HBox && gridPane.getRowIndex(node) == 0 && gridPane.getColumnIndex(node) == 1) {
+                gridPane.getChildren().remove(node);
+                break;
+            }
+        }
         // Create Buttons
         menuButton = new Button("Menu");
         menuButton.setId("Save");
