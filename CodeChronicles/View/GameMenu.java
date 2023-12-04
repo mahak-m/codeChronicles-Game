@@ -32,6 +32,7 @@ public class GameMenu {
     private String saveAudio;
     private String saveMusic;
     private Integer saveFontSize;
+    private String saveColourScheme;
 
     public GameMenu(CodeChroniclesGameView gameView, boolean ifMusic, boolean ifAudio, Integer sizeOfFont, String colorScheme) {
         this.gameView = gameView;
