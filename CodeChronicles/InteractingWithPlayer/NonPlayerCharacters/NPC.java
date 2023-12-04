@@ -14,7 +14,7 @@ import javafx.scene.image.ImageView;
  * folder characterImages --> NPCimages
  */
 public class NPC {
-    String name;
+
     // the name of the NPC character
     ///String IntroText;
     // a short description in case the user would like to know more about the NPC
@@ -31,7 +31,7 @@ public class NPC {
      * Initializes attributes
      */
     public NPC(String npcName, String npcGreetings) {
-        this.name = npcName;
+        this.npcName = npcName;
         this.NPCGreeting = npcGreetings;
     }
 

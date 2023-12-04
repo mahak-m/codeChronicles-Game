@@ -11,7 +11,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.media.Media;
@@ -24,22 +23,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import javafx.scene.AccessibleRole;
-import InteractingWithPlayer.Quest;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import static javafx.scene.control.ContentDisplay.TOP;
-import static javafx.scene.layout.GridPane.getColumnIndex;
-import static javafx.scene.layout.GridPane.getRowIndex;
 import static jdk.dynalink.linker.support.Guards.isInstance;
 
 import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * Class AdventureGameView.
@@ -52,7 +45,7 @@ public class CodeChroniclesGameView {
     Integer fontSize;
     ColourScheme colourScheme;
     Stage stage; //stage on which all is rendered
-    Button menuButton, helpButton, mapButton; //buttons
+    Button avoidButton, trustButton, HackButton; //buttons
     Boolean helpToggle = false; //is help on display?
     Boolean mapToggle = false; //is map on display?
     Boolean music;
@@ -121,7 +114,7 @@ public class CodeChroniclesGameView {
         this.stage.show();
 
         // AFTER LOADING SCREEN SHOW CHARACTER CUSTOMIZATION SCREEN
-        PauseTransition pause = new PauseTransition(Duration.seconds(4));
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(event -> {
             this.stage.setScene(this.setCharacterCustomizationScene());
         });
@@ -210,7 +203,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
         alchemistButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Alchemist Character");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "Harry Potter"); //TODO: PLAYER NAME
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("alchemistDescription.wav");
         });
@@ -233,7 +226,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
         mageButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Mage Character");
-            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "");
+            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "Harry Potter"); //TODO: PLAYER NAME
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("mageDescription.wav");
         });
@@ -256,7 +249,7 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
         warriorButton.setOnAction(e -> {
             selectedPlayerLabel.setText("You have selected: Warrior Character");
-            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "");
+            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "Harry Potter"); //TODO: PLAYER NAME
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("warriorDescription.wav");
         });
@@ -332,17 +325,27 @@ public class CodeChroniclesGameView {
         // add characters and NPCs to the GridPane
         ImageView characterView = this.getCharacterImageView();
         ImageView NPCView = this.getNPCImageView(this.game.player.getCurrentRoom().getNPC());
+        Button NPCButton = new Button();
+        NPCButton.setGraphic(NPCView);
+        NPCButton.setBackground(null);
         roomPane.add(characterView, 3, 2);
-        roomPane.add(NPCView, 1, 2);
-        roomPane.setValignment(this.getCharacterImageView(), VPos.BOTTOM);
-
+        roomPane.add(NPCButton, 1, 2);
+        roomPane.setValignment(characterView, VPos.CENTER);
+        roomPane.setHalignment(characterView, HPos.CENTER);
+        roomPane.setValignment(NPCButton, VPos.CENTER);
+        roomPane.setHalignment(NPCButton, HPos.CENTER);
 
         // add room description to GridPane
-        Label roomLabel= new Label(this.game.player.getCurrentRoom().getRoomDescription());
-        roomLabel.setMinWidth(940);
-        roomLabel.setMinHeight(250);
-        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
-        roomPane.add(roomLabel, 1, 3, 5, 1);
+        this.roomDescLabel.setText(this.game.player.getCurrentRoom().getRoomDescription());
+        this.roomDescLabel.setWrapText(true);
+        this.roomDescLabel.setPadding(new Insets(30));
+        this.roomDescLabel.setAlignment(Pos.TOP_CENTER);
+        this.roomDescLabel.setFont(new Font("Helvetica", this.fontSize));
+        this.roomDescLabel.setTextFill(Color.web(this.colourScheme.regularFontColour));
+        this.roomDescLabel.setMinWidth(1000);
+        this.roomDescLabel.setMinHeight(350);
+        this.roomDescLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
+        roomPane.add(this.roomDescLabel, 0, 3, 5, 1);
 
         // add background
         String roomName = this.game.player.getCurrentRoom().getRoomName().replaceAll("\\s", "");
@@ -354,6 +357,42 @@ public class CodeChroniclesGameView {
         this.stage.setScene(scene);
         this.stage.setResizable(false);
         this.stage.show();
+
+        // What happens when the character clicks on the other character in the room?
+        NPCButton.setOnAction(e -> {
+            this.roomDescLabel.setText(this.game.player.getCurrentRoom().getNPC().getIntro());
+            this.addInteractionCommands();
+        });
+    }
+
+    public void addInteractionCommands() {
+        // Create Buttons
+        avoidButton = new Button("Avoid");
+        avoidButton.setId("Avoid");
+        customizeButton(avoidButton, 200, 50);
+        makeButtonAccessible(avoidButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
+        addMenuEvent();
+
+        trustButton = new Button("Trust");
+        trustButton.setId("Trust");
+        customizeButton(trustButton, 200, 50);
+        makeButtonAccessible(trustButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
+        addInstructionEvent();
+
+        HackButton = new Button("Hack");
+        HackButton.setId("Hack");
+        customizeButton(HackButton, 200, 50);
+        makeButtonAccessible(HackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
+        addMapEvent();
+
+        HBox commandButtons = new HBox();
+        commandButtons.getChildren().addAll(avoidButton, trustButton, HackButton);
+        commandButtons.setSpacing(10);
+        commandButtons.setAlignment(Pos.CENTER);
+
+        //add all the widgets to the GridPane
+        // gridPane.add(commandButtons, 1, 0, 3, 1 );  // Add buttons
+        // gridPane.setHalignment(commandButtons, HPos.CENTER);
     }
 
     public void setupGridPane(GridPane gridPane) {
@@ -370,34 +409,34 @@ public class CodeChroniclesGameView {
         ColumnConstraints column5 = new ColumnConstraints(30);
         RowConstraints row1 = new RowConstraints(80);
         RowConstraints row2 = new RowConstraints( 20);
-        RowConstraints row3 = new RowConstraints(600);
-        RowConstraints row4 = new RowConstraints(100);
+        RowConstraints row3 = new RowConstraints(500);
+        RowConstraints row4 = new RowConstraints(200);
         gridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
         gridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
     }
 
     public void addGameHeader(GridPane gridPane) {
         // Create Buttons
-        menuButton = new Button("Menu");
-        menuButton.setId("Save");
-        customizeButton(menuButton, 200, 50);
-        makeButtonAccessible(menuButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
+        avoidButton = new Button("Menu");
+        avoidButton.setId("Save");
+        customizeButton(avoidButton, 200, 50);
+        makeButtonAccessible(avoidButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
         addMenuEvent();
 
-        helpButton = new Button("Instructions");
-        helpButton.setId("Instructions");
-        customizeButton(helpButton, 200, 50);
-        makeButtonAccessible(helpButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
+        trustButton = new Button("Instructions");
+        trustButton.setId("Instructions");
+        customizeButton(trustButton, 200, 50);
+        makeButtonAccessible(trustButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
 
-        mapButton = new Button("Map");
-        mapButton.setId("Map");
-        customizeButton(mapButton, 200, 50);
-        makeButtonAccessible(mapButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
+        HackButton = new Button("Map");
+        HackButton.setId("Map");
+        customizeButton(HackButton, 200, 50);
+        makeButtonAccessible(HackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
 
         HBox topButtons = new HBox();
-        topButtons.getChildren().addAll(menuButton, helpButton, mapButton);
+        topButtons.getChildren().addAll(avoidButton, trustButton, HackButton);
         topButtons.setSpacing(10);
         topButtons.setAlignment(Pos.CENTER);
 
@@ -429,7 +468,7 @@ public class CodeChroniclesGameView {
     }
 
     public ImageView getNPCImageView(NPC character) throws FileNotFoundException {
-        FileInputStream path = new FileInputStream("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/npcImages/" + "Freya Frostfall" + ".png");
+        FileInputStream path = new FileInputStream("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/npcImages/" + this.game.player.getCurrentRoom().getNPC().getName() + ".png");
         Image image = new Image(path);
         ImageView view = new ImageView(image);
         view.setFitWidth(400);
@@ -585,7 +624,7 @@ public class CodeChroniclesGameView {
      * help button.
      */
     public void addInstructionEvent() {
-        helpButton.setOnAction(e -> {
+        trustButton.setOnAction(e -> {
             stopArticulation();
             try {
                 showInstructions();
@@ -596,7 +635,7 @@ public class CodeChroniclesGameView {
     }
 
     private void addMenuEvent() {
-        menuButton.setOnAction(e -> {
+        avoidButton.setOnAction(e -> {
             stopArticulation();
             gridPane.requestFocus();
             GameMenu menu = new GameMenu(this);
@@ -604,7 +643,7 @@ public class CodeChroniclesGameView {
     }
 
     private void addMapEvent() {
-        mapButton.setOnAction(e -> {
+        HackButton.setOnAction(e -> {
             stopArticulation();
             try {
                 showMap();
