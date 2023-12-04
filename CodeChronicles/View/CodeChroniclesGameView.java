@@ -83,7 +83,7 @@ public class CodeChroniclesGameView {
         intiUI();
 
         // call the method to play reduced background music indefinitely
-        this.playBackgroundMusic();
+        // TODO: this.playBackgroundMusic();
     }
 
     /**
@@ -113,7 +113,7 @@ public class CodeChroniclesGameView {
         this.stage.show();
 
         // AFTER LOADING SCREEN SHOW CHARACTER CUSTOMIZATION SCREEN
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        PauseTransition pause = new PauseTransition(Duration.seconds(4));
         pause.setOnFinished(event -> {
             this.stage.setScene(this.setCharacterCustomizationScene());
         });
@@ -628,7 +628,7 @@ public class CodeChroniclesGameView {
     public void playBackgroundMusic() {
         //later switched to a "try/catch" format to fix MediaException errors
         try {
-            String musicFile = "audio/backgroundMusicAudio/backgroundMusic.wav";
+            String musicFile = "audio/backgroundMusicAudio/backgroundMusic";
 
             //create a media object and media player
             Media sound = new Media(new File(musicFile).toURI().toString());

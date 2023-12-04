@@ -37,7 +37,7 @@ public class AlchemistCharacter extends Player {
      *
      */
     public AlchemistCharacter(Room myCurrLocation, String playerName) {
-        super(playerName, myCurrLocation, "Alchemist");
+        super(playerName, myCurrLocation, "Alchemist", 10, 5);
         isPlayable = true;
         // change playerType
         playerType = "Alchemist";

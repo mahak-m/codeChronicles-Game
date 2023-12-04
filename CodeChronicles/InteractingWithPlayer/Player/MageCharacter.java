@@ -34,7 +34,7 @@ public class MageCharacter extends Player {
      *
      */
     public MageCharacter(Room myCurrLocation, String playerName) {
-        super(playerName, myCurrLocation, "Mage");
+        super(playerName, myCurrLocation, "Mage", 7, 7);
         isPlayable = true;
     }
 }

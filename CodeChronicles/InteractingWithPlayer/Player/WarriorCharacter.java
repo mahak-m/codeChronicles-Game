@@ -38,7 +38,7 @@ public class WarriorCharacter extends Player {
      *
      */
     public WarriorCharacter(Room myCurrLocation, String playerName) {
-        super(playerName, myCurrLocation, "Warrior");
+        super(playerName, myCurrLocation, "Warrior", 5, 10);
         this.isPlayable = true;
     }
 }

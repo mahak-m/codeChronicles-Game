@@ -20,7 +20,6 @@ import javafx.scene.image.ImageView;
  *  */
 public abstract class Player {
 
-    public Image characterImage;
     String playerName;
     // The name of the character, allow the character to choose
     Room currLocation;
@@ -29,9 +28,9 @@ public abstract class Player {
     // The type of character [Either Mage, Alchemist or, Warrior]
     boolean isPlayable;
     // Attribute that determines if character is playable
-    private int codeBytes;
+    private Integer codeBytes;
     // keeps track of the current number of code bytes
-    private int lives;
+    private Integer lives;
     private Pet pet;
 
 
@@ -41,12 +40,12 @@ public abstract class Player {
      * Initializes attributes
      *
      */
-    public Player(String playerName, Room myCurrLocation, String myPlayerType) {
+    public Player(String playerName, Room myCurrLocation, String myPlayerType, Integer codeBytes, Integer lives) {
         this.playerName = playerName; // BEFORE the player customizes their name
         this.currLocation = myCurrLocation;
         this.playerType = myPlayerType;
-        this.codeBytes = 5; // initial value
-        this.lives = 5; //default value
+        this.codeBytes = codeBytes; // initial value
+        this.lives = lives; //default value
     }
 
     /**
@@ -96,14 +95,14 @@ public abstract class Player {
     /**
      * getCodeBytes
      */
-    public int getCodeBytes() {
+    public Integer getCodeBytes() {
         return this.codeBytes;
     }
 
     /**
      * getLives
      */
-    public int getLives() {return this.lives;
+    public Integer getLives() {return this.lives;
     }
 
     /**
