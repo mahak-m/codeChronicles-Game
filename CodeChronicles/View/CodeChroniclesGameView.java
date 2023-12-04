@@ -458,14 +458,19 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(mapButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
 
-        HBox topButtons = new HBox();
-        topButtons.getChildren().addAll(menuButton, instructionsButton, mapButton);
-        topButtons.setSpacing(10);
-        topButtons.setAlignment(Pos.CENTER);
+        // Player Stats
+        Label stats = new Label("Lives: " + this.game.player.getLives() + "\nCode Bytes: " + this.game.player.getCodeBytes());
+        stats.setFont(new Font("Helvetica", this.fontSize));
+        stats.setTextFill(Color.web(this.colourScheme.regularFontColour));
+
+        HBox header = new HBox();
+        header.getChildren().addAll(menuButton, instructionsButton, mapButton, stats);
+        header.setSpacing(10);
+        header.setAlignment(Pos.CENTER);
 
         //add all the widgets to the GridPane
-        gridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
-        gridPane.setHalignment(topButtons, HPos.CENTER);
+        gridPane.add(header, 1, 0, 3, 1 );  // Add buttons
+        gridPane.setHalignment(header, HPos.CENTER);
     }
 
     public ImageView getCharacterImageView() {
