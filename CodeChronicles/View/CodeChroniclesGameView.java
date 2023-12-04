@@ -31,6 +31,12 @@ import static javafx.scene.layout.GridPane.getColumnIndex;
 import static javafx.scene.layout.GridPane.getRowIndex;
 import static jdk.dynalink.linker.support.Guards.isInstance;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 /**
  * Class AdventureGameView.
  *
@@ -53,6 +59,16 @@ public class CodeChroniclesGameView {
     private MediaPlayer mediaPlayer; //to play audio
     private boolean mediaPlaying; //to know if the audio is playing
 
+    // attributes for the background
+    Long currentFrame;
+    Clip clip;
+
+    // current status of clip
+    String status;
+
+    AudioInputStream audioInputStream;
+    static String filePath;
+
     /**
      * Adventure Game View Constructor
      * __________________________
@@ -64,6 +80,9 @@ public class CodeChroniclesGameView {
         this.colourScheme = new ColourScheme("Game Theme");
         this.fontSize = 16;
         intiUI();
+
+        // call the method to play reduced background music indefinitely
+        this.playBackgroundMusic();
     }
 
     /**
@@ -231,6 +250,82 @@ public class CodeChroniclesGameView {
         });
         characterGridPane.add(playButton, 3, 3, 1, 1);
         characterGridPane.setHalignment(playButton, HPos.RIGHT);
+
+        // CHARACTER SELECTION BUTTONS
+
+        // Alchemist Player
+        Button alchemistButton = new Button("ALCHEMIST CHARACTER \n \n character description here");
+        alchemistButton.setId("Alchemist Character");
+        alchemistButton.setAlignment(Pos.CENTER);
+        customizeButton(alchemistButton, 280, 550);
+        Image alchemistImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
+        ImageView alchemistView = new ImageView(alchemistImage);
+        alchemistView.setFitHeight(300);
+        alchemistView.setFitWidth(250);
+        alchemistView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        alchemistView.setAccessibleText("DESCRIPTION");
+        alchemistButton.setGraphic(alchemistView);
+        alchemistButton.setContentDisplay(TOP);
+        alchemistButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
+        makeButtonAccessible(alchemistButton, "Alchemist Character", "Alchemist Character", "DESCRIPTION");
+        alchemistButton.setOnAction(e -> {
+            selectedPlayerLabel.setText("You have selected: Alchemist Character");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "", "");
+            // play introduction audio if selected by passing audio file to method
+            playIntroductionAudio("alchemistDescription.wav");
+        });
+
+        // Mage Player
+        Button mageButton = new Button("   MAGE CHARACTER \n \n character description here");
+        mageButton.setId("Mage Character");
+        mageButton.setAlignment(Pos.CENTER);
+        customizeButton(mageButton, 280, 550);
+        Image mageImage = new Image("OtherFiles/characterImages/mageCharacter.png");
+        ImageView mageView = new ImageView(mageImage);
+        mageView.setFitHeight(300);
+        mageView.setFitWidth(250);
+        mageView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        mageView.setAccessibleText("DESCRIPTION");
+        mageButton.setGraphic(mageView);
+        mageButton.setContentDisplay(TOP);
+        mageButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
+        makeButtonAccessible(mageButton, "Mage Character", "Mage Character", "DESCRIPTION");
+        mageButton.setOnAction(e -> {
+            selectedPlayerLabel.setText("You have selected: Mage Character");
+            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "", "");
+            // play introduction audio if selected by passing audio file to method
+            playIntroductionAudio("mageDescription.wav");
+        });
+
+        // Warrior Player
+        Button warriorButton = new Button("WARRIOR CHARACTER \n \n character description here");
+        warriorButton.setId("Warrior Character");
+        warriorButton.setAlignment(Pos.CENTER);
+        customizeButton(warriorButton, 280, 550);
+        Image warriorImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
+        ImageView warriorView = new ImageView(warriorImage);
+        warriorView.setFitHeight(300);
+        warriorView.setFitWidth(250);
+        warriorView.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        warriorView.setAccessibleText("DESCRIPTION");
+        warriorButton.setGraphic(warriorView);
+        warriorButton.setContentDisplay(TOP);
+        warriorButton.setStyle("-fx-background-color: royalblue; -fx-text-fill: white;");
+        makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "DESCRIPTION");
+        warriorButton.setOnAction(e -> {
+            selectedPlayerLabel.setText("You have selected: Warrior Character");
+            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "", "");
+            // play introduction audio if selected by passing audio file to method
+            playIntroductionAudio("warriorDescription.wav");
+        });
+
+        // Add character buttons to grid pane.
+        characterGridPane.add(alchemistButton, 1, 2, 1, 1 );
+        characterGridPane.setHalignment(alchemistButton, HPos.CENTER);
+        characterGridPane.add(mageButton, 2, 2, 1, 1 );
+        characterGridPane.setHalignment(mageButton, HPos.CENTER);
+        characterGridPane.add(warriorButton, 3, 2, 1, 1 );
+        characterGridPane.setHalignment(warriorButton, HPos.CENTER);
 
         // SETUP SCENE
         Scene scene = new Scene(characterGridPane ,  1000, 800);
@@ -557,15 +652,21 @@ public class CodeChroniclesGameView {
     }
 
 
+    // these method is for playing the room descriptions (long and short)
     /**
      * This method articulates Room Descriptions
+     * ____________________
+     * Each room has a "short" and "long" audio that can be found
+     * in the sub folders audio --> roomDescriptions
      */
     public void articulateRoomDescription() {
         String musicFile;
         String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
 
-        if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-long.mp3" ;
+        if (!this.game.getPlayer().getCurrentRoom().getVisited()) musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.mp3" ;
+        // ^^ the "long" files have the description
         else musicFile = "OtherFiles/sounds/" + roomName.toLowerCase() + "-short.mp3" ;
+        // ^^ the "short" files have the room names
         musicFile = musicFile.replace(" ","-");
 
         Media sound = new Media(new File(musicFile).toURI().toString());
@@ -573,10 +674,11 @@ public class CodeChroniclesGameView {
         mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
         mediaPlaying = true;
-
     }
 
     /**
+     * stopArticulation()
+     * ______________________
      * This method stops articulations 
      * (useful when transitioning to a new room or loading a new game)
      */
@@ -584,6 +686,53 @@ public class CodeChroniclesGameView {
         if (mediaPlaying) {
             mediaPlayer.stop(); //shush!
             mediaPlaying = false;
+        }
+    }
+
+    // these methods are for the main background music
+    /**
+     * playBackgroundMusic
+     * ______________________
+     * This method controls the main background music for the game.
+     * It plays at 50% volume and runs indefinitely for the duration of the game.
+     * The background music should be found in audio -> backgroundMusic -> backgroundMusic.wav
+     */
+    public void playBackgroundMusic() {
+        //later switched to a "try/catch" format to fix MediaException errors
+        try {
+            String musicFile = "audio/backgroundMusicAudio/backgroundMusic.wav";
+
+            //create a media object and media player
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            mediaPlayer = new MediaPlayer(sound);
+
+            //self volume to 50% and play in a loop while the view is up
+            mediaPlayer.setVolume(0.5);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.play();
+
+        } catch (Exception e) {
+            System.out.println("Error loading background music: " + e.getMessage());
+        }
+    }
+
+    // these methods are for the character introduction audio (during character selection)
+    /**
+     * playIntroductionAudio
+     * ______________________
+     * This method plays the character description audio for a character when they are
+     * selected in the character customization screen.
+     *
+     */
+    private void playIntroductionAudio(String audioFileName) {
+        // changed to a try/catch format to avoid errors
+        try {
+            String musicFile = "audio/characterDescriptionAudio" + audioFileName;
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.out.println("there's an error with the audio: " + e.getMessage());
         }
     }
 }
