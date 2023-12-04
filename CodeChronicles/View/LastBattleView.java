@@ -1,30 +1,31 @@
 package View;
+
+import GameModel.Pet.MechaDoodle;
 import GameModel.Pet.VirtualVulture;
+import InteractingWithPlayer.Player.Player;
 import InteractingWithPlayer.Quest;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.AccessibleRole;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import InteractingWithPlayer.Player.Player;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-
-public class QuestView {
+public class LastBattleView {
     BorderPane borderPane = new BorderPane();
     private CodeChroniclesGameView gameView;
     private Stage stage = new Stage();
@@ -32,35 +33,43 @@ public class QuestView {
     private Button challengeButton = new Button("Accept the challenge!");
     private Button submitButton = new Button("Submit");
     private Button exitButton = new Button("Exit");
-    private Quest quest;
     private Player player;
+    private Integer current_question=0; // the current question in the battle (first -> 0, second -> 1, third -> 2)
 
-    public QuestView(CodeChroniclesGameView gameView, Quest quest, Player player) {
+    public LastBattleView(CodeChroniclesGameView gameView, Player player) {
         this.gameView = gameView;
-        this.quest = quest;
         this.player = player;
 
         // SET THE STAGE UP
         this.stage.initModality(Modality.APPLICATION_MODAL);
         this.stage.initOwner(gameView.stage);
-        this.stage.setTitle(this.quest.questName);
+        this.stage.setTitle("Battle with the Incognito Phantom!");
         this.stage.initStyle(StageStyle.UNDECORATED);
 
         // Set up the borderPane
         this.borderPane.setPadding(new Insets(10));
+        try {
+            Image image = new Image(new FileInputStream("OtherFiles/lastBattleImages/Incognito Phantom.png"));
+            borderPane.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         // Create alertLabel
-        Label alertLabel = new Label("You have decided to hack " + this.quest.prowler.getProwlerName() + "... A PROWLER!");
-        alertLabel.setPadding(new Insets(20));
-        alertLabel.setFont(new Font("Georgia", 22));
+        Label alertLabel = new Label("It is I, the Inconginto Phantom. I am here to defeat you.");
+        alertLabel.setPadding(new Insets(5));
+        alertLabel.setMaxWidth(450);
+        alertLabel.setFont(new Font("Georgia", 20));
         alertLabel.setTextFill(Color.valueOf("white"));
-        alertLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#000000"), CornerRadii.EMPTY, Insets.EMPTY)));
-        BorderPane.setAlignment(alertLabel, Pos.TOP_CENTER);
-        this.borderPane.setTop(alertLabel);
+        alertLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("navy"), CornerRadii.EMPTY, Insets.EMPTY)));
+        alertLabel.setWrapText(true);
+        alertLabel.setOpacity(0.85);
 
         // Create continueButton
         this.continueButton.setId("Continue");
         this.continueButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
+        this.continueButton.setMaxWidth(90);
         this.continueButton.setPrefSize(90, 30);
         this.continueButton.setFont(new Font("Georgia", 16));
         makeButtonAccessible(continueButton, "Continue", "Continue", "Continue to the next screen.");
@@ -68,33 +77,27 @@ public class QuestView {
             setInstructionScene();
         });
 
-        BorderPane.setAlignment(continueButton, Pos.BOTTOM_RIGHT);
-        this.borderPane.setBottom(continueButton);
+        // Create HBox for label and button
+        HBox bottomItems = new HBox();
+        bottomItems.setSpacing(10);
+        bottomItems.getChildren().addAll(alertLabel, this.continueButton);
+        bottomItems.setAlignment(Pos.CENTER);
 
-        // Set up borderPane
-        try {
-            Image image = new Image(new FileInputStream("OtherFiles/prowlerImages/" + this.quest.prowler.getProwlerName() + ".png"));
-            borderPane.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        this.borderPane.setAlignment(bottomItems, Pos.BOTTOM_CENTER);
+        this.borderPane.setBottom(bottomItems);
 
-        // CREATE A SCREEN
-        var questScene1 = new Scene(borderPane, 600, 600);
-        this.stage.setScene(questScene1);
+        var battleScene1 = new Scene(borderPane, 600, 600);
+        this.stage.setScene(battleScene1);
         this.stage.setResizable(false);
         this.stage.show();
     }
 
-    public void setInstructionScene() {
-        // Set up the borderPane
+    private void setInstructionScene() {
         BorderPane borderPane2 = new BorderPane();
-
+        // Set up the borderPane
         borderPane2.setPadding(new Insets(10));
-
         try {
-            Image image = new Image(new FileInputStream("OtherFiles/questScreens/instruction screen.png"));
+            Image image = new Image(new FileInputStream("OtherFiles/lastBattleImages/instruction screen.png"));
             borderPane2.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
         } catch (FileNotFoundException e) {
@@ -104,7 +107,7 @@ public class QuestView {
         // Create challengeButton
         this.challengeButton.setId("Accept the Challenge!");
         this.challengeButton.setPrefSize(200, 30);
-        this.challengeButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
+        this.challengeButton.setStyle("-fx-background-color: navy; -fx-text-fill: white;");
         this.challengeButton.setFont(new Font("Georgia", 16));
         makeButtonAccessible(challengeButton, "Challenge", "Accept the challenge!", "Accept the challenge and see the question.");
         challengeButton.setOnAction(e -> {
@@ -114,25 +117,24 @@ public class QuestView {
         borderPane2.setBottom(challengeButton);
 
         // Create questIntroLabel
-        Label questIntroLabel = new Label("Now, you must play their Quest!");
-        questIntroLabel.setFont(new Font("Georgia", 30));
+        Label questIntroLabel = new Label("Now, you must battle with me to win this game!");
+        questIntroLabel.setFont(new Font("Georgia", 22));
+        questIntroLabel.setWrapText(true);
         questIntroLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: white;");
         borderPane2.setAlignment(questIntroLabel, Pos.TOP_CENTER);
         borderPane2.setTop(questIntroLabel);
 
-        // Create instructionsLabel
         Label instructionsLabel =
-                new Label("Welcome to " + this.quest.prowler.getProwlerName() + "'s Quest, " + this.quest.questName +". Here are the instructions:\n" +
-                "1. Objective: To win, you must get the correct answer in two attempts or less.\n" +
-                        "2. Game Format: You'll be presented with one multiple-choice question (MCQ) where you have to choose the correct answer out of the four provided.\n" +
+                new Label("Welcome to the Incognito Prowler's Quest, the Final Conquest. The rules are the same as before, except:\n" +
+                        "1. Objective: To win, you must get the correct answer to all the 3 questions in two attempts or less, each.\n" +
+                        "2. Game Format: You'll be presented with 3 multiple-choice questions (MCQ) where you will have to choose the correct answer out of the four provided.\n" +
                         "3. Attempts:\n" +
-                        "- First Attempt: Answer the question. If you get it right on the first try, you will win and earn 10 code bytes.\n" +
-                        "- Second Attempt: If you don't answer correctly in the first try, you get a hint from your pet. But this will only " +
-                        "get you 6 code bytes, if you answer correctly.\n" +
-                        "- Virtual Vulture: If you have the virtual vulture, you can use it to reveal the answer, but this will only get you " +
-                        "2 code bytes, if you answer correctly.\n" +
-                        "4. Winning and losing: If you get the right answer, you win, but if you don't get it even after 2 attempts, you lose " +
-                        "a life and get 0 codebytes.\n" +
+                        "- First Attempt: Answer the question. If you get it right on the first try, you will move to the next question.\n" +
+                        "- Second Attempt: If you don't answer correctly in the first try, you get a hint from your pet, but only if you have " +
+                        "the Mecha Doodle.\n" +
+                        "- Virtual Vulture and Nano Bunny are not allowed in this battle. Therefore, answers cannot be revealed either.\n" +
+                        "4. Winning and losing: If you answer all the questions correctly, you win the game. If you answer even a single question" +
+                        " wrong after your two attempts for it, you lose the game.\n" +
                         "Remember to use your attempts wisely and make appropriate choices. You may now proceed.");
         instructionsLabel.setWrapText(true);
         instructionsLabel.setFont(new Font("Georgia", 18));
@@ -150,13 +152,13 @@ public class QuestView {
         this.stage.show();
     }
 
-    public void setQuestionScene(boolean doneTwoAttempts) {
+    private void setQuestionScene(boolean doneTwoAttempts) {
         BorderPane borderPane3 = new BorderPane();
         // Set up borderPane
         borderPane3.setPadding(new Insets(10));
 
         try {
-            Image image = new Image(new FileInputStream("OtherFiles/questScreens/question screen.png"));
+            Image image = new Image(new FileInputStream("OtherFiles/lastBattleImages/question screen.png"));
             borderPane3.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
         } catch (FileNotFoundException e) {
@@ -175,11 +177,13 @@ public class QuestView {
         // Create Options Toggle Group
         final ToggleGroup optionsGroup = new ToggleGroup();
 
-        RadioButton optionA = new RadioButton(this.quest.questionOptions.get(0)); RadioButton optionB = new RadioButton(this.quest.questionOptions.get(1));
+        RadioButton optionA = new RadioButton(this.gameView.game.lastBattleQuestions.get(current_question).options.get(0));
+        RadioButton optionB = new RadioButton(this.gameView.game.lastBattleQuestions.get(current_question).options.get(1));
 
         optionA.setToggleGroup(optionsGroup); optionB.setToggleGroup(optionsGroup);
 
-        RadioButton optionC = new RadioButton(this.quest.questionOptions.get(2));  RadioButton optionD = new RadioButton(this.quest.questionOptions.get(3));
+        RadioButton optionC = new RadioButton(this.gameView.game.lastBattleQuestions.get(current_question).options.get(2));
+        RadioButton optionD = new RadioButton(this.gameView.game.lastBattleQuestions.get(current_question).options.get(3));
 
         optionC.setToggleGroup(optionsGroup); optionD.setToggleGroup(optionsGroup);
 
@@ -220,24 +224,31 @@ public class QuestView {
         borderPane3.setCenter(options);
 
         // Create questionLabel
-        Label questionLabel = new Label(this.quest.questQuestion);
+        Label questionLabel = new Label(this.gameView.game.lastBattleQuestions.get(current_question).question);
         questionLabel.setFont(new Font("Georgia", 30));
         questionLabel.setWrapText(true);
         questionLabel.setTextFill(Color.valueOf("white"));
-        questionLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
+        questionLabel.setPadding(new Insets(10));
+        questionLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: black;");
         borderPane3.setAlignment(questionLabel, Pos.TOP_CENTER);
         borderPane3.setTop(questionLabel);
 
         this.submitButton.setOnAction(e -> {
             RadioButton selectedRadioButton = (RadioButton) optionsGroup.getSelectedToggle();
             if (selectedRadioButton != null) {
-                if (selectedRadioButton.getText().equals(this.quest.getQuestAnswer())) {
-                    setEndScene("won");
+                if (selectedRadioButton.getText().equals(this.gameView.game.lastBattleQuestions.get(current_question).getAnswer())) {
+                    if (this.current_question.equals(2)) {
+                        setEndScene("won");
+                    }
+                    else {
+                        setTransitionScene();
+                        this.current_question += 1;
+                    }
                 }
-                else if (! selectedRadioButton.getText().equals(this.quest.getQuestAnswer()) & ! doneTwoAttempts) {
+                else if (! selectedRadioButton.getText().equals(this.gameView.game.lastBattleQuestions.get(current_question).getAnswer()) & ! doneTwoAttempts) {
                     setHintScene();
                 }
-                else if (! selectedRadioButton.getText().equals(this.quest.getQuestAnswer()) & doneTwoAttempts) {
+                else if (! selectedRadioButton.getText().equals(this.gameView.game.lastBattleQuestions.get(current_question).getAnswer()) & doneTwoAttempts) {
                     setEndScene("lost");
                 }
             }
@@ -249,49 +260,42 @@ public class QuestView {
         this.stage.show();
     }
 
-    public void setEndScene(String status) {
+    private void setTransitionScene() {
         BorderPane borderPane4 = new BorderPane();
-        // Set up the borderPane
+        // Set up borderPane
         borderPane4.setPadding(new Insets(10));
 
         try {
-            Image image = new Image(new FileInputStream("OtherFiles/questScreens/question screen.png"));
+            Image image = new Image(new FileInputStream("OtherFiles/lastBattleImages/question screen.png"));
             borderPane4.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        // Create questOutroLabel
-        String endLine = (status.equals("won")) ? "You won the Quest!" : "You lost the Quest!";
-        Label questOutroLabel = new Label(endLine);
-        questOutroLabel.setFont(new Font("Georgia", 60));
-        questOutroLabel.setStyle("-fx-background-color: #000000;");
-        questOutroLabel.setTextFill(Color.valueOf("white"));
-        borderPane4.setAlignment(questOutroLabel, Pos.CENTER);
-        borderPane4.setCenter(questOutroLabel);
+        // Create transitionLabel
+        Label transitionLabel = new Label("Correct! Click next to go to the\nnext question.");
+        transitionLabel.setFont(new Font("Georgia", 40));
+        transitionLabel.setWrapText(true);
+        transitionLabel.setTextAlignment(TextAlignment.CENTER);
+        transitionLabel.setPadding(new Insets(10));
+        transitionLabel.setStyle("-fx-background-color: #000000;");
+        transitionLabel.setTextFill(Color.valueOf("white"));
+        borderPane4.setAlignment(transitionLabel, Pos.CENTER);
+        borderPane4.setCenter(transitionLabel);
 
-        //Create prowlerDialogueLabel
-//        Label prowlerDialogueLabel = new Label("I can't believe this! How dare those pathetic humans\n" +
-//                                                "defeat me? Me, a prowler of unparalleled power! They\n" +
-//                                                "think they can just come in with their feeble tricks\n" +
-//                                                "and take me down? I'll show them! I'll rise again, fiercer\n" +
-//                                                "and stronger than ever before, and crush their puny\n" +
-//                                                "existence into dust beneath my claws! They'll regret\n" +
-//                                                "the day they dared to challenge me!");
-
-        // Create exitButton
-        this.exitButton.setId("Exit");
-        this.exitButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
-        this.exitButton.setPrefSize(90, 30);
-        this.exitButton.setFont(new Font("Georgia", 16));
-        makeButtonAccessible(exitButton, "Exit", "Exit the quest", "Exit the quest and return to the room.");
-        this.exitButton.setOnAction(e -> {
-            this.stage.close();
+        // Create nextButton
+        Button nextButton = new Button("Next");
+        nextButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
+        nextButton.setPrefSize(90, 30);
+        nextButton.setFont(new Font("Georgia", 16));
+        makeButtonAccessible(nextButton, "Next", "Next question", "CLick this button to go to the next question.");
+        nextButton.setOnAction(e -> {
+            setQuestionScene(false);
         });
 
-        borderPane4.setAlignment(this.exitButton, Pos.BOTTOM_RIGHT);
-        borderPane4.setBottom(this.exitButton);
+        borderPane4.setAlignment(nextButton, Pos.BOTTOM_RIGHT);
+        borderPane4.setBottom(nextButton);
 
         var questScene4 = new Scene(borderPane4, 600, 600);
         this.stage.setScene(questScene4);
@@ -299,13 +303,13 @@ public class QuestView {
         this.stage.show();
     }
 
-    public void setHintScene() {
+    private void setHintScene() {
         BorderPane borderPane5 = new BorderPane();
-        // Set up the borderPane
+        /// Set up borderPane
         borderPane5.setPadding(new Insets(10));
 
         try {
-            Image image = new Image(new FileInputStream("OtherFiles/questScreens/question screen.png"));
+            Image image = new Image(new FileInputStream("OtherFiles/lastBattleImages/question screen.png"));
             borderPane5.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
         } catch (FileNotFoundException e) {
@@ -313,8 +317,7 @@ public class QuestView {
         }
 
         // Create a hintLabel
-        Label hintLabel = new Label("Oops! Wrong Answer. Please select one of the following options to help you " +
-                "in the next attempt.");
+        Label hintLabel = new Label("Oops! Wrong Answer. Please click on the Hint button to see a hint.");
         hintLabel.setFont(new Font("Georgia", 30));
         hintLabel.setWrapText(true);
         hintLabel.setTextFill(Color.valueOf("white"));
@@ -325,7 +328,7 @@ public class QuestView {
 
         // Create a hintButton
         Button hintButton = new Button("Hint");
-        makeButtonAccessible(hintButton, "Hint", "This is a hint to the question.", this.quest.getQuestHint());
+        makeButtonAccessible(hintButton, "Hint", "This is a hint to the question.", "Click on the button to see the hint.");
         hintButton.setMinHeight(80);
         hintButton.setMinWidth(250);
         hintButton.setFont(new Font("Georgia", 18));
@@ -334,40 +337,15 @@ public class QuestView {
         hintButton.setOpacity(0.9);
         hintButton.setWrapText(true);
         hintButton.setOnAction(e -> {
-            hintButton.setText(this.quest.getQuestHint());
-            this.quest.usedHint();
-        });
-
-
-        // Create a revealAnswerButton
-        Button revealAnswerButton = new Button("Reveal Answer");
-        makeButtonAccessible(revealAnswerButton, "Reveal Answer", "This is the answer to the question", "Please click on the button to see the answer");
-        revealAnswerButton.setMinHeight(80);
-        revealAnswerButton.setMinWidth(250);
-        revealAnswerButton.setFont(new Font("Georgia", 18));
-        revealAnswerButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
-        revealAnswerButton.setPadding(new Insets(10));
-        revealAnswerButton.setOpacity(0.9);
-        revealAnswerButton.setWrapText(true);
-        hintButton.setWrapText(true);
-        revealAnswerButton.setOnAction(e -> {
-            if (this.player.getPet() instanceof VirtualVulture) {
-                revealAnswerButton.setText(this.quest.getQuestAnswer());
-                this.quest.usedAnswer();
+            if (this.player.getPet() instanceof MechaDoodle) {
+                hintButton.setText(this.gameView.game.lastBattleQuestions.get(current_question).getHint());
             }
             else {
-                revealAnswerButton.setText("Option not available; you don't have a Virtual Vulture as a pet.");
+                hintButton.setText("Option not available; you don't have a Mecha Doodle as a pet.");
             }
         });
-
-        // Create HBox for the buttons
-        HBox buttons = new HBox();
-        buttons.setSpacing(10);
-        buttons.getChildren().addAll(hintButton, revealAnswerButton);
-        buttons.setAlignment(Pos.CENTER);
-
-        borderPane5.setAlignment(buttons, Pos.CENTER);
-        borderPane5.setCenter(buttons);
+        borderPane5.setAlignment(hintButton, Pos.CENTER);
+        borderPane5.setCenter(hintButton);
 
         // Create Back button
         Button back = new Button("Back to the Question");
@@ -377,15 +355,54 @@ public class QuestView {
         back.setFont(new Font("Georgia", 16));
         makeButtonAccessible(back, "Back", "Back to the question", "Go back to the question using this button.");
         back.setOnAction(e -> {
-            if (this.quest.isWithHint() || this.quest.isWithAnswer()) {
                 setQuestionScene(true);
-            }
         });
         borderPane5.setAlignment(back, Pos.BOTTOM_RIGHT);
         borderPane5.setBottom(back);
 
         var questScene5 = new Scene(borderPane5, 600, 600);
         this.stage.setScene(questScene5);
+        this.stage.setResizable(false);
+        this.stage.show();
+    }
+
+    private void setEndScene(String status) {
+        BorderPane borderPane6 = new BorderPane();
+        // Set up borderPane
+        borderPane6.setPadding(new Insets(10));
+
+        try {
+            Image image = new Image(new FileInputStream("OtherFiles/lastBattleImages/end screen.png"));
+            borderPane6.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(600, 600, true, true, true, false))));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Create questOutroLabel
+        String endLine = (status.equals("won")) ? "You won the game!" : "You lost the game!";
+        Label questOutroLabel = new Label(endLine);
+        questOutroLabel.setFont(new Font("Georgia", 60));
+        questOutroLabel.setStyle("-fx-background-color: #000000;");
+        questOutroLabel.setTextFill(Color.valueOf("white"));
+        borderPane6.setAlignment(questOutroLabel, Pos.CENTER);
+        borderPane6.setCenter(questOutroLabel);
+
+        // Create exitButton
+        this.exitButton.setId("Exit");
+        this.exitButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
+        this.exitButton.setPrefSize(90, 30);
+        this.exitButton.setFont(new Font("Georgia", 16));
+        makeButtonAccessible(exitButton, "Exit", "Exit the battle window", "Exit the battle window and return to the previous screen.");
+        this.exitButton.setOnAction(e -> {
+            this.stage.close();
+        });
+
+        borderPane6.setAlignment(this.exitButton, Pos.BOTTOM_RIGHT);
+        borderPane6.setBottom(this.exitButton);
+
+        var questScene4 = new Scene(borderPane6, 600, 600);
+        this.stage.setScene(questScene4);
         this.stage.setResizable(false);
         this.stage.show();
     }
@@ -409,6 +426,3 @@ public class QuestView {
         inputButton.setFocusTraversable(true);
     }
 }
-
-
-

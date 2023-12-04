@@ -6,8 +6,8 @@ import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 
 public class Quest implements Serializable {
     public String questName; // The quest's name.
-    public String questQuestion; // The quest's question.
-    public ArrayList<String> questionOptions; // The options of the MCQ.
+    public String questQuestion; // The quest's multiple-choice question.
+    public ArrayList<String> questionOptions; // The options for the MCQ.
     protected String questAnswer; // The answer to the question.
     protected String questHint; // The hint for the question.
     public Prowler prowler; // The prowler who proposes this question.

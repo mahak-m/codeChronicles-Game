@@ -3,6 +3,7 @@ package GameModel;
 import java.io.*;
 import java.util.ArrayList;
 
+import InteractingWithPlayer.LastBattleQuestion;
 import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.NonPlayerCharacters.SchoolMember;
 import View.ColourScheme;
@@ -35,6 +36,7 @@ public class CodeChroniclesLoader {
         parseProwlers();
         parseSchoolMembers();
         parseQuests();
+        parseLastBattleQuestions();
         this.game.setHelpText(parseOtherFile("help"));
     }
 
@@ -132,6 +134,34 @@ public class CodeChroniclesLoader {
                 System.out.println("Formatting Error!");
             Quest quest = new Quest(questName, questQuestion, options, questAnswer, questHint, questProwler);
             this.game.quests.add(quest);
+        }
+    }
+
+    /**
+     * Parse Quests File
+     */
+    public void parseLastBattleQuestions() throws IOException {
+        BufferedReader buff = new BufferedReader(new FileReader("OtherFiles/lastBattleQuestions.txt"));
+        while (buff.ready()) {
+            String question = buff.readLine();
+            String optionA = buff.readLine();
+            String optionB = buff.readLine();
+            String optionC = buff.readLine();
+            String optionD = buff.readLine();
+            ArrayList<String> options = new ArrayList<String>();
+            options.add(optionA);
+            options.add(optionB);
+            options.add(optionC);
+            options.add(optionD);
+            String answer = buff.readLine();
+            String hint = buff.readLine();
+            String separator = buff.readLine();
+            Prowler questProwler = null;
+
+            if (separator != null && !separator.isEmpty())
+                System.out.println("Formatting Error!");
+            LastBattleQuestion lbQuestion = new LastBattleQuestion(question, options, answer, hint);
+            this.game.lastBattleQuestions.add(lbQuestion);
         }
     }
 

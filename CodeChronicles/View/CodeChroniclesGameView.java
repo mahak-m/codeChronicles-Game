@@ -568,7 +568,9 @@ public class CodeChroniclesGameView {
         menuButton.setOnAction(e -> {
             stopArticulation();
             gridPane.requestFocus();
-            GameMenu menu = new GameMenu(this);
+//            QuestView view = new QuestView(this, this.game.quests.get(0), this.game.player);
+//            GameMenu menu = new GameMenu(this);
+            LastBattleView view = new LastBattleView(this, this.game.player);
         });
     }
 
@@ -628,7 +630,7 @@ public class CodeChroniclesGameView {
     public void playBackgroundMusic() {
         //later switched to a "try/catch" format to fix MediaException errors
         try {
-            String musicFile = "audio/backgroundMusicAudio/backgroundMusic.wav";
+            String musicFile = "audio/backgroundMusic/backgroundMusic.wav";
 
             //create a media object and media player
             Media sound = new Media(new File(musicFile).toURI().toString());
@@ -655,7 +657,7 @@ public class CodeChroniclesGameView {
     private void playIntroductionAudio(String audioFileName) {
         // changed to a try/catch format to avoid errors
         try {
-            String musicFile = "audio/characterDescriptionAudio" + audioFileName;
+            String musicFile = "audio/characterDescriptionAudio/" + audioFileName;
             Media sound = new Media(new File(musicFile).toURI().toString());
             mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.play();
