@@ -170,7 +170,7 @@ public class GameMenu {
         this.gameView = gameView;
         this.musicBox.setValue(this.saveMusic);
         this.audioBox.setValue(this.saveAudio);
-        this.colourModeBox.setValue(this.saveColourScheme);
+        this.colourModeBox.setValue(saveColourScheme);
         this.fontSizeBox.getValueFactory().setValue(this.saveFontSize);
     }
 

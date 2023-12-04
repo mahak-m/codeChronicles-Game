@@ -14,6 +14,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.media.Media;
@@ -665,7 +666,7 @@ public class CodeChroniclesGameView {
      * This method handles the event related to the instructions button.
      */
     public void addInstructionEvent() {
-        helpButton.setOnAction(e -> {
+        instructionsButton.setOnAction(e -> {
             playButtonClick(); // add button click audio
             stopArticulation();
             try {
