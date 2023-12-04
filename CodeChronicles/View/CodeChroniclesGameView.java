@@ -14,7 +14,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.media.Media;
@@ -46,14 +45,14 @@ import javax.sound.sampled.Clip;
 public class CodeChroniclesGameView {
 
     CodeChroniclesGame game; //model of the game
-    Integer fontSize;
-    ColourScheme colourScheme;
+    public Integer fontSize;
+    public ColourScheme colourScheme;
     Stage stage; //stage on which all is rendered
     Button menuButton, instructionsButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
     Boolean mapToggle = false; //is map on display?
-    Boolean music;
-    Boolean audio;
+    public Boolean music;
+    public Boolean audio;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
     ImageView roomImageView; //to hold room image
@@ -779,5 +778,6 @@ public class CodeChroniclesGameView {
             introductionAudioPlayer.stop();
         }
     }
+
 }
 
