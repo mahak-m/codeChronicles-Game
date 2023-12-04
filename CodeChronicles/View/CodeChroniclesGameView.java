@@ -2,10 +2,13 @@ package View;
 
 import GameModel.CodeChroniclesGame;
 import GameModel.Room;
+import InteractingWithPlayer.HackCommand;
+import InteractingWithPlayer.IgnoreCommand;
 import InteractingWithPlayer.NonPlayerCharacters.NPC;
 import InteractingWithPlayer.Player.AlchemistCharacter;
 import InteractingWithPlayer.Player.MageCharacter;
 import InteractingWithPlayer.Player.WarriorCharacter;
+import InteractingWithPlayer.TrustCommand;
 import javafx.animation.PauseTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -372,7 +375,17 @@ public class CodeChroniclesGameView {
         customizeButton(avoidButton, 150, 50, this.colourScheme.buttonColour1);
         makeButtonAccessible(avoidButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
         avoidButton.setOnAction(e -> {
-
+            IgnoreCommand command = new IgnoreCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command.executeCommand());
+            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+            pause.setOnFinished(event -> {
+                try {
+                    this.setRoomScene();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            pause.play();
         });
 
         Button trustButton = new Button("Trust");
@@ -381,7 +394,8 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(trustButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
         trustButton.setOnAction(e -> {
-
+            TrustCommand command = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command.executeCommand());
         });
 
         Button hackButton = new Button("Hack");
@@ -390,7 +404,8 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(hackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
         hackButton.setOnAction(e -> {
-
+            HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command.executeCommand());
         });
 
         HBox commandButtons = new HBox();
@@ -593,7 +608,7 @@ public class CodeChroniclesGameView {
                     roomsRow2.getChildren().add(roomIcon.getRoomButton());
                 }
             } allRooms.getChildren().addAll(roomsRow0, roomsRow1, roomsRow2);
-            this.gridPane.add(allRooms, 1, 2, 5, 1);
+            this.gridPane.add(allRooms, 1, 2, 5, 2);
             this.gridPane.setHalignment(allRooms, HPos.CENTER);
             var scene = new Scene( this.gridPane ,  1000, 800);
             scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
