@@ -181,6 +181,7 @@ public class CodeChroniclesGameView {
             if (this.game.player != null) {
                 try {
                     setRoomScene();
+                    stopIntroductionAudio(); // add this to stop the introduction audio before transitioning
                 } catch (FileNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -691,10 +692,32 @@ public class CodeChroniclesGameView {
         try {
             String musicFile = "audio/characterDescriptionAudio/" + audioFileName;
             Media sound = new Media(new File(musicFile).toURI().toString());
+
+            // UPDATE: now the audio's should not overlap!
+            // check to see if there is any audio playing and stop it
+            if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                introductionAudioPlayer.stop();
+            }
+
             introductionAudioPlayer = new MediaPlayer(sound);
+            // ^^ that creates a new media player
             introductionAudioPlayer.play();
+            // ^^ that plays the new media player
         } catch (Exception e) {
-            System.out.println("there's an error with the audio: " + e.getMessage());
+            System.out.println("There's an error with the audio: " + e.getMessage());
+        }
+    }
+
+    /**
+     * stopIntroductionAudio
+     * ______________________
+     * this method is to stop the introduction audio. It is useful for when the screen
+     * is done, or the player has moved on from the "choose character" view.
+     *
+     */
+    private void stopIntroductionAudio() {
+        if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            introductionAudioPlayer.stop();
         }
     }
 }
