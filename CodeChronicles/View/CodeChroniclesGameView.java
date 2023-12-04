@@ -2,16 +2,18 @@ package View;
 
 import GameModel.CodeChroniclesGame;
 import GameModel.Room;
+import InteractingWithPlayer.HackCommand;
+import InteractingWithPlayer.IgnoreCommand;
 import InteractingWithPlayer.NonPlayerCharacters.NPC;
 import InteractingWithPlayer.Player.AlchemistCharacter;
 import InteractingWithPlayer.Player.MageCharacter;
 import InteractingWithPlayer.Player.WarriorCharacter;
+import InteractingWithPlayer.TrustCommand;
 import javafx.animation.PauseTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.media.Media;
@@ -24,22 +26,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import javafx.scene.AccessibleRole;
-import InteractingWithPlayer.Quest;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import static javafx.scene.control.ContentDisplay.TOP;
-import static javafx.scene.layout.GridPane.getColumnIndex;
-import static javafx.scene.layout.GridPane.getRowIndex;
 import static jdk.dynalink.linker.support.Guards.isInstance;
 
 import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * Class AdventureGameView.
@@ -49,14 +45,14 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class CodeChroniclesGameView {
 
     CodeChroniclesGame game; //model of the game
-    Integer fontSize;
-    ColourScheme colourScheme;
+    public Integer fontSize;
+    public ColourScheme colourScheme;
     Stage stage; //stage on which all is rendered
-    Button menuButton, helpButton, mapButton; //buttons
+    Button menuButton, instructionsButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
     Boolean mapToggle = false; //is map on display?
-    Boolean music;
-    Boolean audio;
+    public Boolean music;
+    public Boolean audio;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
     ImageView roomImageView; //to hold room image
@@ -122,7 +118,7 @@ public class CodeChroniclesGameView {
         this.stage.show();
 
         // AFTER LOADING SCREEN SHOW CHARACTER CUSTOMIZATION SCREEN
-        PauseTransition pause = new PauseTransition(Duration.seconds(4));
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(event -> {
             this.stage.setScene(this.setCharacterCustomizationScene());
         });
@@ -176,7 +172,7 @@ public class CodeChroniclesGameView {
         Button playButton = new Button("Play");
         playButton.setId("Play");
         playButton.setAlignment(Pos.CENTER);
-        customizeButton(playButton,100, 50);
+        customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
             playButtonClick(); // plays the button click sound effect when pressed
@@ -195,10 +191,10 @@ public class CodeChroniclesGameView {
         // CHARACTER SELECTION BUTTONS
 
         // Alchemist Player
-        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
+        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe. \n \n Lives: 5 \n Code Bytes: 10");
         alchemistButton.setId("Alchemist Character");
         alchemistButton.setAlignment(Pos.TOP_CENTER);
-        customizeButton(alchemistButton, 280, 550);
+        customizeButton(alchemistButton, 280, 550, this.colourScheme.buttonColour2);
         alchemistButton.wrapTextProperty().setValue(true);
         Image alchemistImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
         ImageView alchemistView = new ImageView(alchemistImage);
@@ -219,10 +215,10 @@ public class CodeChroniclesGameView {
         });
 
         // Mage Player
-        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
+        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air. \n \n \n Lives: 7 \n Code Bytes: 7");
         mageButton.setId("Mage Character");
         mageButton.setAlignment(Pos.TOP_CENTER);
-        customizeButton(mageButton, 280, 550);
+        customizeButton(mageButton, 280, 550, this.colourScheme.buttonColour2);
         mageButton.wrapTextProperty().setValue(true);
         Image mageImage = new Image("OtherFiles/characterImages/mageCharacter.png");
         ImageView mageView = new ImageView(mageImage);
@@ -243,10 +239,10 @@ public class CodeChroniclesGameView {
         });
 
         // Warrior Player
-        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
-        warriorButton.setId("Warrior");
+        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles. \n \n \n Lives: 10 \n Code Bytes: 5");
+        warriorButton.setId("Warrior Character");
         warriorButton.setAlignment(Pos.TOP_CENTER);
-        customizeButton(warriorButton, 280, 550);
+        customizeButton(warriorButton, 280, 550, this.colourScheme.buttonColour2);
         warriorButton.wrapTextProperty().setValue(true);
         Image warriorImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
         ImageView warriorView = new ImageView(warriorImage);
@@ -308,7 +304,7 @@ public class CodeChroniclesGameView {
         Button playButton = new Button("Play");
         playButton.setId("Play");
         playButton.setAlignment(Pos.CENTER);
-        customizeButton(playButton,100, 50);
+        customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
             if (this.game.player != null) {
@@ -337,17 +333,27 @@ public class CodeChroniclesGameView {
         // add characters and NPCs to the GridPane
         ImageView characterView = this.getCharacterImageView();
         ImageView NPCView = this.getNPCImageView(this.game.player.getCurrentRoom().getNPC());
+        Button NPCButton = new Button();
+        NPCButton.setGraphic(NPCView);
+        NPCButton.setBackground(null);
         roomPane.add(characterView, 3, 2);
-        roomPane.add(NPCView, 1, 2);
-        roomPane.setValignment(this.getCharacterImageView(), VPos.BOTTOM);
-
+        roomPane.add(NPCButton, 1, 2);
+        roomPane.setValignment(characterView, VPos.CENTER);
+        roomPane.setHalignment(characterView, HPos.CENTER);
+        roomPane.setValignment(NPCButton, VPos.CENTER);
+        roomPane.setHalignment(NPCButton, HPos.CENTER);
 
         // add room description to GridPane
-        Label roomLabel= new Label(this.game.player.getCurrentRoom().getRoomDescription());
-        roomLabel.setMinWidth(940);
-        roomLabel.setMinHeight(250);
-        roomLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
-        roomPane.add(roomLabel, 1, 3, 5, 1);
+        this.roomDescLabel.setText(this.game.player.getCurrentRoom().getRoomDescription());
+        this.roomDescLabel.setWrapText(true);
+        this.roomDescLabel.setPadding(new Insets(30));
+        this.roomDescLabel.setAlignment(Pos.TOP_CENTER);
+        this.roomDescLabel.setFont(new Font("Helvetica", this.fontSize));
+        this.roomDescLabel.setTextFill(Color.web(this.colourScheme.regularFontColour));
+        this.roomDescLabel.setMinWidth(1000);
+        this.roomDescLabel.setMinHeight(350);
+        this.roomDescLabel.setBackground(new Background(new BackgroundFill(Color.valueOf(this.colourScheme.backgroundColour), CornerRadii.EMPTY, Insets.EMPTY)));
+        roomPane.add(this.roomDescLabel, 0, 3, 5, 1);
 
         // add background
         String roomName = this.game.player.getCurrentRoom().getRoomName().replaceAll("\\s", "");
@@ -359,6 +365,64 @@ public class CodeChroniclesGameView {
         this.stage.setScene(scene);
         this.stage.setResizable(false);
         this.stage.show();
+
+        // What happens when the character clicks on the other character in the room?
+        NPCButton.setOnAction(e -> {
+            this.roomDescLabel.setText(this.game.player.getCurrentRoom().getNPC().getIntro());
+            this.addInteractionCommands();
+        });
+    }
+
+    public void addInteractionCommands() {
+        // Create Buttons
+        Button avoidButton = new Button("Avoid");
+        avoidButton.setId("Avoid");
+        customizeButton(avoidButton, 150, 50, this.colourScheme.buttonColour1);
+        makeButtonAccessible(avoidButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
+        avoidButton.setOnAction(e -> {
+            IgnoreCommand command = new IgnoreCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command.executeCommand());
+            PauseTransition pause = new PauseTransition(Duration.seconds(2));
+            pause.setOnFinished(event -> {
+                try {
+                    this.setRoomScene();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            pause.play();
+        });
+
+        Button trustButton = new Button("Trust");
+        trustButton.setId("Trust");
+        customizeButton(trustButton, 150, 50, this.colourScheme.buttonColour1);
+        makeButtonAccessible(trustButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
+        addInstructionEvent();
+        trustButton.setOnAction(e -> {
+            TrustCommand command = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command.executeCommand());
+            this.addGameHeader(this.gridPane);
+        });
+
+        Button hackButton = new Button("Hack");
+        hackButton.setId("Hack");
+        customizeButton(hackButton, 150, 50, this.colourScheme.buttonColour1);
+        makeButtonAccessible(hackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
+        addMapEvent();
+        hackButton.setOnAction(e -> {
+            HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command.executeCommand());
+            this.addGameHeader(this.gridPane);
+        });
+
+        HBox commandButtons = new HBox();
+        commandButtons.getChildren().addAll(avoidButton, trustButton, hackButton);
+        commandButtons.setSpacing(10);
+        commandButtons.setAlignment(Pos.CENTER);
+
+        //add all the widgets to the GridPane
+        this.gridPane.add(commandButtons, 1, 3, 3, 1 );  // Add buttons
+        this.gridPane.setHalignment(commandButtons, HPos.CENTER);
     }
 
     public void setupGridPane(GridPane gridPane) {
@@ -375,40 +439,51 @@ public class CodeChroniclesGameView {
         ColumnConstraints column5 = new ColumnConstraints(30);
         RowConstraints row1 = new RowConstraints(80);
         RowConstraints row2 = new RowConstraints( 20);
-        RowConstraints row3 = new RowConstraints(600);
-        RowConstraints row4 = new RowConstraints(100);
+        RowConstraints row3 = new RowConstraints(500);
+        RowConstraints row4 = new RowConstraints(200);
         gridPane.getColumnConstraints().addAll(column1 , column2 , column3, column4, column5);
         gridPane.getRowConstraints().addAll(row1 , row2 , row3, row4);
     }
 
     public void addGameHeader(GridPane gridPane) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof HBox && gridPane.getRowIndex(node) == 0 && gridPane.getColumnIndex(node) == 1) {
+                gridPane.getChildren().remove(node);
+                break;
+            }
+        }
         // Create Buttons
         menuButton = new Button("Menu");
         menuButton.setId("Save");
-        customizeButton(menuButton, 200, 50);
+        customizeButton(menuButton, 200, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(menuButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
         addMenuEvent();
 
-        helpButton = new Button("Instructions");
-        helpButton.setId("Instructions");
-        customizeButton(helpButton, 200, 50);
-        makeButtonAccessible(helpButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
+        instructionsButton = new Button("Instructions");
+        instructionsButton.setId("Instructions");
+        customizeButton(instructionsButton, 200, 50, this.colourScheme.buttonColour2);
+        makeButtonAccessible(instructionsButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         addInstructionEvent();
 
         mapButton = new Button("Map");
         mapButton.setId("Map");
-        customizeButton(mapButton, 200, 50);
+        customizeButton(mapButton, 200, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(mapButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
 
-        HBox topButtons = new HBox();
-        topButtons.getChildren().addAll(menuButton, helpButton, mapButton);
-        topButtons.setSpacing(10);
-        topButtons.setAlignment(Pos.CENTER);
+        // Player Stats
+        Label stats = new Label("Lives: " + this.game.player.getLives() + "\nCode Bytes: " + this.game.player.getCodeBytes());
+        stats.setFont(new Font("Helvetica", this.fontSize));
+        stats.setTextFill(Color.web(this.colourScheme.regularFontColour));
+
+        HBox header = new HBox();
+        header.getChildren().addAll(menuButton, instructionsButton, mapButton, stats);
+        header.setSpacing(10);
+        header.setAlignment(Pos.CENTER);
 
         //add all the widgets to the GridPane
-        gridPane.add(topButtons, 1, 0, 3, 1 );  // Add buttons
-        gridPane.setHalignment(topButtons, HPos.CENTER);
+        gridPane.add(header, 1, 0, 3, 1 );  // Add buttons
+        gridPane.setHalignment(header, HPos.CENTER);
     }
 
     public ImageView getCharacterImageView() {
@@ -434,7 +509,7 @@ public class CodeChroniclesGameView {
     }
 
     public ImageView getNPCImageView(NPC character) throws FileNotFoundException {
-        FileInputStream path = new FileInputStream("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/npcImages/" + "Freya Frostfall" + ".png");
+        FileInputStream path = new FileInputStream("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/npcImages/" + this.game.player.getCurrentRoom().getNPC().getName() + ".png");
         Image image = new Image(path);
         ImageView view = new ImageView(image);
         view.setFitWidth(400);
@@ -472,28 +547,10 @@ public class CodeChroniclesGameView {
      * @param w width
      * @param h height
      */
-    private void customizeButton(Button inputButton, int w, int h) {
+    private void customizeButton(Button inputButton, int w, int h, String colour) {
         inputButton.setPrefSize(w, h);
         inputButton.setFont(new Font("Arial", this.fontSize));
-        inputButton.setStyle("-fx-background-color: " + this.colourScheme.buttonColour2 + "; -fx-text-fill: white;");
-    }
-
-    /**
-     * formatText
-     * __________________________
-     *
-     * Format text for display.
-     * 
-     * @param textToDisplay the text to be formatted for display.
-     */
-    private void formatText(String textToDisplay) {
-        if (textToDisplay == null || textToDisplay.isBlank()) {
-            String roomDesc = this.game.getPlayer().getCurrentRoom().getRoomDescription() + "\n";
-            roomDescLabel.setText(roomDesc);
-        } else roomDescLabel.setText(textToDisplay);
-        roomDescLabel.setStyle("-fx-text-fill: white;");
-        roomDescLabel.setFont(new Font("Arial", this.fontSize));
-        roomDescLabel.setAlignment(Pos.CENTER);
+        inputButton.setStyle("-fx-background-color: " + colour + "; -fx-text-fill: white;");
     }
 
     /*
@@ -569,7 +626,7 @@ public class CodeChroniclesGameView {
                     roomsRow2.getChildren().add(roomIcon.getRoomButton());
                 }
             } allRooms.getChildren().addAll(roomsRow0, roomsRow1, roomsRow2);
-            this.gridPane.add(allRooms, 1, 2, 5, 1);
+            this.gridPane.add(allRooms, 1, 2, 5, 2);
             this.gridPane.setHalignment(allRooms, HPos.CENTER);
             var scene = new Scene( this.gridPane ,  1000, 800);
             scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
@@ -586,8 +643,7 @@ public class CodeChroniclesGameView {
     }
 
     /**
-     * This method handles the event related to the
-     * help button.
+     * This method handles the event related to the instructions button.
      */
     public void addInstructionEvent() {
         helpButton.setOnAction(e -> {
@@ -606,7 +662,9 @@ public class CodeChroniclesGameView {
             playButtonClick(); // add button click audio
             stopArticulation();
             gridPane.requestFocus();
-            GameMenu menu = new GameMenu(this);
+//            QuestView view = new QuestView(this, this.game.quests.get(0), this.game.player);
+//            GameMenu menu = new GameMenu(this);
+            LastBattleView view = new LastBattleView(this, this.game.player);
         });
     }
 

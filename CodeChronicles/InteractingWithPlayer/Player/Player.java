@@ -3,7 +3,6 @@ package InteractingWithPlayer.Player;
 import GameModel.Pet.Pet;
 import GameModel.Room;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 /**
  * Character class
@@ -18,7 +17,7 @@ import javafx.scene.image.ImageView;
  * At the start of the game the player will be able to choose the
  * character "type" as indicated by the subclasses.
  *  */
-public abstract class Player {
+public class Player {
 
     String characterDesc;
     // The description of the character
@@ -73,6 +72,13 @@ public abstract class Player {
      */
     public Room getCurrentRoom() {
         return this.currLocation;
+    }
+
+    public void setCurrentRoom(Room room) {
+        this.currLocation = room;
+        if (!room.getVisited()) {
+            this.updateCodeBytes(-1);
+        } room.visit();
     }
 
     /**
