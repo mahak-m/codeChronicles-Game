@@ -51,8 +51,8 @@ public class CodeChroniclesGameView {
     Button menuButton, instructionsButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
     Boolean mapToggle = false; //is map on display?
-    Boolean music = true;
-    Boolean audio = true;
+    public Boolean music = true;
+    public Boolean audio = true;
     GridPane gridPane = new GridPane(); //to hold images and buttons
     Label roomDescLabel = new Label(); //to hold room description and/or instructions
     ImageView roomImageView; //to hold room image
