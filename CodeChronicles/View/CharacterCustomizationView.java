@@ -19,5 +19,8 @@ public class CharacterCustomizationView {
 
     }
 
+    // audio for character customization
+    // when the characters are selected, read out their description
+
 
 }
