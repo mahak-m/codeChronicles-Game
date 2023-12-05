@@ -59,16 +59,16 @@ public class RoomPreview {
         goButton.setStyle("-fx-background-color: " + this.gameView.colourScheme.buttonColour2 + "; -fx-text-fill: white;");
         makeButtonAccessible(goButton, "Go", "Go Here", "Click to go to the place previewed.");
         goButton.setOnAction(e -> {
-            if (gameView.game.getPlayer().getCodeBytes() < 1) {
-                this.previewText.setText("You don't have enough CodeBytes to unlock a new room.");
-            } else {
-                this.gameView.game.getPlayer().setCurrentRoom(icon.getRoom());
-                try {
-                    this.gameView.setRoomScene();
-                    dialog.close();
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
+            this.gameView.game.getPlayer().setCurrentRoom(icon.getRoom());
+            try {
+                this.gameView.setRoomScene();
+                // first stop any NPC audio that could be playing
+                this.gameView.stopIntroductionAudio();
+                // only load room audio AFTER room scene has been set
+                this.gameView.articulateRoomDescription(); // try this rn
+                dialog.close();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
             }
         });
 

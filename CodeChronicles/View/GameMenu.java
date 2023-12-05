@@ -95,6 +95,7 @@ public class GameMenu {
         this.restartButton.setPrefSize(200, 50);
         this.restartButton.setFont(new Font(16));
         this.restartButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             try {
                 this.restart();
             } catch (IOException ex) {
@@ -187,18 +188,29 @@ public class GameMenu {
     public void save_changes() {
         // check value of music box, update this.gameView.music
         if (this.musicBox.getValue().equals("On")){
+            // fix the functionality of this
             this.gameView.music = true;
+            this.gameView.playBackgroundMusic();
         }
         else {
             this.gameView.music = false;
+            this.gameView.stopBackgroundMusic();
         }
+
+
         // check value of audio box, update this.gameView.audio
-        if (this.audioBox.getValue().equals("On")){
+        if (this.audioBox.getValue().equals("On")) {
             this.gameView.audio = true;
-        }
-        else {
+            // Start or resume playing music when audio is turned on
+            this.gameView.allAudioOn = true;
+            this.gameView.playBackgroundMusic();
+        } else {
             this.gameView.audio = false;
+            // Stop music when audio is turned off
+            this.gameView.stopBackgroundMusic();
+            this.gameView.allAudioOn = false;
         }
+
         // check value of colour scheme box, update this.colourScheme.music
         this.gameView.colourScheme = new ColourScheme(this.colourModeBox.getValue());
 
