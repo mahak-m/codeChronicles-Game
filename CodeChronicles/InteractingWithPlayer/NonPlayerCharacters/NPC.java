@@ -27,6 +27,8 @@ public class NPC {
     Room currLocation;
     // the location of the NPC (the room where they are found)
 
+    Boolean defeated;
+
     Quest quest;
     /**
      * NPC Character Constructor
@@ -36,6 +38,7 @@ public class NPC {
     public NPC(String npcName, String npcGreetings) {
         this.npcName = npcName;
         this.NPCGreeting = npcGreetings;
+        this.defeated = false;
     }
 
     public String getName(){
@@ -44,7 +47,14 @@ public class NPC {
 
     public String getIntro(){
         return this.NPCGreeting;
-    } // getter method for greeting by the npc
-    public void setQuest(Quest quest) {this.quest = quest;} // setting the quest
-    public Quest getQuest() {return this.quest;} // getter method for quest
+    }
+    public void setQuest(Quest quest) {this.quest = quest;}
+
+    public boolean getDefeated() {return this.defeated;}
+
+    public void setDefeated(boolean defeated) {this.defeated = defeated;}
+    public Quest getQuest() {return this.quest;}
 }
+
+
+

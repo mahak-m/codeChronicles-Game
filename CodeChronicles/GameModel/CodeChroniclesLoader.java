@@ -38,6 +38,7 @@ public class CodeChroniclesLoader {
         parseQuests();
         parseLastBattleQuestions();
         this.game.setHelpText(parseOtherFile("help"));
+        this.game.setPrologueText(parseOtherFile("prologue"));
     }
 
     /**
