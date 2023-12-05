@@ -787,6 +787,10 @@ public class CodeChroniclesGameView {
         if (audio) {
             //later switched to a "try/catch" format to fix MediaException errors
             try {
+                if (!music) {
+                    return;  // exit if audio has been turned off before playback starts
+                }
+
                 String musicFile = "audio/backgroundMusic/backgroundMusic.wav";
 
                 //create a media object and media player

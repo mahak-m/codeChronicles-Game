@@ -162,6 +162,7 @@ public class GameMenu {
 
     public void restart() throws IOException {
         //restart the game
+        this.gameView.stopBackgroundMusic();
         this.saveMusic = this.musicBox.getValue();
         this.saveAudio = this.audioBox.getValue();
         String saveColourScheme = this.colourModeBox.getValue();
@@ -188,8 +189,10 @@ public class GameMenu {
         }
 
         // check value of audio box, update this.gameView.audio
+        // problem rn: off turns off only voice not background music
         if (this.audioBox.getValue().equals("On")) {
             // Start or resume playing music when audio is turned on
+            this.gameView.audio = true;
             this.gameView.playBackgroundMusic();
         } else {
             this.gameView.audio = false;
