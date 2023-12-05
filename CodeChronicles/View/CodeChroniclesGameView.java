@@ -214,9 +214,9 @@ public class CodeChroniclesGameView {
         name.setFont(new Font("Helvetica", this.fontSize));
         name.setFocusTraversable(true);
         name.setAccessibleRole(AccessibleRole.TEXT_AREA);
-        name.setAccessibleRoleDescription("Text Entry Box");
-        name.setAccessibleText("Enter commands in this box.");
-        name.setAccessibleHelp("This is the area in which you can enter commands you would like to play.  Enter a command and hit return to continue.");
+        name.setAccessibleRoleDescription("Player Name");
+        name.setAccessibleText("Enter a name for you player in the box.");
+        name.setAccessibleHelp("Enter a name for you player in the box.");
         characterGridPane.add(name, 2, 3, 1, 1);
         characterGridPane.setHalignment(name, HPos.LEFT);
 
