@@ -27,9 +27,10 @@ public class NPC {
     Room currLocation;
     // the location of the NPC (the room where they are found)
 
-    Boolean defeated;
+    private boolean defeated;
 
     Quest quest;
+    private boolean trusted;
     /**
      * NPC Character Constructor
      * __________________________
@@ -39,6 +40,7 @@ public class NPC {
         this.npcName = npcName;
         this.NPCGreeting = npcGreetings;
         this.defeated = false;
+        this.trusted = false;
     }
 
     public String getName(){
@@ -54,6 +56,8 @@ public class NPC {
 
     public void setDefeated(boolean defeated) {this.defeated = defeated;}
     public Quest getQuest() {return this.quest;}
+    public void setTrusted(boolean trust) {this.trusted = true;}
+    public boolean getTrusted() {return this.trusted;}
 }
 
 

@@ -35,11 +35,17 @@ public class TrustCommand implements Command {
      * @param player;
      */
     public String showCharacterIdentity(NPC character, Player player) {
+        if (player.getCurrentRoom().characterInRoom.getQuest().getIfWon()) {
+            return "You have already interacted with this character once successfully. You are not allowed any more interactions.";
+        }
         if (character instanceof Prowler) {
             player.loseLife();
             return "Oh no! You decided to trust a Prowler and lost 1 life";
         }
         else {
+            if (player.getCurrentRoom().characterInRoom.getTrusted()) {
+                return "You have already interacted with this character successfully once.";
+            }
             player.updateCodeBytes(10);
             return "You decided to trust a School Member. \n Hi " + player.getPlayerName() + "! I am so happy to hear you're helping us defeat the Polymorphic prowlers. Here are 10 code bytes to help you with your mission.";
         }
