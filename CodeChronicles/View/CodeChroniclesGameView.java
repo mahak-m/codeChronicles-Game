@@ -44,11 +44,10 @@ import javax.sound.sampled.Clip;
  * This is the Class that will visualize the model.
  */
 public class CodeChroniclesGameView {
-
-    CodeChroniclesGame game; //model of the game
+    public CodeChroniclesGame game; //model of the game
     public Integer fontSize;
     public ColourScheme colourScheme;
-    Stage stage; //stage on which all is rendered
+    public Stage stage; //stage on which all is rendered
     Button menuButton, instructionsButton, mapButton; //buttons
     Boolean helpToggle = false; //is help on display?
     Boolean mapToggle = false; //is map on display?
@@ -90,6 +89,7 @@ public class CodeChroniclesGameView {
 
         // call the method to play reduced background music indefinitely
         this.playBackgroundMusic();
+
     }
 
     /**
@@ -112,7 +112,8 @@ public class CodeChroniclesGameView {
 
         // CREATE LOADING SCREEN
         GridPane gamePane = new GridPane();
-        gamePane.setStyle("-fx-background-image: url('OtherFiles/StartScreen.jpg');");
+
+        gamePane.setStyle("-fx-background-image: url('OtherFiles/StartScreen.png'); -fx-background-size: stretch");
         var scene1 = new Scene(gamePane ,  1000, 800);
         this.stage.setScene(scene1);
         this.stage.setResizable(false);
@@ -759,7 +760,7 @@ public class CodeChroniclesGameView {
             backgroundMusicPlayer = new MediaPlayer(sound);
 
             //self volume to 50% and play in a loop while the view is up
-            backgroundMusicPlayer.setVolume(0.2);
+            backgroundMusicPlayer.setVolume(0.5);
             backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             backgroundMusicPlayer.play();
 

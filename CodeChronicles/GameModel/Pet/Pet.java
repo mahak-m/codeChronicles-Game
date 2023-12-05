@@ -1,80 +1,25 @@
 package GameModel.Pet;
-import GameModel.Room;
-import InteractingWithPlayer.Player.Player;
-import javafx.scene.image.Image;
 
-import java.io.Serializable;
+import InteractingWithPlayer.Player.Player;
 
 /**
  * This class keeps track of the progress
  * of the pet in the game.
  */
-public abstract class Pet implements Serializable {
-    protected Room currentRoom; // The current room that the pet is located in
-    public String name; // The name of the pet
-    public boolean chosen; // is the pet chosen by the player?
-    protected String description; // A brief summary of the pet
-    protected Player player; // the player that has chosen this pet
-    public Image petImage; // The picture of the pet
-
-    /**
-     * CodeChronicles Pet Constructor
-     */
-    public Pet(String name) {
-        this.chosen = false;
-        this.name = name;
-    }
+public interface Pet {
 
     /**
      * This method provides the player with an introduction of this pet.
      *
      * @return the introduction of the pet
      */
-    public String introducePet(){
-        return this.description;
-    }
+    public String introducePet();
 
     /**
-     * This method changes the location of the pet to the provided room.
+     * This method allows the player to equip this pet.
      *
-     * @param room the room to move the pet to
+     * @param player the player of this game
+     * @return the string indicating the status of pet equipment
      */
-    public void movePet(Room room) { this.currentRoom = room; }
-
-    /**
-     * Getter method for the current room attribute.
-     *
-     * @return the current room of the player.
-     */
-    public Room getCurrentRoom() {
-        return this.currentRoom;
-    }
-
-    /**
-     * This method allows the player to choose this pet.
-     *
-     */
-    public void choosePet() {
-        this.player = player;
-        this.currentRoom = this.player.getCurrentRoom();
-        this.chosen = true;
-    }
-
-    /**
-     * This method allows the player to "let go" of this pet.
-     *
-     */
-    public void leavePet() {
-        this.player = null;
-        this.currentRoom = null;
-        this.chosen = false;
-    }
-
-    /**
-     * This method takes a quest from the player, and returns a hint for it.
-     *
-     * @return hint the hint requested for this quest
-     */
-    public String giveHint() {
-        return "";}
+    public String equipPet(Player player);
 }
