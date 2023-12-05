@@ -601,20 +601,21 @@ public class CodeChroniclesGameView {
     public void showInstructions() throws FileNotFoundException {
         // If helpToggle is false, add instructions to the grid pane.
         if (!this.helpToggle) {
-            Label instrLabel =  new Label(this.game.getInstructions());
-            instrLabel.setAlignment(Pos.CENTER);
-            instrLabel.setFont(new Font("Arial", this.fontSize));
-            instrLabel.setStyle("-fx-text-fill: white;");
-            instrLabel.setWrapText(true);
-            ScrollPane sp = new ScrollPane();
-            sp.setContent(instrLabel);
-            sp.setPadding(new Insets(25));
-            sp.setStyle("-fx-background: #000000; -fx-background-color:transparent; -fx-border-color:royalblue;");
-            sp.setFitToWidth(true);
-            this.gridPane.add(sp, 1, 1, 1, 1 );  // Add label
+            this.gridPane = new GridPane();
+            this.setupGridPane(this.gridPane);
+            this.addGameHeader(this.gridPane);
+
+            Label instructionsLabel = new Label(this.game.getInstructions());
+            instructionsLabel.wrapTextProperty().setValue(true);
+            instructionsLabel.setFont(new Font("Helvetica", this.fontSize));
+            instructionsLabel.setTextFill(Color.web(this.colourScheme.regularFontColour));
+
+            this.gridPane.add(instructionsLabel, 1, 2, 5, 2);
+            var scene = new Scene( this.gridPane ,  1000, 800);
+            scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+            this.stage.setScene(scene);
             this.helpToggle = true;
         }
-        // If helpToggle is true, show the room scene again.
         else {
             this.setRoomScene();
             this.helpToggle = false;
@@ -662,8 +663,6 @@ public class CodeChroniclesGameView {
             var scene = new Scene( this.gridPane ,  1000, 800);
             scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
             this.stage.setScene(scene);
-            this.stage.setResizable(false);
-            this.stage.show();
             this.mapToggle = true;
         }
         // If mapToggle is true, show the room scene again.
