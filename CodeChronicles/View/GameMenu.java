@@ -187,18 +187,14 @@ public class GameMenu {
             this.gameView.stopBackgroundMusic();
         }
 
-
         // check value of audio box, update this.gameView.audio
         if (this.audioBox.getValue().equals("On")) {
-            this.gameView.audio = true;
             // Start or resume playing music when audio is turned on
-            this.gameView.allAudioOn = true;
             this.gameView.playBackgroundMusic();
         } else {
             this.gameView.audio = false;
             // Stop music when audio is turned off
             this.gameView.stopBackgroundMusic();
-            this.gameView.allAudioOn = false;
         }
 
         // check value of colour scheme box, update this.colourScheme.music

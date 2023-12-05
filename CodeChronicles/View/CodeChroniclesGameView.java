@@ -67,7 +67,7 @@ public class CodeChroniclesGameView {
     private boolean backgroundMediaPlaying; //to know if the room descriptions are playing
     private boolean roomMediaPlaying; //to know if the background audio is playing
     // public boolean allAudioOn = true; // for the no audio option (true by default)
-    public boolean allAudioOn = true;
+    // public boolean allAudioOn = true;
 
 
     // attributes for the background
@@ -94,7 +94,7 @@ public class CodeChroniclesGameView {
 
         // call the method to play reduced background music indefinitely
         // but only do it if the audio feature is not turned off
-        if (allAudioOn) {
+        if (audio) {
             this.playBackgroundMusic();
         }
     }
@@ -744,7 +744,7 @@ public class CodeChroniclesGameView {
      * in the sub folders audio --> roomDescriptions
      */
     public void articulateRoomDescription() {
-        if (allAudioOn) {
+        if (audio) {
 
             String musicFile;
             String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
@@ -784,7 +784,7 @@ public class CodeChroniclesGameView {
      * The background music should be found in audio -> backgroundMusic -> backgroundMusic.wav
      */
     public void playBackgroundMusic() {
-        if (allAudioOn) {
+        if (audio) {
             //later switched to a "try/catch" format to fix MediaException errors
             try {
                 String musicFile = "audio/backgroundMusic/backgroundMusic.wav";
@@ -824,7 +824,7 @@ public class CodeChroniclesGameView {
      *
      */
     private void playIntroductionAudio(String audioFileName) {
-        if (allAudioOn) {
+        if (audio) {
             // changed to a try/catch format to avoid errors
             try {
                 String musicFile = "audio/characterDescriptionAudio/" + audioFileName;
@@ -864,7 +864,7 @@ public class CodeChroniclesGameView {
      * This method controls the button click sound effect
      */
     public void playButtonClick() {
-        if (allAudioOn) {
+        if (audio) {
             //later switched to a "try/catch" format to fix MediaException errors
             try {
                 String musicFile = "audio/buttonClick.wav";
@@ -888,7 +888,7 @@ public class CodeChroniclesGameView {
      *
      */
     private void playNpcAudio(String audioFileName) {
-        if (allAudioOn) {
+        if (audio) {
             // changed to a try/catch format to avoid errors
             try {
                 String musicFile = "audio/npcAudio/" + audioFileName + ".wav";
@@ -920,7 +920,7 @@ public class CodeChroniclesGameView {
      *
      */
     private void playCommandsAudio(String audioFileName) {
-        if (allAudioOn) {
+        if (audio) {
             // changed to a try/catch format to avoid errors
             try {
                 String musicFile = "audio/commandsAudio/" + audioFileName + ".wav";
