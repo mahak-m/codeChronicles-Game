@@ -92,6 +92,7 @@ public class QuestView {
         this.continueButton.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(continueButton, "Continue", "Continue", "Continue to the next screen.");
         this.continueButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             setInstructionScene();
         });
 
@@ -262,6 +263,7 @@ public class QuestView {
         borderPane3.setTop(questionLabel);
 
         this.submitButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             RadioButton selectedRadioButton = (RadioButton) optionsGroup.getSelectedToggle();
             if (selectedRadioButton != null) {
                 if (selectedRadioButton.getText().equals(this.quest.getQuestAnswer())) {
@@ -323,6 +325,8 @@ public class QuestView {
         this.exitButton.setOnAction(e -> {
             this.stage.close();
 
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+
             // stop the quest background music
             stopBackgroundMusic();
             // here, after clicking the button and returning, begin playing the background music again
@@ -374,6 +378,7 @@ public class QuestView {
         hintButton.setOpacity(0.9);
         hintButton.setWrapText(true);
         hintButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             hintButton.setText(this.quest.getQuestHint());
             this.quest.usedHint();
         });
@@ -390,6 +395,7 @@ public class QuestView {
         revealAnswerButton.setWrapText(true);
         hintButton.setWrapText(true);
         revealAnswerButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             if (this.player.getPet() instanceof VirtualVulture) {
                 revealAnswerButton.setText(this.quest.getQuestAnswer());
                 this.quest.usedAnswer();
@@ -414,6 +420,7 @@ public class QuestView {
         back.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(back, "Back", "Back to the question", "Go back to the question using this button.");
         back.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             if (this.quest.isWithHint() || this.quest.isWithAnswer()) {
                 setQuestionScene(true);
             }

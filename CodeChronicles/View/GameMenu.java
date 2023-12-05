@@ -94,6 +94,7 @@ public class GameMenu {
         this.restartButton.setPrefSize(200, 50);
         this.restartButton.setFont(new Font(16));
         this.restartButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             try {
                 this.restart();
             } catch (IOException ex) {
