@@ -94,7 +94,7 @@ public class CodeChroniclesGameView {
 
         // call the method to play reduced background music indefinitely
         // but only do it if the audio feature is not turned off
-        if (audio) {
+        if (music && audio) {
             this.playBackgroundMusic();
         }
     }
@@ -796,6 +796,9 @@ public class CodeChroniclesGameView {
                 //create a media object and media player
                 Media sound = new Media(new File(musicFile).toURI().toString());
                 backgroundMusicPlayer = new MediaPlayer(sound);
+
+                // stop any existing background music before starting a new one
+                stopBackgroundMusic();
 
                 //self volume to 50% and play in a loop while the view is up
                 backgroundMusicPlayer.setVolume(0.1);
