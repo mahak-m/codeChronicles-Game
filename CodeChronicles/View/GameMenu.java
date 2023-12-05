@@ -182,13 +182,21 @@ public class GameMenu {
         else {
             this.gameView.music = false;
         }
+
+
         // check value of audio box, update this.gameView.audio
-        if (this.audioBox.getValue().equals("On")){
+        if (this.audioBox.getValue().equals("On")) {
             this.gameView.audio = true;
-        }
-        else {
+            // Start or resume playing music when audio is turned on
+            this.gameView.allAudioOn = true;
+            this.gameView.playBackgroundMusic();
+        } else {
             this.gameView.audio = false;
+            // Stop music when audio is turned off
+            this.gameView.stopBackgroundMusic();
+            this.gameView.allAudioOn = false;
         }
+
         // check value of colour scheme box, update this.colourScheme.music
         this.gameView.colourScheme = new ColourScheme(this.colourModeBox.getValue());
 

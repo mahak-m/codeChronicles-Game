@@ -64,6 +64,7 @@ public class CodeChroniclesGameView {
     private MediaPlayer buttonClickPlayer; // for button sound
     private boolean backgroundMediaPlaying; //to know if the room descriptions are playing
     private boolean roomMediaPlaying; //to know if the background audio is playing
+    public boolean allAudioOn = true; // for the no audio option (true by default)
 
 
     // attributes for the background
@@ -89,7 +90,10 @@ public class CodeChroniclesGameView {
         intiUI();
 
         // call the method to play reduced background music indefinitely
-        this.playBackgroundMusic();
+        // but only do it if the audio feature is not turned off
+        if (allAudioOn) {
+            this.playBackgroundMusic();
+        }
     }
 
     /**
@@ -726,22 +730,22 @@ public class CodeChroniclesGameView {
      * in the sub folders audio --> roomDescriptions
      */
     public void articulateRoomDescription() {
+        if (allAudioOn) {
 
-        // do the same for help.txt audio
+            String musicFile;
+            String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
+            System.out.println("room name " + roomName);
 
-        String musicFile;
-        String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
-        System.out.println("room name " + roomName);
+            musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.wav";
+            // System.out.println("room name again" + roomName);
+            musicFile = musicFile.replace(" ", "-");
 
-        musicFile = "audio/roomDescriptionAudio/" + roomName.toLowerCase() + "-long.wav";
-        // System.out.println("room name again" + roomName);
-        musicFile = musicFile.replace(" ","-");
+            Media sound = new Media(new File(musicFile).toURI().toString());
 
-        Media sound = new Media(new File(musicFile).toURI().toString());
-
-        roomAudioPlayer = new MediaPlayer(sound);
-        roomAudioPlayer.play();
-        roomMediaPlaying = true;
+            roomAudioPlayer = new MediaPlayer(sound);
+            roomAudioPlayer.play();
+            roomMediaPlaying = true;
+        }
     }
 
     /**
@@ -766,21 +770,34 @@ public class CodeChroniclesGameView {
      * The background music should be found in audio -> backgroundMusic -> backgroundMusic.wav
      */
     public void playBackgroundMusic() {
-        //later switched to a "try/catch" format to fix MediaException errors
-        try {
-            String musicFile = "audio/backgroundMusic/backgroundMusic.wav";
+        if (allAudioOn) {
+            //later switched to a "try/catch" format to fix MediaException errors
+            try {
+                String musicFile = "audio/backgroundMusic/backgroundMusic.wav";
 
-            //create a media object and media player
-            Media sound = new Media(new File(musicFile).toURI().toString());
-            backgroundMusicPlayer = new MediaPlayer(sound);
+                //create a media object and media player
+                Media sound = new Media(new File(musicFile).toURI().toString());
+                backgroundMusicPlayer = new MediaPlayer(sound);
 
-            //self volume to 50% and play in a loop while the view is up
-            backgroundMusicPlayer.setVolume(0.1);
-            backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-            backgroundMusicPlayer.play();
+                //self volume to 50% and play in a loop while the view is up
+                backgroundMusicPlayer.setVolume(0.1);
+                backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                backgroundMusicPlayer.play();
 
-        } catch (Exception e) {
-            System.out.println("Error loading background music: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Error loading background music: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * stopBackgroundMusic
+     * ______________________
+     * This method stops the background music. This is useful for players that want a no audio option.
+     */
+    public void stopBackgroundMusic() {
+        if (backgroundMusicPlayer != null && backgroundMusicPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            backgroundMusicPlayer.stop();
         }
     }
 
@@ -793,23 +810,25 @@ public class CodeChroniclesGameView {
      *
      */
     private void playIntroductionAudio(String audioFileName) {
-        // changed to a try/catch format to avoid errors
-        try {
-            String musicFile = "audio/characterDescriptionAudio/" + audioFileName;
-            Media sound = new Media(new File(musicFile).toURI().toString());
+        if (allAudioOn) {
+            // changed to a try/catch format to avoid errors
+            try {
+                String musicFile = "audio/characterDescriptionAudio/" + audioFileName;
+                Media sound = new Media(new File(musicFile).toURI().toString());
 
-            // UPDATE: now the audio's should not overlap!
-            // check to see if there is any audio playing and stop it
-            if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
-                introductionAudioPlayer.stop();
+                // UPDATE: now the audio's should not overlap!
+                // check to see if there is any audio playing and stop it
+                if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                    introductionAudioPlayer.stop();
+                }
+
+                introductionAudioPlayer = new MediaPlayer(sound);
+                // ^^ that creates a new media player
+                introductionAudioPlayer.play();
+                // ^^ that plays the new media player
+            } catch (Exception e) {
+                System.out.println("There's an error with the audio: " + e.getMessage());
             }
-
-            introductionAudioPlayer = new MediaPlayer(sound);
-            // ^^ that creates a new media player
-            introductionAudioPlayer.play();
-            // ^^ that plays the new media player
-        } catch (Exception e) {
-            System.out.println("There's an error with the audio: " + e.getMessage());
         }
     }
 
@@ -831,17 +850,19 @@ public class CodeChroniclesGameView {
      * This method controls the button click sound effect
      */
     public void playButtonClick() {
-        //later switched to a "try/catch" format to fix MediaException errors
-        try {
-            String musicFile = "audio/buttonClick.wav";
+        if (allAudioOn) {
+            //later switched to a "try/catch" format to fix MediaException errors
+            try {
+                String musicFile = "audio/buttonClick.wav";
 
-            //create a media object and media player
-            Media sound = new Media(new File(musicFile).toURI().toString());
-            buttonClickPlayer = new MediaPlayer(sound);
-            buttonClickPlayer.play();
+                //create a media object and media player
+                Media sound = new Media(new File(musicFile).toURI().toString());
+                buttonClickPlayer = new MediaPlayer(sound);
+                buttonClickPlayer.play();
 
-        } catch (Exception e) {
-            System.out.println("Error loading button click audio: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Error loading button click audio: " + e.getMessage());
+            }
         }
     }
 
@@ -853,23 +874,25 @@ public class CodeChroniclesGameView {
      *
      */
     private void playNpcAudio(String audioFileName) {
-        // changed to a try/catch format to avoid errors
-        try {
-            String musicFile = "audio/npcAudio/" + audioFileName + ".wav";
-            Media sound = new Media(new File(musicFile).toURI().toString());
+        if (allAudioOn) {
+            // changed to a try/catch format to avoid errors
+            try {
+                String musicFile = "audio/npcAudio/" + audioFileName + ".wav";
+                Media sound = new Media(new File(musicFile).toURI().toString());
 
-            // check to see if there is any audio "room" playing and stop it before playing
-            // the NPC audio
-            if (roomAudioPlayer != null && roomAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
-                roomAudioPlayer.stop();
+                // check to see if there is any audio "room" playing and stop it before playing
+                // the NPC audio
+                if (roomAudioPlayer != null && roomAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                    roomAudioPlayer.stop();
+                }
+
+                introductionAudioPlayer = new MediaPlayer(sound);
+                // ^^ that creates a new media player
+                introductionAudioPlayer.play();
+                // ^^ that plays the new media player
+            } catch (Exception e) {
+                System.out.println("There's an error with the audio: " + e.getMessage());
             }
-
-            introductionAudioPlayer = new MediaPlayer(sound);
-            // ^^ that creates a new media player
-            introductionAudioPlayer.play();
-            // ^^ that plays the new media player
-        } catch (Exception e) {
-            System.out.println("There's an error with the audio: " + e.getMessage());
         }
     }
 }
