@@ -877,6 +877,12 @@ public class CodeChroniclesGameView {
                 playButtonClick();
             });
 
+            // Label
+            Label selectedPet = new Label("Please select a pet.");
+            selectedPet.setFont(new Font("Helvetica", this.fontSize));
+            selectedPet.setTextFill(Color.web(this.colourScheme.regularFontColour));
+            selectedPet.setAlignment(Pos.CENTER);
+
             HBox pets = new HBox();
             pets.getChildren().addAll(nanoBunnyButton, virtualVultureButton, mechaDoodleButton);
             pets.setSpacing(10);
@@ -902,7 +908,7 @@ public class CodeChroniclesGameView {
             this.gridPane.setHalignment(playButton, HPos.CENTER);
 
             VBox petView = new VBox();
-            petView.getChildren().addAll(meetPetsLabel, pets, playButton);
+            petView.getChildren().addAll(meetPetsLabel, selectedPet, pets, playButton);
             petView.setSpacing(30);
             petView.setAlignment(Pos.CENTER);
 
