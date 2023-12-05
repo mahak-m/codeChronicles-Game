@@ -66,7 +66,8 @@ public class CodeChroniclesGameView {
     private MediaPlayer commandsPlayer; // for commands audio
     private boolean backgroundMediaPlaying; //to know if the room descriptions are playing
     private boolean roomMediaPlaying; //to know if the background audio is playing
-    public boolean allAudioOn = true; // for the no audio option (true by default)
+    // public boolean allAudioOn = true; // for the no audio option (true by default)
+    public boolean allAudioOn = true;
 
 
     // attributes for the background

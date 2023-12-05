@@ -40,7 +40,8 @@ public class QuestView {
     private Player player;
     private Integer increaseFont;
     private MediaPlayer questMusicPlayer; // for the quest background music
-    // boolean allAudioOn2 = this.gameView.allAudioOn;
+
+    boolean allAudioOn2;
 
 
     public QuestView(CodeChroniclesGameView gameView, Quest quest, Player player, Integer fontIncrease) {
@@ -60,17 +61,18 @@ public class QuestView {
         this.stage.setTitle(this.quest.questName);
         this.stage.initStyle(StageStyle.UNDECORATED);
 
+        boolean allAudioOn2 = this.gameView.allAudioOn;
+
         // also stop the old background music
         this.gameView.stopBackgroundMusic();
 
         // call the method to play reduced background music until
         // the quest is over and this screen can finally be exited
-        /**
+
         if (allAudioOn2) {
             this.playBackgroundMusic();
         }
-         */
-        this.playBackgroundMusic();
+        // this.playBackgroundMusic();
 
         // Set up the borderPane
         this.borderPane.setPadding(new Insets(10));
@@ -453,7 +455,7 @@ public class QuestView {
      * The background music should be found in audio -> backgroundMusic -> backgroundMusic.wav
      */
     public void playBackgroundMusic() {
-        // if (allAudioOn2) {
+        if (allAudioOn2) {
             //later switched to a "try/catch" format to fix MediaException errors
             try {
                 String musicFile = "audio/backgroundMusic/hackingMusic.wav";
@@ -471,7 +473,7 @@ public class QuestView {
                 System.out.println("Error loading background music: " + e.getMessage());
             }
         }
-    // }
+    }
 
     /**
      * stopBackgroundMusic

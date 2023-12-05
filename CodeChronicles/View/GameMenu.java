@@ -177,10 +177,13 @@ public class GameMenu {
     public void save_changes() {
         // check value of music box, update this.gameView.music
         if (this.musicBox.getValue().equals("On")){
+            // fix the functionality of this
             this.gameView.music = true;
+            this.gameView.playBackgroundMusic();
         }
         else {
             this.gameView.music = false;
+            this.gameView.stopBackgroundMusic();
         }
 
 
