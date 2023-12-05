@@ -417,17 +417,6 @@ public class CodeChroniclesGameView {
             this.roomDescLabel.setText(command.executeCommand());
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
-            /**
-            pause.setOnFinished(event -> {
-                try {
-                    this.setRoomScene();
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-
-            pause.play();
-             */
         });
 
         Button trustButton = new Button("Trust");
@@ -451,17 +440,6 @@ public class CodeChroniclesGameView {
             this.roomDescLabel.setText(command.executeCommand());
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
-            /**
-            pause.setOnFinished(event -> {
-                try {
-                    this.setRoomScene();
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-
-            pause.play();
-             */
         });
 
         Button hackButton = new Button("Hack");
@@ -486,18 +464,6 @@ public class CodeChroniclesGameView {
             this.roomDescLabel.setText(command.executeCommand());
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
-            /**
-            pause.setOnFinished(event -> {
-                try {
-                    this.setRoomScene();
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-
-            pause.play();
-             */
-
         });
 
         HBox commandButtons = new HBox();
@@ -548,6 +514,9 @@ public class CodeChroniclesGameView {
         instructionsButton.setId("Instructions");
         customizeButton(instructionsButton, 200, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(instructionsButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
+        // play instructions audio
+        // also CREATE audio for prologue
+        // also do all of the quest audio
         addInstructionEvent();
 
         mapButton = new Button("Map");
