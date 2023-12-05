@@ -113,13 +113,13 @@ public class CodeChroniclesGameView {
         screenButton.setOnAction(e -> {
             this.stage.setScene(this.setPrologue());
         });
-        Image img = new Image("OtherFiles/StartScreen.png");
-        img.setPreserveRatio(true);
-        img.fitWidthProperty().bind(btn.widthProperty());
-        img.fitHeightProperty().bind(btn.heightProperty());
-        screenButton.setGraphic(new ImageView(img);
+        ImageView imgView = new ImageView(new Image("OtherFiles/StartScreen.png"));
+        imgView.setPreserveRatio(true);
+        imgView.fitWidthProperty().bind(screenButton.widthProperty());
+        imgView.fitHeightProperty().bind(screenButton.heightProperty());
+        screenButton.setGraphic(imgView);
         screenButton.setPadding( new Insets(0));
-        Scene scene = new Scene( screenButton,  1000, 800);
+        Scene scene = new Scene(screenButton,  1000, 800);
 
         this.stage.setScene(scene);
 
