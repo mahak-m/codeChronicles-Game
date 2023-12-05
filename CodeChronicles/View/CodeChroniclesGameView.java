@@ -5,6 +5,7 @@ import GameModel.Room;
 import InteractingWithPlayer.HackCommand;
 import InteractingWithPlayer.IgnoreCommand;
 import InteractingWithPlayer.NonPlayerCharacters.NPC;
+import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.Player.AlchemistCharacter;
 import InteractingWithPlayer.Player.MageCharacter;
 import InteractingWithPlayer.Player.WarriorCharacter;
@@ -62,6 +63,7 @@ public class CodeChroniclesGameView {
     private MediaPlayer introductionAudioPlayer; // for the character introductions + NPC voices
     private MediaPlayer roomAudioPlayer; // for room articulations
     private MediaPlayer buttonClickPlayer; // for button sound
+    private MediaPlayer commandsPlayer; // for commands audio
     private boolean backgroundMediaPlaying; //to know if the room descriptions are playing
     private boolean roomMediaPlaying; //to know if the background audio is playing
     public boolean allAudioOn = true; // for the no audio option (true by default)
@@ -376,6 +378,9 @@ public class CodeChroniclesGameView {
 
         // What happens when the character clicks on the other character in the room?
         NPCButton.setOnAction(e -> {
+
+            // it should say that voice line
+
             playButtonClick(); // adds button click sound effect
             String theNpcName = this.game.player.getCurrentRoom().getNPC().getName();
             // formatting is different, change that (remove all spaces)
@@ -397,10 +402,22 @@ public class CodeChroniclesGameView {
         makeButtonAccessible(ignoreButton, "Ignore button", "This button loads the ignore interaction.", "This button loads the menu and settings. Click it in order to change your settings.");
         ignoreButton.setOnAction(e -> {
             playButtonClick(); // adds button click sound effect
+            // also stop ANY current audio, if playing
+            stopIntroductionAudio();
+            stopArticulation();
+            // ignore success
+            if (this.game.getPlayer().getCodeBytes() >= 5) {
+                playCommandsAudio("ignoreSuccess");
+            }
+            // ignore failure
+            if (this.game.getPlayer().getCodeBytes() < 5) {
+                playCommandsAudio("ignoreFailure");
+            }
             IgnoreCommand command = new IgnoreCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
+            /**
             pause.setOnFinished(event -> {
                 try {
                     this.setRoomScene();
@@ -410,6 +427,7 @@ public class CodeChroniclesGameView {
             });
 
             pause.play();
+             */
         });
 
         Button trustButton = new Button("Trust");
@@ -419,10 +437,21 @@ public class CodeChroniclesGameView {
         addInstructionEvent();
         trustButton.setOnAction(e -> {
             playButtonClick(); // adds button click sound effect
+            // also stop ANY current audio, if playing
+            stopIntroductionAudio();
+            stopArticulation();
+            // if the player wrongfully trusts a prowler, play wrongTrust.wav audio:
+            if (this.game.getPlayer().getCurrentRoom().getNPC() instanceof Prowler) {
+                playCommandsAudio("wrongTrust");
+            }
+            else {
+                playCommandsAudio("correctTrust");
+            }
             TrustCommand command = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
             this.roomDescLabel.setText(command.executeCommand());
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
+            /**
             pause.setOnFinished(event -> {
                 try {
                     this.setRoomScene();
@@ -432,6 +461,7 @@ public class CodeChroniclesGameView {
             });
 
             pause.play();
+             */
         });
 
         Button hackButton = new Button("Hack");
@@ -441,10 +471,22 @@ public class CodeChroniclesGameView {
         addMapEvent();
         hackButton.setOnAction(e -> {
             playButtonClick(); // adds button click sound effect
+            // also stop ANY current audio, if playing
+            stopIntroductionAudio();
+            stopArticulation();
+            // if the NPC is an innocent student play wrongHack.wav audio:
+            if (!(this.game.getPlayer().getCurrentRoom().getNPC() instanceof Prowler)) {
+                playCommandsAudio("wrongHack");
+            }
+            // if the NPC has less than 2 code bytes, play hackFailure.wac audio
+            if (this.game.getPlayer().getCodeBytes() < 2) {
+                playCommandsAudio("hackFailure");
+            }
             HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC(), this);
             this.roomDescLabel.setText(command.executeCommand());
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
+            /**
             pause.setOnFinished(event -> {
                 try {
                     this.setRoomScene();
@@ -454,6 +496,8 @@ public class CodeChroniclesGameView {
             });
 
             pause.play();
+             */
+
         });
 
         HBox commandButtons = new HBox();
@@ -895,5 +939,47 @@ public class CodeChroniclesGameView {
             }
         }
     }
+
+
+    // these methods are to play audio for the commands
+    /**
+     * playCommandsAudip
+     * ______________________
+     * This method plays the audio for the commands (i.e. the buttons pressed when the
+     * user interacts with an NPC character).
+     *
+     */
+    private void playCommandsAudio(String audioFileName) {
+        if (allAudioOn) {
+            // changed to a try/catch format to avoid errors
+            try {
+                String musicFile = "audio/commandsAudio/" + audioFileName + ".wav";
+                Media sound = new Media(new File(musicFile).toURI().toString());
+
+                // check to see if there is any previous commands audio playing and stop that
+                if (commandsPlayer != null && commandsPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                    commandsPlayer.stop();
+                }
+
+                // check to see if there are any room descriptions playing and stop that
+                if (roomAudioPlayer != null && roomAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                    roomAudioPlayer.stop();
+                }
+
+                // check to see if there are any character instructions playing and stop that
+                if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                    introductionAudioPlayer.stop();
+                }
+
+                commandsPlayer = new MediaPlayer(sound);
+                // ^^ that creates a new media player
+                commandsPlayer.play();
+                // ^^ that plays the new media player
+            } catch (Exception e) {
+                System.out.println("There's an error with the audio: " + e.getMessage());
+            }
+        }
+    }
+
 }
 
