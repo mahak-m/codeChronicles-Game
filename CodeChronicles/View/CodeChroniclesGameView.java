@@ -183,7 +183,9 @@ public class CodeChroniclesGameView {
         customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
-            playButtonClick(); // plays the button click sound effect when pressed
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             if (this.game.player != null) {
                 try {
                     setRoomScene();
@@ -215,7 +217,9 @@ public class CodeChroniclesGameView {
         alchemistButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         makeButtonAccessible(alchemistButton, "Alchemist", "Alchemist Character", "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
         alchemistButton.setOnAction(e -> {
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             selectedPlayerLabel.setText("You have selected: Alchemist");
             this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "");
             // play introduction audio if selected by passing audio file to method
@@ -239,7 +243,9 @@ public class CodeChroniclesGameView {
         mageButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         makeButtonAccessible(mageButton, "Mage", "Mage Character", "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
         mageButton.setOnAction(e -> {
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             selectedPlayerLabel.setText("You have selected: Mage");
             this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "");
             // play introduction audio if selected by passing audio file to method
@@ -263,7 +269,9 @@ public class CodeChroniclesGameView {
         warriorButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
         warriorButton.setOnAction(e -> {
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             selectedPlayerLabel.setText("You have selected: Warrior");
             this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "");
             // play introduction audio if selected by passing audio file to method
@@ -315,7 +323,9 @@ public class CodeChroniclesGameView {
         customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             if (this.game.player != null) {
                 try {
                     setRoomScene();
@@ -382,7 +392,9 @@ public class CodeChroniclesGameView {
 
             // it should say that voice line
 
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             String theNpcName = this.game.player.getCurrentRoom().getNPC().getName();
             // formatting is different, change that (remove all spaces)
             theNpcName = theNpcName.replace(" ","");
