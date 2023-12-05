@@ -100,31 +100,58 @@ public class CodeChroniclesGameView {
         // SETTING UP THE STAGE
         this.stage.setTitle("Code Chronicles: Wizard's Quest");
 
-        this.gridPane.setAlignment(Pos.CENTER);
+        Button screenButton = new Button("Code Chronicles: Wizard's Quest");
+        screenButton.setId("Code Chronicles: Wizard's Quest");
+        screenButton.setAlignment(Pos.CENTER);
+        customizeButton( screenButton, 1000, 800, this.colourScheme.backgroundColour);
+        screenButton.wrapTextProperty().setValue(true);
+        screenButton.setStyle("-fx-background-color: "+ this.colourScheme.backgroundColour + "; -fx-text-fill: white;");
+        makeButtonAccessible( screenButton, "Code Chronicles: Wizard's Quest", "Code Chronicles: Wizard's Quest, click anywhere to continue.", "Code Chronicles: Wizard's Quest, click anywhere to continue.");
+        screenButton.setOnAction(e -> {
+            this.stage.setScene(this.setPrologue());
+        });
+        screenButton.setGraphic(new ImageView(new Image("OtherFiles/StartScreen.png")));
+        screenButton.setPadding( new Insets(0));
+        Scene scene = new Scene( screenButton,  1000, 800);
 
-        // Setup Playing GridPane
-        this.gridPane.setPadding(new Insets(0));
-        this.gridPane.setBackground(new Background(new BackgroundFill(
-                Color.valueOf(this.colourScheme.backgroundColour),
-                new CornerRadii(0),
-                new Insets(0)
-        )));
+        this.stage.setScene(scene);
 
-        // CREATE LOADING SCREEN
-        GridPane gamePane = new GridPane();
-
-        gamePane.setStyle("-fx-background-image: url('OtherFiles/StartScreen.png'); -fx-background-size: stretch");
-        var scene1 = new Scene(gamePane ,  1000, 800);
-        this.stage.setScene(scene1);
         this.stage.setResizable(false);
         this.stage.show();
+    }
 
-        // AFTER LOADING SCREEN SHOW CHARACTER CUSTOMIZATION SCREEN
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-        pause.setOnFinished(event -> {
+    public Scene setPrologue() {
+        Button prologueButton = new Button(this.game.getPrologue() + "\n\n Click anywhere to continue.");
+        prologueButton.setPadding( new Insets(50));
+        prologueButton.setId("Prologue");
+        prologueButton.setAlignment(Pos.CENTER);
+        customizeButton(prologueButton, 1000, 800, this.colourScheme.backgroundColour);
+        prologueButton.wrapTextProperty().setValue(true);
+        prologueButton.setStyle("-fx-background-color: "+ this.colourScheme.backgroundColour + "; -fx-text-fill: white;");
+        makeButtonAccessible(prologueButton, "Prologue", "Prologue, click anywhere to continue.", this.game.getPrologue() + "\n\n Click anywhere to continue.");
+        prologueButton.setOnAction(e -> {
+            this.stage.setScene(this.setInstructions());
+        });
+        Scene scene = new Scene(prologueButton,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+        return scene;
+    }
+
+    public Scene setInstructions() {
+        Button instructionsButton = new Button(this.game.getInstructions() + "\n\n Click anywhere to continue");
+        instructionsButton.setPadding( new Insets(50));
+        instructionsButton.setId("Instructions");
+        instructionsButton.setAlignment(Pos.CENTER);
+        customizeButton(instructionsButton, 1000, 800, this.colourScheme.backgroundColour);
+        instructionsButton.wrapTextProperty().setValue(true);
+        instructionsButton.setStyle("-fx-background-color: "+ this.colourScheme.backgroundColour + "; -fx-text-fill: white;");
+        makeButtonAccessible(instructionsButton, "Instructions", "Instructions, click anywhere to Continue", this.game.getInstructions() + "\n\n Click anywhere to continue.");
+        instructionsButton.setOnAction(e -> {
             this.stage.setScene(this.setCharacterCustomizationScene());
         });
-        pause.play();
+        Scene scene = new Scene(instructionsButton,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+        return scene;
     }
 
     public Scene setCharacterCustomizationScene() {
