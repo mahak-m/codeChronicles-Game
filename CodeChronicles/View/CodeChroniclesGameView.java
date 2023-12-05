@@ -194,15 +194,31 @@ public class CodeChroniclesGameView {
         characterGridPane.setHalignment(characterCustomization, HPos.CENTER);
 
         // Character Selection Label
-        Label selectedPlayerLabel = new Label("Please select a player.");
+        Label selectedPlayerLabel = new Label("Please select a player, and enter a name.");
         selectedPlayerLabel.setFont(new Font("Helvetica", this.fontSize));
         selectedPlayerLabel.setTextFill(Color.web(this.colourScheme.regularFontColour));
         selectedPlayerLabel.setAlignment(Pos.CENTER);
         characterGridPane.add(selectedPlayerLabel, 2, 1, 1, 1);
         characterGridPane.setHalignment(selectedPlayerLabel, HPos.CENTER);
 
+        // Name Label
+        Label nameLabel = new Label("Player Name: ");
+        nameLabel.setFont(new Font("Helvetica", this.fontSize));
+        nameLabel.setTextFill(Color.web(this.colourScheme.regularFontColour));
+        nameLabel.setAlignment(Pos.CENTER);
+        characterGridPane.add(nameLabel, 1, 3, 1, 1);
+        characterGridPane.setHalignment(nameLabel, HPos.CENTER);
+
         // Input Text Field for Player Name
-        // TODO
+        TextField name = new TextField();
+        name.setFont(new Font("Helvetica", this.fontSize));
+        name.setFocusTraversable(true);
+        name.setAccessibleRole(AccessibleRole.TEXT_AREA);
+        name.setAccessibleRoleDescription("Text Entry Box");
+        name.setAccessibleText("Enter commands in this box.");
+        name.setAccessibleHelp("This is the area in which you can enter commands you would like to play.  Enter a command and hit return to continue.");
+        characterGridPane.add(name, 2, 3, 1, 1);
+        characterGridPane.setHalignment(name, HPos.LEFT);
 
         // Play Game Button
         Button playButton = new Button("Play");
@@ -246,7 +262,7 @@ public class CodeChroniclesGameView {
         alchemistButton.setOnAction(e -> {
             playButtonClick(); // adds button click sound effect
             selectedPlayerLabel.setText("You have selected: Alchemist");
-            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), "");
+            this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), name.getText().trim());
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("alchemistDescription.wav");
         });
@@ -270,7 +286,7 @@ public class CodeChroniclesGameView {
         mageButton.setOnAction(e -> {
             playButtonClick(); // adds button click sound effect
             selectedPlayerLabel.setText("You have selected: Mage");
-            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), "");
+            this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), name.getText().trim());
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("mageDescription.wav");
         });
@@ -294,7 +310,7 @@ public class CodeChroniclesGameView {
         warriorButton.setOnAction(e -> {
             playButtonClick(); // adds button click sound effect
             selectedPlayerLabel.setText("You have selected: Warrior");
-            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), "");
+            this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), name.getText().trim());
             // play introduction audio if selected by passing audio file to method
             playIntroductionAudio("warriorDescription.wav");
         });
