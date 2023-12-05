@@ -80,9 +80,11 @@ public class HackCommand implements Command {
         }
         boolean won = player.playQuest(gameView);
         if (won) {
+            this.npc.setDefeated(true);
             return "Congratulations! You won the quest";
         }
         else {
+            this.player.loseLife();
             return "You lost the quest. Better luck next time.";
         }
     }
