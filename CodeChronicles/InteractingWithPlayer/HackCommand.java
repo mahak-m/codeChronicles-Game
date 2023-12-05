@@ -5,6 +5,7 @@ import InteractingWithPlayer.NonPlayerCharacters.NPC;
 import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.Player.Player;
 import View.CodeChroniclesGameView;
+import View.LastBattleView;
 
 /**
  * The player uses Hack Command, if the player wishes to hack in the NPC character's mind
@@ -87,6 +88,10 @@ public class HackCommand implements Command {
         boolean won = player.playQuest(gameView);
         if (won) {
             this.npc.setDefeated(true);
+            gameView.game.prowlers.remove(player.getCurrentRoom().characterInRoom.getQuest().prowler);
+            if (gameView.game.prowlers.size() == 0) {
+                LastBattleView view = new LastBattleView(gameView, player);
+            }
             return "Congratulations! You won the quest";
         }
         else {

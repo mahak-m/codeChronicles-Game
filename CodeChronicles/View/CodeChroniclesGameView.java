@@ -1,7 +1,10 @@
 package View;
 
 import GameModel.CodeChroniclesGame;
+import GameModel.Pet.MechaDoodle;
+import GameModel.Pet.NanoBunny;
 import GameModel.Pet.Pet;
+import GameModel.Pet.VirtualVulture;
 import GameModel.Room;
 import InteractingWithPlayer.HackCommand;
 import InteractingWithPlayer.IgnoreCommand;
@@ -23,6 +26,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -214,7 +219,6 @@ public class CodeChroniclesGameView {
             playButtonClick(); // plays the button click sound effect when pressed
             if (this.game.player != null) {
                 try {
-                    setRoomScene();
                     showPets();
                     stopIntroductionAudio(); // add this to stop the introduction audio before transitioning
                 } catch (FileNotFoundException ex) {
@@ -228,7 +232,8 @@ public class CodeChroniclesGameView {
         // CHARACTER SELECTION BUTTONS
 
         // Alchemist Player
-        Button alchemistButton = new Button("       ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe. \n \n Lives: 5 \n Code Bytes: 10");
+        Button alchemistButton = new Button("ALCHEMIST CHARACTER \n \n As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe. \n \n Lives: 5 \n Code Bytes: 10");
+        alchemistButton.setTextAlignment(TextAlignment.CENTER);
         alchemistButton.setId("Alchemist Character");
         alchemistButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(alchemistButton, 280, 550, this.colourScheme.buttonColour2);
@@ -252,7 +257,8 @@ public class CodeChroniclesGameView {
         });
 
         // Mage Player
-        Button mageButton = new Button("           MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air. \n \n \n Lives: 7 \n Code Bytes: 7");
+        Button mageButton = new Button("MAGE CHARACTER \n \n As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air. \n \n \n Lives: 7 \n Code Bytes: 7");
+        mageButton.setTextAlignment(TextAlignment.CENTER);
         mageButton.setId("Mage Character");
         mageButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(mageButton, 280, 550, this.colourScheme.buttonColour2);
@@ -276,7 +282,8 @@ public class CodeChroniclesGameView {
         });
 
         // Warrior Player
-        Button warriorButton = new Button("         WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles. \n \n \n Lives: 10 \n Code Bytes: 5");
+        Button warriorButton = new Button("WARRIOR CHARACTER \n \n As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles. \n \n \n Lives: 10 \n Code Bytes: 5");
+        warriorButton.setTextAlignment(TextAlignment.CENTER);
         warriorButton.setId("Warrior Character");
         warriorButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(warriorButton, 280, 550, this.colourScheme.buttonColour2);
@@ -390,6 +397,8 @@ public class CodeChroniclesGameView {
             pause.play();
         });
 
+        Button hackButton = new Button("Hack");
+
         Button trustButton = new Button("Trust");
         trustButton.setId("Trust");
         customizeButton(trustButton, 150, 50, this.colourScheme.buttonColour1);
@@ -410,7 +419,6 @@ public class CodeChroniclesGameView {
             pause.play();
         });
 
-        Button hackButton = new Button("Hack");
         hackButton.setId("Hack");
         customizeButton(hackButton, 150, 50, this.colourScheme.buttonColour1);
         makeButtonAccessible(hackButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
@@ -681,7 +689,6 @@ public class CodeChroniclesGameView {
         if (!this.petToggle) {
             this.gridPane = new GridPane();
             setupGridPane(this.gridPane);
-            addGameHeader(this.gridPane);
 
             // "Meet Your Pets Label to Display at Top"
             Label meetPetsLabel = new Label("Meet The Pets");
@@ -693,58 +700,72 @@ public class CodeChroniclesGameView {
 
             // PET SELECTION BUTTONS
 
-            // TODO: Uncomment once u read this. The leading spaces r there to center the name, dont get rid of them.
             // NanoBunny
-            Button nanoBunnyButton = new Button("          NanoBunny \n \n" + "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            NanoBunny nanoBunny = new NanoBunny();
+            Button nanoBunnyButton = new Button("NanoBunny \n \n" + nanoBunny.description);
             nanoBunnyButton.setId("NanoBunny");
-            nanoBunnyButton.setAlignment(Pos.TOP_CENTER);
-            customizeButton(nanoBunnyButton, 280, 550, this.colourScheme.buttonColour2);
+            nanoBunnyButton.setFont(new Font(16));
+            nanoBunnyButton.setTextAlignment(TextAlignment.CENTER);
+            nanoBunnyButton.setAlignment(Pos.CENTER);
+            nanoBunnyButton.setStyle("-fx-background-color: " + this.colourScheme.buttonColour2 + ";");
+            nanoBunnyButton.setMinHeight(500);
+            nanoBunnyButton.setMinWidth(300);
             nanoBunnyButton.wrapTextProperty().setValue(true);
             nanoBunnyButton.setGraphic(getPetImageView("NanoBunny"));
             nanoBunnyButton.setContentDisplay(TOP);
             nanoBunnyButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
-            makeButtonAccessible(nanoBunnyButton, "NanoBunny", "Meet NanoBunny", "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            makeButtonAccessible(nanoBunnyButton, "NanoBunny", "Meet NanoBunny", nanoBunny.description);
             nanoBunnyButton.setOnAction(e -> {
-                // TODO: CALL SET PET METHOD
-                // nanoBunnyButton.setText("NanoBunny \n \n" + "[INSERT DESCRIPTION]" + "\n \n" + "[WHATEVER SET PET RETURNS]");
+                String string = nanoBunny.equipPet(this.game.player);
+                nanoBunnyButton.setText("NanoBunny \n \n" + string);
                 playButtonClick();
             });
 
             // VirtualVulture
-            Button virtualVultureButton = new Button("        VirtualVulture \n \n" + "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            VirtualVulture virtualVulture = new VirtualVulture();
+            Button virtualVultureButton = new Button("VirtualVulture \n \n" + virtualVulture.description);
             virtualVultureButton.setId("Virtual Vulture");
-            virtualVultureButton.setAlignment(Pos.TOP_CENTER);
-            customizeButton(virtualVultureButton, 280, 550, this.colourScheme.buttonColour2);
+            virtualVultureButton.setFont(new Font(16));
+            virtualVultureButton.setAlignment(Pos.CENTER);
+            virtualVultureButton.setTextAlignment(TextAlignment.CENTER);
+            virtualVultureButton.setStyle("-fx-background-color: " + this.colourScheme.buttonColour2 + ";");
+            virtualVultureButton.setMinHeight(500);
+            virtualVultureButton.setMinWidth(300);
             virtualVultureButton.wrapTextProperty().setValue(true);
             virtualVultureButton.setGraphic(getPetImageView("VirtualVulture"));
             virtualVultureButton.setContentDisplay(TOP);
             virtualVultureButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
-            makeButtonAccessible(virtualVultureButton, "VirtualVulture", "Meet VirtualVulture", "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            makeButtonAccessible(virtualVultureButton, "VirtualVulture", "Meet VirtualVulture", virtualVulture.description);
             virtualVultureButton.setOnAction(e -> {
-                // TODO: CALL SET PET METHOD.
-                // virtualVulture.setText("VirtualVulture \n \n" + "[INSERT DESCRIPTION]" + "\n \n" + "[WHATEVER SET PET RETURNS]");
+                String string = virtualVulture.equipPet(this.game.player);
+                virtualVultureButton.setText("Virtual Vulture \n \n" + string);
                 playButtonClick();
             });
 
-            //MechaDoodle
-            Button mechaDoodleButton = new Button("         MechaDoodle \n \n" + "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            // MechaDoodle
+            MechaDoodle mechaDoodle = new MechaDoodle();
+            Button mechaDoodleButton = new Button("MechaDoodle \n \n" + mechaDoodle.description);
             mechaDoodleButton.setId("MechaDoodle");
-            mechaDoodleButton.setAlignment(Pos.TOP_CENTER);
-            customizeButton(mechaDoodleButton, 280, 550, this.colourScheme.buttonColour2);
+            mechaDoodleButton.setFont(new Font(16));
+            mechaDoodleButton.setAlignment(Pos.CENTER);
+            mechaDoodleButton.setTextAlignment(TextAlignment.CENTER);
+            mechaDoodleButton.setStyle("-fx-background-color: " + this.colourScheme.buttonColour2 + ";");
+            mechaDoodleButton.setMinHeight(500);
+            mechaDoodleButton.setMinWidth(300);
             mechaDoodleButton.wrapTextProperty().setValue(true);
             mechaDoodleButton.setGraphic(getPetImageView("MechaDoodle"));
             mechaDoodleButton.setContentDisplay(TOP);
             mechaDoodleButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
-            makeButtonAccessible(mechaDoodleButton, "MechaDoodle", "MechaDoodle", "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            makeButtonAccessible(mechaDoodleButton, "MechaDoodle", "MechaDoodle", mechaDoodle.description);
             mechaDoodleButton.setOnAction(e -> {
-                // TODO: CALL SET PET METHOD.
-                // mechaDoodle.setText("MechaDoodle \n \n" + "[INSERT DESCRIPTION]" + "\n \n" + "[WHATEVER SET PET RETURNS]");
+                String string = mechaDoodle.equipPet(this.game.player);
+                mechaDoodleButton.setText("MechaDoodle \n \n" + string);
                 playButtonClick();
             });
 
             HBox pets = new HBox();
             pets.getChildren().addAll(nanoBunnyButton, virtualVultureButton, mechaDoodleButton);
-            pets.setSpacing(30);
+            pets.setSpacing(10);
             pets.setAlignment(Pos.CENTER);
 
             // Continue Game Button
@@ -764,7 +785,7 @@ public class CodeChroniclesGameView {
                 }
             });
             this.gridPane.add(playButton, 3, 3, 1, 1);
-            this.gridPane.setHalignment(playButton, HPos.RIGHT);
+            this.gridPane.setHalignment(playButton, HPos.CENTER);
 
             VBox petView = new VBox();
             petView.getChildren().addAll(meetPetsLabel, pets, playButton);
@@ -781,8 +802,10 @@ public class CodeChroniclesGameView {
         }
         // If helpToggle is true, show the room scene again.
         else {
-            this.setRoomScene();
-            this.petToggle = false;
+            if (this.game.player.getPet() instanceof NanoBunny) {
+                this.setRoomScene();
+                this.petToggle = false;
+            }
         }
     }
 
@@ -881,7 +904,7 @@ public class CodeChroniclesGameView {
             backgroundMusicPlayer = new MediaPlayer(sound);
 
             //self volume to 50% and play in a loop while the view is up
-            backgroundMusicPlayer.setVolume(0.5);
+            backgroundMusicPlayer.setVolume(0);
             backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             backgroundMusicPlayer.play();
 
