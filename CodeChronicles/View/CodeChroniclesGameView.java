@@ -74,7 +74,7 @@ public class CodeChroniclesGameView {
     private boolean backgroundMediaPlaying; //to know if the room descriptions are playing
     private boolean roomMediaPlaying; //to know if the background audio is playing
     // public boolean allAudioOn = true; // for the no audio option (true by default)
-    public boolean allAudioOn = true;
+    // public boolean allAudioOn = true;
 
 
     // attributes for the background
@@ -101,7 +101,7 @@ public class CodeChroniclesGameView {
 
         // call the method to play reduced background music indefinitely
         // but only do it if the audio feature is not turned off
-        if (allAudioOn) {
+        if (music && audio) {
             this.playBackgroundMusic();
         }
     }
@@ -238,7 +238,9 @@ public class CodeChroniclesGameView {
         customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
-            playButtonClick(); // plays the button click sound effect when pressed
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             if (this.game.player != null) {
                 try {
                     showPets();
@@ -271,7 +273,9 @@ public class CodeChroniclesGameView {
         alchemistButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         makeButtonAccessible(alchemistButton, "Alchemist", "Alchemist Character", "As an alchemist, you will use the alchemy of programming languages to brew potions and concoct coding elixirs that unravel the secrets of the digital universe.");
         alchemistButton.setOnAction(e -> {
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             selectedPlayerLabel.setText("You have selected: Alchemist");
             this.game.player = new AlchemistCharacter(this.game.rooms.get("Front Gate"), name.getText().trim());
             // play introduction audio if selected by passing audio file to method
@@ -296,7 +300,9 @@ public class CodeChroniclesGameView {
         mageButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         makeButtonAccessible(mageButton, "Mage", "Mage Character", "As a mage, you will control the digital realms by wielding spells that manifest as intricate lines of code dancing through the air.");
         mageButton.setOnAction(e -> {
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             selectedPlayerLabel.setText("You have selected: Mage");
             this.game.player = new MageCharacter(this.game.rooms.get("Front Gate"), name.getText().trim());
             // play introduction audio if selected by passing audio file to method
@@ -321,7 +327,9 @@ public class CodeChroniclesGameView {
         warriorButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         makeButtonAccessible(warriorButton, "Warrior Character", "Warrior Character", "As a warrior, you will use your digital blade to embody strength, resilience, and martial prowess as you fight coding battles.");
         warriorButton.setOnAction(e -> {
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             selectedPlayerLabel.setText("You have selected: Warrior");
             this.game.player = new WarriorCharacter(this.game.rooms.get("Front Gate"), name.getText().trim());
             // play introduction audio if selected by passing audio file to method
@@ -373,7 +381,9 @@ public class CodeChroniclesGameView {
         customizeButton(playButton,100, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(playButton, "Play", "Play Game", "Click to play game with selected character.");
         playButton.setOnAction(e -> {
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             if (this.game.player != null) {
                 try {
                     setRoomScene();
@@ -450,7 +460,9 @@ public class CodeChroniclesGameView {
 
             // it should say that voice line
 
-            playButtonClick(); // adds button click sound effect
+            if (audio) {
+                playButtonClick(); // plays the button click sound effect when pressed
+            }
             String theNpcName = this.game.player.getCurrentRoom().getNPC().getName();
             // formatting is different, change that (remove all spaces)
             theNpcName = theNpcName.replace(" ","");
@@ -958,7 +970,7 @@ public class CodeChroniclesGameView {
      * in the sub folders audio --> roomDescriptions
      */
     public void articulateRoomDescription() {
-        if (allAudioOn) {
+        if (audio) {
 
             String musicFile;
             String roomName = this.game.getPlayer().getCurrentRoom().getRoomName();
@@ -998,14 +1010,21 @@ public class CodeChroniclesGameView {
      * The background music should be found in audio -> backgroundMusic -> backgroundMusic.wav
      */
     public void playBackgroundMusic() {
-        if (allAudioOn) {
+        if (audio) {
             //later switched to a "try/catch" format to fix MediaException errors
             try {
+                if (!music) {
+                    return;  // exit if audio has been turned off before playback starts
+                }
+
                 String musicFile = "audio/backgroundMusic/backgroundMusic.wav";
 
                 //create a media object and media player
                 Media sound = new Media(new File(musicFile).toURI().toString());
                 backgroundMusicPlayer = new MediaPlayer(sound);
+
+                // stop any existing background music before starting a new one
+                stopBackgroundMusic();
 
                 //self volume to 50% and play in a loop while the view is up
                 backgroundMusicPlayer.setVolume(0.1);
@@ -1038,7 +1057,7 @@ public class CodeChroniclesGameView {
      *
      */
     private void playIntroductionAudio(String audioFileName) {
-        if (allAudioOn) {
+        if (audio) {
             // changed to a try/catch format to avoid errors
             try {
                 String musicFile = "audio/characterDescriptionAudio/" + audioFileName;
@@ -1078,7 +1097,7 @@ public class CodeChroniclesGameView {
      * This method controls the button click sound effect
      */
     public void playButtonClick() {
-        if (allAudioOn) {
+        if (audio) {
             //later switched to a "try/catch" format to fix MediaException errors
             try {
                 String musicFile = "audio/buttonClick.wav";
@@ -1102,7 +1121,7 @@ public class CodeChroniclesGameView {
      *
      */
     private void playNpcAudio(String audioFileName) {
-        if (allAudioOn) {
+        if (audio) {
             // changed to a try/catch format to avoid errors
             try {
                 String musicFile = "audio/npcAudio/" + audioFileName + ".wav";
@@ -1134,7 +1153,7 @@ public class CodeChroniclesGameView {
      *
      */
     private void playCommandsAudio(String audioFileName) {
-        if (allAudioOn) {
+        if (audio) {
             // changed to a try/catch format to avoid errors
             try {
                 String musicFile = "audio/commandsAudio/" + audioFileName + ".wav";
