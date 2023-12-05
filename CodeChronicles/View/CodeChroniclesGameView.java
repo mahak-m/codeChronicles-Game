@@ -415,9 +415,10 @@ public class CodeChroniclesGameView {
         roomPane.setValignment(characterView, VPos.CENTER);
         roomPane.setHalignment(characterView, HPos.CENTER);
 
+        Button NPCButton = new Button();
+
         if (!this.game.player.getCurrentRoom().getNPC().getDefeated()) {
             ImageView NPCView = this.getNPCImageView(this.game.player.getCurrentRoom().getNPC());
-            Button NPCButton = new Button();
             NPCButton.setGraphic(NPCView);
             NPCButton.setBackground(null);
             roomPane.add(NPCButton, 1, 2);
