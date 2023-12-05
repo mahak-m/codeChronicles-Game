@@ -10,6 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -19,6 +21,8 @@ import javafx.stage.StageStyle;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import InteractingWithPlayer.Player.Player;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -35,6 +39,10 @@ public class QuestView {
     private Quest quest;
     private Player player;
     private Integer increaseFont;
+    private MediaPlayer questMusicPlayer; // for the quest background music
+
+    boolean allAudioOn2;
+
 
     public QuestView(CodeChroniclesGameView gameView, Quest quest, Player player, Integer fontIncrease) {
         this.gameView = gameView;
@@ -42,6 +50,9 @@ public class QuestView {
         this.player = player;
         this.increaseFont = fontIncrease;
         intiUI();
+
+        // test to see if the quest audio still plays if the no audio setting
+        // is selected in the menu
     }
     public void intiUI() {
         // SET THE STAGE UP
@@ -49,6 +60,19 @@ public class QuestView {
         this.stage.initOwner(gameView.stage);
         this.stage.setTitle(this.quest.questName);
         this.stage.initStyle(StageStyle.UNDECORATED);
+
+        boolean allAudioOn2 = this.gameView.allAudioOn;
+
+        // also stop the old background music
+        this.gameView.stopBackgroundMusic();
+
+        // call the method to play reduced background music until
+        // the quest is over and this screen can finally be exited
+
+        if (allAudioOn2) {
+            this.playBackgroundMusic();
+        }
+        // this.playBackgroundMusic();
 
         // Set up the borderPane
         this.borderPane.setPadding(new Insets(10));
@@ -68,6 +92,7 @@ public class QuestView {
         this.continueButton.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(continueButton, "Continue", "Continue", "Continue to the next screen.");
         this.continueButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             setInstructionScene();
         });
 
@@ -238,6 +263,7 @@ public class QuestView {
         borderPane3.setTop(questionLabel);
 
         this.submitButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             RadioButton selectedRadioButton = (RadioButton) optionsGroup.getSelectedToggle();
             if (selectedRadioButton != null) {
                 if (selectedRadioButton.getText().equals(this.quest.getQuestAnswer())) {
@@ -298,6 +324,15 @@ public class QuestView {
         makeButtonAccessible(exitButton, "Exit", "Exit the quest", "Exit the quest and return to the room.");
         this.exitButton.setOnAction(e -> {
             this.stage.close();
+
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+
+            // stop the quest background music
+            stopBackgroundMusic();
+            // here, after clicking the button and returning, begin playing the background music again
+            this.gameView.playBackgroundMusic();
+
+
         });
 
         borderPane4.setAlignment(this.exitButton, Pos.BOTTOM_RIGHT);
@@ -343,6 +378,7 @@ public class QuestView {
         hintButton.setOpacity(0.9);
         hintButton.setWrapText(true);
         hintButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             hintButton.setText(this.quest.getQuestHint());
             this.quest.usedHint();
         });
@@ -359,6 +395,7 @@ public class QuestView {
         revealAnswerButton.setWrapText(true);
         hintButton.setWrapText(true);
         revealAnswerButton.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             if (this.player.getPet() instanceof VirtualVulture) {
                 revealAnswerButton.setText(this.quest.getQuestAnswer());
                 this.quest.usedAnswer();
@@ -383,6 +420,7 @@ public class QuestView {
         back.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(back, "Back", "Back to the question", "Go back to the question using this button.");
         back.setOnAction(e -> {
+            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
             if (this.quest.isWithHint() || this.quest.isWithAnswer()) {
                 setQuestionScene(true);
             }
@@ -413,6 +451,46 @@ public class QuestView {
         inputButton.setAccessibleText(shortString);
         inputButton.setAccessibleHelp(longString);
         inputButton.setFocusTraversable(true);
+    }
+
+    // these methods are for the quest
+    /**
+     * playBackgroundMusic
+     * ______________________
+     * This method controls the main background music for the game.
+     * It plays at 50% volume and runs indefinitely for the duration of the game.
+     * The background music should be found in audio -> backgroundMusic -> backgroundMusic.wav
+     */
+    public void playBackgroundMusic() {
+        if (allAudioOn2) {
+            //later switched to a "try/catch" format to fix MediaException errors
+            try {
+                String musicFile = "audio/backgroundMusic/hackingMusic.wav";
+
+                //create a media object and media player
+                Media sound = new Media(new File(musicFile).toURI().toString());
+                questMusicPlayer = new MediaPlayer(sound);
+
+                //self volume to 50% and play in a loop while the view is up
+                questMusicPlayer.setVolume(0.1);
+                questMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                questMusicPlayer.play();
+
+            } catch (Exception e) {
+                System.out.println("Error loading background music: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * stopBackgroundMusic
+     * ______________________
+     * This method stops the background music. This is useful for players that want a no audio option.
+     */
+    public void stopBackgroundMusic() {
+        if (questMusicPlayer != null && questMusicPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            questMusicPlayer.stop();
+        }
     }
 }
 
