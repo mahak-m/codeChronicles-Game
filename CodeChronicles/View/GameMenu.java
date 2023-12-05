@@ -79,7 +79,7 @@ public class GameMenu {
         this.musicBox.setValue((ifMusic) ? "On" : "Off");
 
         // Create Audio Label
-        Label audio = new Label("Audio");
+        Label audio = new Label("Voiceover");
         audio.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         audio.setFont(new Font("Helvetica", this.gameView.fontSize));
 
