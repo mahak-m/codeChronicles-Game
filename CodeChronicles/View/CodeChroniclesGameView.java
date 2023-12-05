@@ -1,6 +1,7 @@
 package View;
 
 import GameModel.CodeChroniclesGame;
+import GameModel.Pet.Pet;
 import GameModel.Room;
 import InteractingWithPlayer.HackCommand;
 import InteractingWithPlayer.IgnoreCommand;
@@ -45,14 +46,15 @@ import javax.sound.sampled.Clip;
  * This is the Class that will visualize the model.
  */
 public class CodeChroniclesGameView {
-
-    CodeChroniclesGame game; //model of the game
+    public CodeChroniclesGame game; //model of the game
     public Integer fontSize;
     public ColourScheme colourScheme;
-    Stage stage; //stage on which all is rendered
-    Button menuButton, instructionsButton, mapButton; //buttons
+    public Stage stage; //stage on which all is rendered
+    Button menuButton, instructionsButton, mapButton, petsButton; //buttons
+
     Boolean helpToggle = false; //is help on display?
     Boolean mapToggle = false; //is map on display?
+    Boolean petToggle = false; // are pets on display?
     public Boolean music = true;
     public Boolean audio = true;
     GridPane gridPane = new GridPane(); //to hold images and buttons
@@ -107,30 +109,58 @@ public class CodeChroniclesGameView {
         // SETTING UP THE STAGE
         this.stage.setTitle("Code Chronicles: Wizard's Quest");
 
-        this.gridPane.setAlignment(Pos.CENTER);
+        Button screenButton = new Button("Code Chronicles: Wizard's Quest");
+        screenButton.setId("Code Chronicles: Wizard's Quest");
+        screenButton.setAlignment(Pos.CENTER);
+        customizeButton( screenButton, 1000, 800, this.colourScheme.backgroundColour);
+        screenButton.wrapTextProperty().setValue(true);
+        screenButton.setStyle("-fx-background-color: "+ this.colourScheme.backgroundColour + "; -fx-text-fill: white;");
+        makeButtonAccessible( screenButton, "Code Chronicles: Wizard's Quest", "Code Chronicles: Wizard's Quest, click anywhere to continue.", "Code Chronicles: Wizard's Quest, click anywhere to continue.");
+        screenButton.setOnAction(e -> {
+            this.stage.setScene(this.setPrologue());
+        });
+        screenButton.setGraphic(new ImageView(new Image("OtherFiles/StartScreen.png")));
+        screenButton.setPadding( new Insets(0));
+        Scene scene = new Scene( screenButton,  1000, 800);
 
-        // Setup Playing GridPane
-        this.gridPane.setPadding(new Insets(0));
-        this.gridPane.setBackground(new Background(new BackgroundFill(
-                Color.valueOf(this.colourScheme.backgroundColour),
-                new CornerRadii(0),
-                new Insets(0)
-        )));
+        this.stage.setScene(scene);
 
-        // CREATE LOADING SCREEN
-        GridPane gamePane = new GridPane();
-        gamePane.setStyle("-fx-background-image: url('OtherFiles/StartScreen.jpg');");
-        var scene1 = new Scene(gamePane ,  1000, 800);
-        this.stage.setScene(scene1);
         this.stage.setResizable(false);
         this.stage.show();
+    }
 
-        // AFTER LOADING SCREEN SHOW CHARACTER CUSTOMIZATION SCREEN
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
-        pause.setOnFinished(event -> {
+    public Scene setPrologue() {
+        Button prologueButton = new Button(this.game.getPrologue() + "\n\n Click anywhere to continue.");
+        prologueButton.setPadding( new Insets(50));
+        prologueButton.setId("Prologue");
+        prologueButton.setAlignment(Pos.CENTER);
+        customizeButton(prologueButton, 1000, 800, this.colourScheme.backgroundColour);
+        prologueButton.wrapTextProperty().setValue(true);
+        prologueButton.setStyle("-fx-background-color: "+ this.colourScheme.backgroundColour + "; -fx-text-fill: white;");
+        makeButtonAccessible(prologueButton, "Prologue", "Prologue, click anywhere to continue.", this.game.getPrologue() + "\n\n Click anywhere to continue.");
+        prologueButton.setOnAction(e -> {
+            this.stage.setScene(this.setInstructions());
+        });
+        Scene scene = new Scene(prologueButton,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+        return scene;
+    }
+
+    public Scene setInstructions() {
+        Button instructionsButton = new Button(this.game.getInstructions() + "\n\n Click anywhere to continue");
+        instructionsButton.setPadding( new Insets(50));
+        instructionsButton.setId("Instructions");
+        instructionsButton.setAlignment(Pos.CENTER);
+        customizeButton(instructionsButton, 1000, 800, this.colourScheme.backgroundColour);
+        instructionsButton.wrapTextProperty().setValue(true);
+        instructionsButton.setStyle("-fx-background-color: "+ this.colourScheme.backgroundColour + "; -fx-text-fill: white;");
+        makeButtonAccessible(instructionsButton, "Instructions", "Instructions, click anywhere to Continue", this.game.getInstructions() + "\n\n Click anywhere to continue.");
+        instructionsButton.setOnAction(e -> {
             this.stage.setScene(this.setCharacterCustomizationScene());
         });
-        pause.play();
+        Scene scene = new Scene(instructionsButton,  1000, 800);
+        scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+        return scene;
     }
 
     public Scene setCharacterCustomizationScene() {
@@ -187,6 +217,7 @@ public class CodeChroniclesGameView {
             if (this.game.player != null) {
                 try {
                     setRoomScene();
+                    showPets();
                     stopIntroductionAudio(); // add this to stop the introduction audio before transitioning
                 } catch (FileNotFoundException ex) {
                     throw new RuntimeException(ex);
@@ -341,16 +372,26 @@ public class CodeChroniclesGameView {
 
         // add characters and NPCs to the GridPane
         ImageView characterView = this.getCharacterImageView();
-        ImageView NPCView = this.getNPCImageView(this.game.player.getCurrentRoom().getNPC());
-        Button NPCButton = new Button();
-        NPCButton.setGraphic(NPCView);
-        NPCButton.setBackground(null);
+
         roomPane.add(characterView, 3, 2);
-        roomPane.add(NPCButton, 1, 2);
+
         roomPane.setValignment(characterView, VPos.CENTER);
         roomPane.setHalignment(characterView, HPos.CENTER);
-        roomPane.setValignment(NPCButton, VPos.CENTER);
-        roomPane.setHalignment(NPCButton, HPos.CENTER);
+
+        if (!this.game.player.getCurrentRoom().getNPC().getDefeated()) {
+            ImageView NPCView = this.getNPCImageView(this.game.player.getCurrentRoom().getNPC());
+            Button NPCButton = new Button();
+            NPCButton.setGraphic(NPCView);
+            NPCButton.setBackground(null);
+            roomPane.add(NPCButton, 1, 2);
+            roomPane.setValignment(NPCButton, VPos.CENTER);
+            roomPane.setHalignment(NPCButton, HPos.CENTER);
+            // What happens when the character clicks on the other character in the room?
+            NPCButton.setOnAction(e -> {
+                this.roomDescLabel.setText(this.game.player.getCurrentRoom().getNPC().getIntro());
+                this.addInteractionCommands();
+            });
+        }
 
         articulateRoomDescription(); // try this rn
 
@@ -466,12 +507,10 @@ public class CodeChroniclesGameView {
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
         });
-
         HBox commandButtons = new HBox();
         commandButtons.getChildren().addAll(ignoreButton, trustButton, hackButton);
         commandButtons.setSpacing(10);
         commandButtons.setAlignment(Pos.CENTER);
-
         //add all the widgets to the GridPane
         this.gridPane.add(commandButtons, 1, 3, 3, 1 );  // Add buttons
         this.gridPane.setHalignment(commandButtons, HPos.CENTER);
@@ -507,13 +546,13 @@ public class CodeChroniclesGameView {
         // Create Buttons
         menuButton = new Button("Menu");
         menuButton.setId("Save");
-        customizeButton(menuButton, 200, 50, this.colourScheme.buttonColour2);
+        customizeButton(menuButton, 175, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(menuButton, "Menu Button", "This button loads the menu.", "This button loads the menu and settings. Click it in order to change your settings.");
         addMenuEvent();
 
         instructionsButton = new Button("Instructions");
         instructionsButton.setId("Instructions");
-        customizeButton(instructionsButton, 200, 50, this.colourScheme.buttonColour2);
+        customizeButton(instructionsButton, 175, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(instructionsButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         // play instructions audio
         // also CREATE audio for prologue
@@ -522,9 +561,21 @@ public class CodeChroniclesGameView {
 
         mapButton = new Button("Map");
         mapButton.setId("Map");
-        customizeButton(mapButton, 200, 50, this.colourScheme.buttonColour2);
+        customizeButton(mapButton, 175, 50, this.colourScheme.buttonColour2);
         makeButtonAccessible(mapButton, "Map Button", "This button loads the game map.", "This button loads the game map. Click on it to see where you are and navigate to other rooms.");
         addMapEvent();
+
+        petsButton = new Button("Pets");
+        petsButton.setId("Pets");
+        customizeButton(petsButton, 175, 50, this.colourScheme.buttonColour2);
+        makeButtonAccessible(petsButton, "Pets Button", "Pets button, click to view pets.", "Pets button, click to see an overview of the pet you have currently equipped.");
+        petsButton.setOnAction(e -> {
+            try {
+                showPets();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         // Player Stats
         Label stats = new Label("Lives: " + this.game.player.getLives() + "\nCode Bytes: " + this.game.player.getCodeBytes());
@@ -532,7 +583,7 @@ public class CodeChroniclesGameView {
         stats.setTextFill(Color.web(this.colourScheme.regularFontColour));
 
         HBox header = new HBox();
-        header.getChildren().addAll(menuButton, instructionsButton, mapButton, stats);
+        header.getChildren().addAll(menuButton, instructionsButton, mapButton, petsButton, stats);
         header.setSpacing(10);
         header.setAlignment(Pos.CENTER);
 
@@ -574,6 +625,16 @@ public class CodeChroniclesGameView {
         return view;
     }
 
+    public ImageView getPetImageView(String petType) throws FileNotFoundException {
+        FileInputStream path = new FileInputStream("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/petImages/" + petType + ".jpg");
+        Image image = new Image(path);
+        ImageView view = new ImageView(image);
+        view.setFitWidth(220);
+        view.setFitHeight(220);
+        view.setAccessibleRole(AccessibleRole.IMAGE_VIEW);
+        view.setAccessibleText(petType);
+        return view;
+    }
 
     /**
      * makeButtonAccessible
@@ -625,20 +686,21 @@ public class CodeChroniclesGameView {
     public void showInstructions() throws FileNotFoundException {
         // If helpToggle is false, add instructions to the grid pane.
         if (!this.helpToggle) {
-            Label instrLabel =  new Label(this.game.getInstructions());
-            instrLabel.setAlignment(Pos.CENTER);
-            instrLabel.setFont(new Font("Arial", this.fontSize));
-            instrLabel.setStyle("-fx-text-fill: white;");
-            instrLabel.setWrapText(true);
-            ScrollPane sp = new ScrollPane();
-            sp.setContent(instrLabel);
-            sp.setPadding(new Insets(25));
-            sp.setStyle("-fx-background: #000000; -fx-background-color:transparent; -fx-border-color:royalblue;");
-            sp.setFitToWidth(true);
-            this.gridPane.add(sp, 1, 1, 1, 1 );  // Add label
+            this.gridPane = new GridPane();
+            this.setupGridPane(this.gridPane);
+            this.addGameHeader(this.gridPane);
+
+            Label instructionsLabel = new Label(this.game.getInstructions());
+            instructionsLabel.wrapTextProperty().setValue(true);
+            instructionsLabel.setFont(new Font("Helvetica", this.fontSize));
+            instructionsLabel.setTextFill(Color.web(this.colourScheme.regularFontColour));
+
+            this.gridPane.add(instructionsLabel, 1, 2, 5, 2);
+            var scene = new Scene( this.gridPane ,  1000, 800);
+            scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+            this.stage.setScene(scene);
             this.helpToggle = true;
         }
-        // If helpToggle is true, show the room scene again.
         else {
             this.setRoomScene();
             this.helpToggle = false;
@@ -686,8 +748,6 @@ public class CodeChroniclesGameView {
             var scene = new Scene( this.gridPane ,  1000, 800);
             scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
             this.stage.setScene(scene);
-            this.stage.setResizable(false);
-            this.stage.show();
             this.mapToggle = true;
         }
         // If mapToggle is true, show the room scene again.
@@ -695,6 +755,128 @@ public class CodeChroniclesGameView {
             this.setRoomScene();
             this.mapToggle = false;
         }
+    }
+
+    public void showPets() throws FileNotFoundException {
+        // If helpToggle is false, add instructions to the grid pane.
+        if (!this.petToggle) {
+            this.gridPane = new GridPane();
+            setupGridPane(this.gridPane);
+            addGameHeader(this.gridPane);
+
+            // "Meet Your Pets Label to Display at Top"
+            Label meetPetsLabel = new Label("Meet The Pets");
+            meetPetsLabel.setFont(new Font("Helvetica", 25));
+            meetPetsLabel.setTextFill(Color.web(this.colourScheme.regularFontColour));
+            meetPetsLabel.setAlignment(Pos.CENTER);
+            this.gridPane.add(meetPetsLabel, 2, 0, 1, 1);
+            this.gridPane.setHalignment(meetPetsLabel, HPos.CENTER);
+
+            // PET SELECTION BUTTONS
+
+            // TODO: Uncomment once u read this. The leading spaces r there to center the name, dont get rid of them.
+            // NanoBunny
+            Button nanoBunnyButton = new Button("          NanoBunny \n \n" + "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            nanoBunnyButton.setId("NanoBunny");
+            nanoBunnyButton.setAlignment(Pos.TOP_CENTER);
+            customizeButton(nanoBunnyButton, 280, 550, this.colourScheme.buttonColour2);
+            nanoBunnyButton.wrapTextProperty().setValue(true);
+            nanoBunnyButton.setGraphic(getPetImageView("NanoBunny"));
+            nanoBunnyButton.setContentDisplay(TOP);
+            nanoBunnyButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
+            makeButtonAccessible(nanoBunnyButton, "NanoBunny", "Meet NanoBunny", "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            nanoBunnyButton.setOnAction(e -> {
+                // TODO: CALL SET PET METHOD
+                // nanoBunnyButton.setText("NanoBunny \n \n" + "[INSERT DESCRIPTION]" + "\n \n" + "[WHATEVER SET PET RETURNS]");
+                playButtonClick();
+            });
+
+            // VirtualVulture
+            Button virtualVultureButton = new Button("        VirtualVulture \n \n" + "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            virtualVultureButton.setId("Virtual Vulture");
+            virtualVultureButton.setAlignment(Pos.TOP_CENTER);
+            customizeButton(virtualVultureButton, 280, 550, this.colourScheme.buttonColour2);
+            virtualVultureButton.wrapTextProperty().setValue(true);
+            virtualVultureButton.setGraphic(getPetImageView("VirtualVulture"));
+            virtualVultureButton.setContentDisplay(TOP);
+            virtualVultureButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
+            makeButtonAccessible(virtualVultureButton, "VirtualVulture", "Meet VirtualVulture", "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            virtualVultureButton.setOnAction(e -> {
+                // TODO: CALL SET PET METHOD.
+                // virtualVulture.setText("VirtualVulture \n \n" + "[INSERT DESCRIPTION]" + "\n \n" + "[WHATEVER SET PET RETURNS]");
+                playButtonClick();
+            });
+
+            //MechaDoodle
+            Button mechaDoodleButton = new Button("         MechaDoodle \n \n" + "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            mechaDoodleButton.setId("MechaDoodle");
+            mechaDoodleButton.setAlignment(Pos.TOP_CENTER);
+            customizeButton(mechaDoodleButton, 280, 550, this.colourScheme.buttonColour2);
+            mechaDoodleButton.wrapTextProperty().setValue(true);
+            mechaDoodleButton.setGraphic(getPetImageView("MechaDoodle"));
+            mechaDoodleButton.setContentDisplay(TOP);
+            mechaDoodleButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
+            makeButtonAccessible(mechaDoodleButton, "MechaDoodle", "MechaDoodle", "[INSERT DESCRIPTION]"); // TODO: replace with get description methods once pet class has been updated.
+            mechaDoodleButton.setOnAction(e -> {
+                // TODO: CALL SET PET METHOD.
+                // mechaDoodle.setText("MechaDoodle \n \n" + "[INSERT DESCRIPTION]" + "\n \n" + "[WHATEVER SET PET RETURNS]");
+                playButtonClick();
+            });
+
+            HBox pets = new HBox();
+            pets.getChildren().addAll(nanoBunnyButton, virtualVultureButton, mechaDoodleButton);
+            pets.setSpacing(30);
+            pets.setAlignment(Pos.CENTER);
+
+            // Continue Game Button
+            Button playButton = new Button("Continue Game");
+            playButton.setId("Continue Game");
+            playButton.setAlignment(Pos.CENTER);
+            customizeButton(playButton,250, 100, this.colourScheme.buttonColour2);
+            makeButtonAccessible(playButton, "Continue", "Continue Game", "Click to view the room and continue playing game.");
+            playButton.setOnAction(e -> {
+                playButtonClick(); // plays the button click sound effect when pressed
+                if (this.game.player != null) {
+                    try {
+                        showPets();
+                    } catch (FileNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            });
+            this.gridPane.add(playButton, 3, 3, 1, 1);
+            this.gridPane.setHalignment(playButton, HPos.RIGHT);
+
+            VBox petView = new VBox();
+            petView.getChildren().addAll(meetPetsLabel, pets, playButton);
+            petView.setSpacing(30);
+            petView.setAlignment(Pos.CENTER);
+
+            this.gridPane.add(petView, 2, 2);
+            this.gridPane.setHalignment(petView, HPos.CENTER);
+
+            Scene scene = new Scene(this.gridPane,  1000, 800);
+            scene.setFill(Color.valueOf(this.colourScheme.backgroundColour));
+            this.stage.setScene(scene);
+            this.petToggle = true;
+        }
+        // If helpToggle is true, show the room scene again.
+        else {
+            this.setRoomScene();
+            this.petToggle = false;
+        }
+    }
+
+
+    private void addMenuEvent() {
+        menuButton.setOnAction(e -> {
+            playButtonClick(); // add button click audio
+            stopArticulation();
+            gridPane.requestFocus();
+//            QuestView view = new QuestView(this, this.game.quests.get(0), this.game.player);
+            GameMenu menu = new GameMenu(this, music, audio, fontSize, colourScheme.colourSchemeName);
+//            LastBattleView view = new LastBattleView(this, this.game.player);
+        });
     }
 
     /**
@@ -709,17 +891,6 @@ public class CodeChroniclesGameView {
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
-        });
-    }
-
-    private void addMenuEvent() {
-        menuButton.setOnAction(e -> {
-            playButtonClick(); // add button click audio
-            stopArticulation();
-            gridPane.requestFocus();
-//            QuestView view = new QuestView(this, this.game.quests.get(0), this.game.player);
-            GameMenu menu = new GameMenu(this, music, audio, fontSize, colourScheme.colourSchemeName);
-//            LastBattleView view = new LastBattleView(this, this.game.player);
         });
     }
 

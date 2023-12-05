@@ -5,7 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -27,12 +27,27 @@ public class RoomPreview {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(this.gameView.stage);
-        VBox dialogVbox = new VBox(20);
-        dialogVbox.setPadding(new Insets(20, 20, 20, 20));
-        dialogVbox.setStyle("-fx-background-color: " + this.gameView.colourScheme.backgroundColour + ";");
+
+        GridPane pane = new GridPane();
+        pane.setBackground(new Background(new BackgroundFill(
+                Color.valueOf(gameView.colourScheme.backgroundColour),
+                new CornerRadii(0),
+                new Insets(0)
+        )));
+        pane.setAlignment(Pos.CENTER);
 
         // Creating Preview Text Content
-        this.previewText = new Label(icon.getPreviewName() + "\n\n" + icon.getPreviewText());
+        Label previewTitle = new Label(icon.getPreviewName());
+        previewTitle.setFont(new Font("Helvetica", 25));
+        previewTitle.setTextFill(Color.web(gameView.colourScheme.headingsFontColour));
+        this.previewText = new Label(icon.getPreviewText());
+        this.previewText.wrapTextProperty().setValue(true);
+        this.previewText.setFont(new Font("Helvetica", gameView.fontSize));
+        this.previewText.setTextFill(Color.web(gameView.colourScheme.regularFontColour));
+
+        VBox dialogVbox = new VBox();
+        dialogVbox.setPadding(new Insets(20, 20, 20, 20));
+        dialogVbox.setStyle("-fx-background-color: " + this.gameView.colourScheme.backgroundColour + ";");
 
         // Creating "Go Here" Button
         // Play Game Button
@@ -59,12 +74,13 @@ public class RoomPreview {
 
         // Adding Content to VBox
         VBox preview = new VBox();
-        preview.getChildren().addAll(icon.getRoomImage(), this.previewText, goButton);
+        preview.getChildren().addAll(previewTitle, icon.getRoomImage(), this.previewText, goButton);
         preview.setAlignment(Pos.BASELINE_CENTER);
         preview.setSpacing(20);
+        pane.add(preview, 0, 0);
 
-        // Adding VBox to Scene
-        Scene dialogScene = new Scene(preview, 400, 400);
+        // Setting up Scene
+        Scene dialogScene = new Scene(pane, 400, 400);
         dialogScene.setFill(Color.valueOf(this.gameView.colourScheme.backgroundColour));
         dialog.setScene(dialogScene);
         dialog.show();

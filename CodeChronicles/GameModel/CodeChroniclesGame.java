@@ -16,6 +16,7 @@ import java.util.*;
  */
 public class CodeChroniclesGame implements Serializable {
     private String helpText; //A variable to store the Help text of the game. This text is displayed when the user types "HELP" command.
+    private String prologueText; //A variable to store the Prologue text of the game. This text is displayed when the user first loads the game.
     public HashMap<String, Room> rooms; //A list of all the rooms in the game.
 
     public Player player; //The Player of the game.
@@ -67,6 +68,16 @@ public class CodeChroniclesGame implements Serializable {
     }
 
     /**
+     * getPrologue
+     * __________________________
+     * Getter method for Prologue
+     * @return prologueText
+     */
+    public String getPrologue() {
+        return prologueText;
+    }
+
+    /**
      * getPlayer
      * __________________________
      * Getter method for Player 
@@ -93,6 +104,16 @@ public class CodeChroniclesGame implements Serializable {
      */
     public void setHelpText(String help) {
         this.helpText = help;
+    }
+
+    /**
+     * setPrologueText
+     * __________________________
+     * Setter method for helpText
+     * @param prologue which is text to set
+     */
+    public void setPrologueText(String prologue) {
+        this.prologueText = prologue;
     }
 
 }
