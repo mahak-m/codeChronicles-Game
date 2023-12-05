@@ -25,7 +25,7 @@ public class Room implements Serializable {
     private boolean isVisited; // A boolean to store if the room has been visited or not.
 
     /**
-     * AdvGameRoom constructor.
+     * Room constructor.
      *
      * @param roomName: The name of the room.
      * @param xCoord: The x-coordinate of the room on the map.
