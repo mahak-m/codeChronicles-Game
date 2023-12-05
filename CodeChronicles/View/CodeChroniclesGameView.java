@@ -635,19 +635,19 @@ public class CodeChroniclesGameView {
 
     public ImageView getCharacterImageView() {
         if (this.game.player instanceof AlchemistCharacter) {
-            Image playerImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
+            Image playerImage = new Image("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/characterImages/alchemistCharacter.png");
             ImageView imageView = new ImageView(playerImage);
             imageView.setFitWidth(400);
             imageView.setFitHeight(500);
             return imageView;
         } else if (this.game.player instanceof MageCharacter) {
-            Image playerImage = new Image("OtherFiles/characterImages/mageCharacter.png");
+            Image playerImage = new Image("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/characterImages/mageCharacter.png");
             ImageView imageView = new ImageView(playerImage);
             imageView.setFitWidth(400);
             imageView.setFitHeight(500);
             return imageView;
         } else {
-            Image playerImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
+            Image playerImage = new Image("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/characterImages/warriorCharacter.png");
             ImageView imageView = new ImageView(playerImage);
             imageView.setFitWidth(400);
             imageView.setFitHeight(500);
