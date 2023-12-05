@@ -31,8 +31,6 @@ public class RoomPreview {
         dialogVbox.setPadding(new Insets(20, 20, 20, 20));
         dialogVbox.setStyle("-fx-background-color: " + this.gameView.colourScheme.backgroundColour + ";");
 
-        this.gameView.articulateRoomDescription(); // try this rn
-
         // Creating Preview Text Content
         this.previewText = new Label(icon.getPreviewName() + "\n\n" + icon.getPreviewText());
 
@@ -49,6 +47,10 @@ public class RoomPreview {
             this.gameView.game.getPlayer().setCurrentRoom(icon.getRoom());
             try {
                 this.gameView.setRoomScene();
+                // first stop any NPC audio that could be playing
+                this.gameView.stopIntroductionAudio();
+                // only load room audio AFTER room scene has been set
+                this.gameView.articulateRoomDescription(); // try this rn
                 dialog.close();
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);

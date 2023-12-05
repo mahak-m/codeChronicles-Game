@@ -820,7 +820,7 @@ public class CodeChroniclesGameView {
      * is done, or the player has moved on from the "choose character" view.
      *
      */
-    private void stopIntroductionAudio() {
+    public void stopIntroductionAudio() {
         if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             introductionAudioPlayer.stop();
         }
