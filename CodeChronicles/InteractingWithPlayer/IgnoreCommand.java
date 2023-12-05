@@ -1,5 +1,4 @@
 package InteractingWithPlayer;
-
 import InteractingWithPlayer.NonPlayerCharacters.NPC;
 import InteractingWithPlayer.Player.Player;
 
@@ -11,6 +10,11 @@ public class IgnoreCommand implements Command {
     private Player player;
     private NPC npc;
 
+    /**
+     * Ignore Command Constructor
+     * @param player
+     * @param npc
+     */
     public IgnoreCommand(Player player, NPC npc) {
         this.player = player;
         this.npc = npc;

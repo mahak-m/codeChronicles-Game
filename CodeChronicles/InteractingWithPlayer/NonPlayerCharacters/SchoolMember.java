@@ -1,6 +1,5 @@
 package InteractingWithPlayer.NonPlayerCharacters;
 
-import javafx.scene.image.Image;
 
 public class SchoolMember extends NPC {
     /**
@@ -12,6 +11,7 @@ public class SchoolMember extends NPC {
      * @param introText
      */
     public SchoolMember(String characterName, String introText) {
+
         super(characterName, introText);
     }
 }
