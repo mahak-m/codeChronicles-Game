@@ -262,7 +262,7 @@ public class CodeChroniclesGameView {
         alchemistButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(alchemistButton, 280, 550, this.colourScheme.buttonColour2);
         alchemistButton.wrapTextProperty().setValue(true);
-        Image alchemistImage = new Image("OtherFiles/characterImages/alchemistCharacter.png");
+        Image alchemistImage = new Image("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/characterImages/alchemistCharacter.png");
         ImageView alchemistView = new ImageView(alchemistImage);
         alchemistView.setFitHeight(300);
         alchemistView.setFitWidth(250);
@@ -289,7 +289,7 @@ public class CodeChroniclesGameView {
         mageButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(mageButton, 280, 550, this.colourScheme.buttonColour2);
         mageButton.wrapTextProperty().setValue(true);
-        Image mageImage = new Image("OtherFiles/characterImages/mageCharacter.png");
+        Image mageImage = new Image("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/characterImages/mageCharacter.png");
         ImageView mageView = new ImageView(mageImage);
         mageView.setFitHeight(300);
         mageView.setFitWidth(250);
@@ -316,7 +316,7 @@ public class CodeChroniclesGameView {
         warriorButton.setAlignment(Pos.TOP_CENTER);
         customizeButton(warriorButton, 280, 550, this.colourScheme.buttonColour2);
         warriorButton.wrapTextProperty().setValue(true);
-        Image warriorImage = new Image("OtherFiles/characterImages/warriorCharacter.png");
+        Image warriorImage = new Image("OtherFiles/Images/" + this.colourScheme.colourSchemeName + "/characterImages/warriorCharacter.png");
         ImageView warriorView = new ImageView(warriorImage);
         warriorView.setFitHeight(300);
         warriorView.setFitWidth(250);
