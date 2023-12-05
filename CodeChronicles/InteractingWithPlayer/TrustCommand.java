@@ -14,6 +14,12 @@ public class TrustCommand implements Command {
     private Player player;
     private NPC npc;
 
+    /**
+     * Trust Command Constructor
+     * @param player
+     * @param npc
+     */
+
     public TrustCommand(Player player, NPC npc) {
         this.player = player;
         this.npc = npc;

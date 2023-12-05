@@ -6,7 +6,6 @@ import InteractingWithPlayer.NonPlayerCharacters.Prowler;
 import InteractingWithPlayer.Player.Player;
 import View.CodeChroniclesGameView;
 
-
 /**
  * The player uses Hack Command, if the player wishes to hack in the NPC character's mind
  * which the player does not know is a prowler or school member.
@@ -18,11 +17,18 @@ public class HackCommand implements Command {
     private CodeChroniclesGameView gameView;
     static final int MIN_BYTES = 2; //the minimum number of code bytes the player should have to hack an NPC
 
+    /**
+     * Constructor for Hack Command
+     * @param player
+     * @param npc
+     * @param gameView
+     */
     public HackCommand(Player player, NPC npc, CodeChroniclesGameView gameView) {
         this.player = player;
         this.npc = npc;
         this.gameView = gameView;
     }
+
 
     public String executeCommand() {
         return showCharacterIdentity(this.npc, this.player, gameView);
@@ -53,7 +59,7 @@ public class HackCommand implements Command {
         }
         else {
             return "You don't have enough code bytes to hack this person." +
-                    "Look around for School Members to help you with collecting code bytes.";
+                    " Look around for School Members to help you with collecting code bytes.";
         }
     }
 

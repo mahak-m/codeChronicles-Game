@@ -1,18 +1,12 @@
 package InteractingWithPlayer.NonPlayerCharacters;
 
-import GameModel.Room;
-import InteractingWithPlayer.NonPlayerCharacters.NPC;
-import InteractingWithPlayer.Quest;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import java.util.Objects;
 
+
+// All the Prowler names were generated from ChatGpt.
 public class Prowler extends NPC {
 
     private String prowlerName;
-
-
 
     /**
      * Constructor
@@ -24,7 +18,7 @@ public class Prowler extends NPC {
     }
 
     /**
-     * Defeat method that keeps track if the prowler was defeated or not
+     * This method gets the name of the Prowler.
      */
 
     public String getProwlerName() {

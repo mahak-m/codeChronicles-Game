@@ -5,6 +5,7 @@ import InteractingWithPlayer.Quest;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+// All the NPC character names were taken as a reference from ChatGpt except CrownMark Markus and we added a few names on our own.
 /**
  * NPC
  * ___________________
@@ -39,15 +40,11 @@ public class NPC {
 
     public String getName(){
         return this.npcName;
-    }
+    } // getting name of the NPC characters
 
     public String getIntro(){
         return this.NPCGreeting;
-    }
-    public void setQuest(Quest quest) {this.quest = quest;}
-    public Quest getQuest() {return this.quest;}
+    } // getter method for greeting by the npc
+    public void setQuest(Quest quest) {this.quest = quest;} // setting the quest
+    public Quest getQuest() {return this.quest;} // getter method for quest
 }
-
-
-
-

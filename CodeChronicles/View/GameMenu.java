@@ -159,6 +159,11 @@ public class GameMenu {
         return this.fontSizeBox;
     }
 
+    /**
+     * This method restarts the whole game but does not change the menu settings done by the player.
+     * @throws IOException
+     */
+
 
     public void restart() throws IOException {
         //restart the game
@@ -174,6 +179,10 @@ public class GameMenu {
         this.colourModeBox.setValue(saveColourScheme);
         this.fontSizeBox.getValueFactory().setValue(this.saveFontSize);
     }
+
+    /**
+     * This method saves the changes after the player selects the menu
+     */
 
     public void save_changes() {
         // check value of music box, update this.gameView.music
