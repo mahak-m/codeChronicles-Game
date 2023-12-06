@@ -765,7 +765,7 @@ public class CodeChroniclesGameView {
     }
 
     public void showMap() throws FileNotFoundException {
-        if (this.game.numOfProwlers.equals(6)) {
+        if (this.game.numOfProwlers.equals(0)) {
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
             pause.setOnFinished(e -> {stopArticulation();
                 stopIntroductionAudio();
