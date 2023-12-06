@@ -1,84 +1,59 @@
+Front Gate
+0
+0
+The front gate of Hackwards School of Codecraft towers above you, its wrought-iron structure adorned with pulsating binary patterns and binary tree bushes.
+
+Main Entrance
 1
-Outside building
-You are standing at the end of a road before a small brick building.  A small stream flows out of the building and down a gully to the south.  A road runs up a small hill to the west.
------
-WEST       2
-UP         2
-NORTH      3
-IN         3
-SOUTH      4
-DOWN       4
+0
+You're standing across from the main entrance of Hackwards School of Codecraft, where the building lights up with radiant holographic symbols that flicker with the promise of arcane programming secrets.
 
+Administrations Office
 2
-End of road
-You are at the end of a road at the top of a small hill. You can see a small building in the valley to the east.
------
-EAST       1
-WEST       3
-DOWN       3
+0
+You’re standing outside the administration office, a room with a polished interior featuring sleek glass panels and minimalist coding motifs.
 
+Dorm Rooms
 3
-Inside building
-You are inside a building, a well house for a large spring. The exit door is to the south.  There is another room to the north, but the door is barred by a shimmering curtain.
------
-SOUTH      1
-WEST       5
-OUT        6/BIRD
-OUT        1
-NORTH     3
-XYZZY     2/BOOK
-XYZZY     1
-PLUGH     2/BOOK
-PLUGH     1
+0
+You stand across from the eerie dorm rooms of Hackwards School of Codecraft, where elongated shadows linger menacingly around cryptic lines of code scrawled on the walls, evoking an unsettling sense of mystery and apprehension.
 
-4
-Valley beside a stream
-You are in a valley in the forest beside a stream tumbling along a rocky bed.  The stream is flowing to the south.
------
-NORTH      1
-UP         1
-SOUTH      5
-DOWN       5
-WEST       5
+Hackers Hallway
+0
+1
+You’re navigating through the Hackers Hallway, a long row of doors dimly lit by the ghostly glow of monitors left aglow with lines of intricate code.
 
-5
-Slit in rock
-At your feet all the water of the stream splashes into a two-inch slit in the rock.  To the south, the streambed is bare rock.
------
-NORTH      4
-UP         4
-SOUTH      6
-DOWN       6
-WEST       6
+Coders Building
+1
+1
+You stand at the entrance of Coders building, a sleek structure of glass and steel where the distant clicks of keyboards and soft discussions envelop the surroundings.
 
-6
-Curtain1
-You are passing through a curtain!
------
-FORCED    7/BIRD
-FORCED    9
+Library
+2
+1
+You’re standing in the serene library of Hackwards School of Codecraft, where the faint hum of servers blends with the soft rustle of turning pages, creating a tranquil environment where coders immerse themselves in a symphony of knowledge. The librarian looks at you and smiles, happy to be surrounded by neatly organized coding books and the comforting scent of well-worn algorithms.
 
-7
-Curtain2
-You are passing through another curtain!
------
-FORCED    8
+CodeCraft Classroom
+3
+1
+You enter the dimly lit Codecraft classroom, where the silence amplifies the solemnity of vacant workstations, each screen patiently awaiting the return of eager coders.
 
-8
-Curtain3
-Yet another curtain here!
------
-FORCED    10
+Locker Room
+0
+2
+You’re standing in the Hackwards locker room, where the shadows play upon rows of empty compartments, creating an atmosphere of mystery and solitude.
 
-9
-Missing Treasures
-You can pass through this curtain only if you're carrying all the treasures.  You don't yet have all of them.
------
-FORCED     3
+Fourth Floor
+1
+2
+You’re standing across from the fourth-floor staircase, the rhythmic tap of your footsteps reverberating against the cool metal steps as the soft glow of programmable LED lights flickers above you.
 
-10
-Victory
-You have collected all the treasures and are admitted to the Adventurer's Hall of Fame.  Congratulations!
------
-FORCED     0
+Cafeteria
+2
+2
+You enter the bustling cafeteria, where the aroma of freshly brewed code coffee mingles with the soft hum of collaborative coding discussions, creating a vibrant and lively atmosphere.
 
+Side Entrance
+3
+2
+You’re standing next to the side entrance of Hackwards School of Codecraft, a modest portal tucked against the sprawling brick walls of the massive building.
