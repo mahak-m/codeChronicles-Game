@@ -6,6 +6,7 @@ import View.CodeChroniclesGameView;
 import java.io.IOException;
 import java.util.Map;
 
+// demo link: https://utoronto-my.sharepoint.com/:v:/g/personal/hia_aggrawal_mail_utoronto_ca/EW4tXRn5zT1IsI2prpSpgy0BYsRDC0Jrrt9eWJszo4qNFg?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=FPFdT4
 /**
  * Class AdventureGameApp.
  */
