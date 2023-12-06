@@ -137,8 +137,10 @@ public class Player {
      * playQuest
      */
     public boolean playQuest(CodeChroniclesGameView gameView) {
-        QuestView questView = new QuestView(gameView, this.currLocation.characterInRoom.getQuest(), this, gameView.fontSize - 16);
-        return this.currLocation.characterInRoom.getQuest().getIfWon();
+        QuestView questView = new QuestView(gameView, this.currLocation.characterInRoom.getQuest(), this);
+        questView.adhereToMenuSettings(gameView.fontSize - 16, gameView.audio, gameView.music,
+                gameView.colourScheme.colourSchemeName);
+        return this.getCurrentRoom().characterInRoom.getQuest().getIfWon();
     }
 
     public void setPet(Pet pet) {this.pet = pet;}

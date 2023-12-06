@@ -402,6 +402,8 @@ public class CodeChroniclesGameView {
     }
 
     public void setRoomScene() throws FileNotFoundException {
+        stopIntroductionAudio();
+        stopArticulation();
 
         GridPane roomPane = new GridPane();
         this.setupGridPane(roomPane);
@@ -418,6 +420,7 @@ public class CodeChroniclesGameView {
         Button NPCButton = new Button();
 
         if (!this.game.player.getCurrentRoom().getNPC().getDefeated()) {
+            stopIntroductionAudio();
             ImageView NPCView = this.getNPCImageView(this.game.player.getCurrentRoom().getNPC());
             NPCButton.setGraphic(NPCView);
             NPCButton.setBackground(null);
@@ -481,7 +484,7 @@ public class CodeChroniclesGameView {
         Button ignoreButton = new Button("Ignore");
         ignoreButton.setId("Ignore");
         customizeButton(ignoreButton, 150, 50, this.colourScheme.buttonColour1);
-        makeButtonAccessible(ignoreButton, "Ignore button", "This button loads the ignore interaction.", "This button loads the menu and settings. Click it in order to change your settings.");
+        makeButtonAccessible(ignoreButton, "Ignore button", "This button loads the ignore interaction.", "This button loads the ignore interaction. Click it in order to ignore the character.");
         ignoreButton.setOnAction(e -> {
             playButtonClick(); // adds button click sound effect
             // also stop ANY current audio, if playing
@@ -495,8 +498,8 @@ public class CodeChroniclesGameView {
             if (this.game.getPlayer().getCodeBytes() < 5) {
                 playCommandsAudio("ignoreFailure");
             }
-            IgnoreCommand command = new IgnoreCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
-            this.roomDescLabel.setText(command.executeCommand());
+            IgnoreCommand command1 = new IgnoreCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command1.executeCommand());
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
         });
@@ -506,8 +509,7 @@ public class CodeChroniclesGameView {
         Button trustButton = new Button("Trust");
         trustButton.setId("Trust");
         customizeButton(trustButton, 150, 50, this.colourScheme.buttonColour1);
-        makeButtonAccessible(trustButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
-        addInstructionEvent();
+
         trustButton.setOnAction(e -> {
             playButtonClick(); // adds button click sound effect
             // also stop ANY current audio, if playing
@@ -517,13 +519,21 @@ public class CodeChroniclesGameView {
             if (this.game.getPlayer().getCurrentRoom().getNPC() instanceof Prowler) {
                 playCommandsAudio("wrongTrust");
             }
-            else {
+            else if (! this.game.getPlayer().getCurrentRoom().getNPC().getTrusted()) {
                 playCommandsAudio("correctTrust");
             }
-            TrustCommand command = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
-            this.roomDescLabel.setText(command.executeCommand());
+
+            TrustCommand command2 = new TrustCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC());
+            this.roomDescLabel.setText(command2.executeCommand());
+
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
+
+            if (this.game.player.getLives() <= 0) {
+                this.roomDescLabel.setText("Oh no! You lost all your lives! You lost the game now.");
+                PauseTransition pause2 = new PauseTransition(Duration.seconds(5));
+                this.stage.close();
+            }
         });
 
         hackButton.setId("Hack");
@@ -543,15 +553,21 @@ public class CodeChroniclesGameView {
             if (this.game.getPlayer().getCodeBytes() < 2) {
                 playCommandsAudio("hackFailure");
             }
-            HackCommand command = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC(), this);
-            this.roomDescLabel.setText(command.executeCommand());
+
+            HackCommand command3 = new HackCommand(this.game.getPlayer(), this.game.getPlayer().getCurrentRoom().getNPC(), this);
+            this.roomDescLabel.setText(command3.executeCommand());
+
             this.addGameHeader(this.gridPane);
             PauseTransition pause = new PauseTransition(Duration.seconds(5));
         });
+
+
         HBox commandButtons = new HBox();
         commandButtons.getChildren().addAll(ignoreButton, trustButton, hackButton);
         commandButtons.setSpacing(10);
         commandButtons.setAlignment(Pos.CENTER);
+        makeButtonAccessible(trustButton, "Trust Button",  "This button loads the trust interaction.", "This button loads the trust interaction. Click the button to trust the character.");
+        addInstructionEvent();
         //add all the widgets to the GridPane
         this.gridPane.add(commandButtons, 1, 3, 3, 1 );  // Add buttons
         this.gridPane.setHalignment(commandButtons, HPos.CENTER);
@@ -594,7 +610,7 @@ public class CodeChroniclesGameView {
         instructionsButton = new Button("Instructions");
         instructionsButton.setId("Instructions");
         customizeButton(instructionsButton, 175, 50, this.colourScheme.buttonColour2);
-        makeButtonAccessible(instructionsButton, "Help Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
+        makeButtonAccessible(instructionsButton, "Instructions Button", "This button gives game instructions.", "This button gives instructions on the game controls. Click it to learn how to play.");
         // play instructions audio
         // also CREATE audio for prologue
         // also do all of the quest audio
@@ -749,6 +765,21 @@ public class CodeChroniclesGameView {
     }
 
     public void showMap() throws FileNotFoundException {
+        if (this.game.numOfProwlers.equals(6)) {
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> {stopArticulation();
+                stopIntroductionAudio();
+                LastBattleView view = new LastBattleView(this, this.game.player);
+                view.adhereToMenuSettings(fontSize, audio, music, this.colourScheme.colourSchemeName);
+            });
+            pause.play();
+        }
+        else if (this.game.player.getLives() <= 0) {
+            this.roomDescLabel.setText("Oh no! You lost all your lives! You lost the game now.");
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            pause.setOnFinished(e -> {this.stage.close();});
+            pause.play();
+        }
         // If the mapToggle is false, show the map on the grid pane.
         if (!this.mapToggle) {
             // Create map background.
@@ -870,7 +901,7 @@ public class CodeChroniclesGameView {
             mechaDoodleButton.setGraphic(getPetImageView("MechaDoodle"));
             mechaDoodleButton.setContentDisplay(TOP);
             mechaDoodleButton.setStyle("-fx-background-color: "+ this.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
-            makeButtonAccessible(mechaDoodleButton, "MechaDoodle", "MechaDoodle", mechaDoodle.description);
+            makeButtonAccessible(mechaDoodleButton, "MechaDoodle", "Meet MechaDoodle", mechaDoodle.description);
             mechaDoodleButton.setOnAction(e -> {
                 String string = mechaDoodle.equipPet(this.game.player);
                 mechaDoodleButton.setText("MechaDoodle \n \n" + string);
@@ -958,8 +989,8 @@ public class CodeChroniclesGameView {
 
     private void addMapEvent() {
         mapButton.setOnAction(e -> {
-            playButtonClick(); // add button click audio
             stopArticulation();
+            playButtonClick(); // add button click audio
             try {
                 showMap();
             } catch (FileNotFoundException ex) {
@@ -990,6 +1021,7 @@ public class CodeChroniclesGameView {
             Media sound = new Media(new File(musicFile).toURI().toString());
 
             roomAudioPlayer = new MediaPlayer(sound);
+            roomAudioPlayer.setVolume(0.2);
             roomAudioPlayer.play();
             roomMediaPlaying = true;
         }
@@ -1077,6 +1109,7 @@ public class CodeChroniclesGameView {
                 }
 
                 introductionAudioPlayer = new MediaPlayer(sound);
+                introductionAudioPlayer.setVolume(0.2);
                 // ^^ that creates a new media player
                 introductionAudioPlayer.play();
                 // ^^ that plays the new media player
@@ -1112,6 +1145,7 @@ public class CodeChroniclesGameView {
                 //create a media object and media player
                 Media sound = new Media(new File(musicFile).toURI().toString());
                 buttonClickPlayer = new MediaPlayer(sound);
+                buttonClickPlayer.setVolume(0.2);
                 buttonClickPlayer.play();
 
             } catch (Exception e) {
@@ -1139,8 +1173,12 @@ public class CodeChroniclesGameView {
                 if (roomAudioPlayer != null && roomAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
                     roomAudioPlayer.stop();
                 }
+                if (introductionAudioPlayer != null && introductionAudioPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                    introductionAudioPlayer.stop();
+                }
 
                 introductionAudioPlayer = new MediaPlayer(sound);
+                introductionAudioPlayer.setVolume(0.2);
                 // ^^ that creates a new media player
                 introductionAudioPlayer.play();
                 // ^^ that plays the new media player
@@ -1182,6 +1220,7 @@ public class CodeChroniclesGameView {
                 }
 
                 commandsPlayer = new MediaPlayer(sound);
+                commandsPlayer.setVolume(0.2);
                 // ^^ that creates a new media player
                 commandsPlayer.play();
                 // ^^ that plays the new media player

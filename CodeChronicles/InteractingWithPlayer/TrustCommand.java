@@ -25,29 +25,33 @@ public class TrustCommand implements Command {
         this.npc = npc;
     }
 
-    public String executeCommand() {
-        return showCharacterIdentity(this.npc, this.player);
-    };
+    public String executeCommand() { return showCharacterIdentity();};
 
     /**
      * This method reveals the identity of the NPC character when the player chooses to trust the character.
-     * @param character;
-     * @param player;
+     *
+     * @return indicator string
      */
-    public String showCharacterIdentity(NPC character, Player player) {
-        if (player.getCurrentRoom().characterInRoom.getQuest().getIfWon()) {
-            return "You have already interacted with this character once successfully. You are not allowed any more interactions.";
-        }
-        if (character instanceof Prowler) {
-            player.loseLife();
-            return "Oh no! You decided to trust a Prowler and lost 1 life";
+    public String showCharacterIdentity() {
+        if (this.npc instanceof Prowler) {
+            if (this.player.getCurrentRoom().characterInRoom.getQuest().getIfWon()) {
+                return "You have already interacted with this character once successfully. You are not allowed any more interactions.";
+            }
+            else {
+                this.player.loseLife();
+                this.player.getCurrentRoom().characterInRoom.setTrusted(true);
+                return "Oh no! You decided to trust a Prowler and lost 1 life";
+            }
         }
         else {
-            if (player.getCurrentRoom().characterInRoom.getTrusted()) {
-                return "You have already interacted with this character successfully once.";
+            if (this.npc.getTrusted()) {
+                return "You have already interacted with this character once successfully. You are not allowed any more interactions.";
             }
-            player.updateCodeBytes(10);
-            return "You decided to trust a School Member. \n Hi " + player.getPlayerName() + "! I am so happy to hear you're helping us defeat the Polymorphic prowlers. Here are 10 code bytes to help you with your mission.";
+            else {
+                this.npc.setTrusted(true);
+                this.player.updateCodeBytes(10);
+                return "You decided to trust a School Member. \n Hi " + this.player.getPlayerName() + "! I am so happy to hear you're helping us defeat the Polymorphic prowlers. Here are 10 code bytes to help you with your mission.";
+            }
         }
     }
 }

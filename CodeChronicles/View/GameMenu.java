@@ -79,7 +79,7 @@ public class GameMenu {
         this.musicBox.setValue((ifMusic) ? "On" : "Off");
 
         // Create Audio Label
-        Label audio = new Label("Voiceover");
+        Label audio = new Label("Sounds");
         audio.setTextFill(Color.web(this.gameView.colourScheme.regularFontColour));
         audio.setFont(new Font("Helvetica", this.gameView.fontSize));
 
@@ -91,7 +91,7 @@ public class GameMenu {
 
         // Create Restart Button
         this.restartButton.setId("Restart Game");
-        this.restartButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        this.restartButton.setStyle("-fx-background-color:" + this.gameView.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         this.restartButton.setPrefSize(200, 50);
         this.restartButton.setFont(new Font(16));
         this.restartButton.setOnAction(e -> {
@@ -106,7 +106,7 @@ public class GameMenu {
 
         // Create Save Changes Button
         this.saveChangesButton.setId("Save Changes");
-        this.saveChangesButton.setStyle("-fx-background-color: #17871b; -fx-text-fill: white;");
+        this.saveChangesButton.setStyle("-fx-background-color:" + this.gameView.colourScheme.buttonColour1 + "; -fx-text-fill: white;");
         this.saveChangesButton.setPrefSize(200, 50);
         this.saveChangesButton.setFont(new Font(16));
         this.saveChangesButton.setOnAction(e ->this.save_changes());
@@ -175,11 +175,11 @@ public class GameMenu {
         this.saveFontSize = this.fontSizeBox.getValue();
         CodeChroniclesGame newGame = new CodeChroniclesGame(); //change the name of the game if you want to try something bigger!
         CodeChroniclesGameView gameView = new CodeChroniclesGameView(newGame, new Stage());
-        this.gameView = gameView;
-        this.musicBox.setValue(this.saveMusic);
-        this.audioBox.setValue(this.saveAudio);
-        this.colourModeBox.setValue(saveColourScheme);
-        this.fontSizeBox.getValueFactory().setValue(this.saveFontSize);
+//        this.gameView = gameView;
+//        this.musicBox.setValue(this.saveMusic);
+//        this.audioBox.setValue(this.saveAudio);
+//        this.colourModeBox.setValue(saveColourScheme);
+//        this.fontSizeBox.getValueFactory().setValue(this.saveFontSize);
     }
 
     /**

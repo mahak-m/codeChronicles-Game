@@ -24,6 +24,7 @@ public class CodeChroniclesGame implements Serializable {
     public ArrayList<SchoolMember> schoolMembers; // The list of all the School Members.
     public ArrayList<Quest> quests; // The list of all the quests.
     public ArrayList<LastBattleQuestion> lastBattleQuestions; // The list of all the questions in the last battle.
+    public Integer numOfProwlers;
 
 
 
@@ -40,6 +41,7 @@ public class CodeChroniclesGame implements Serializable {
             this.quests = new ArrayList<Quest>();
             this.schoolMembers = new ArrayList<SchoolMember>();
             this.lastBattleQuestions = new ArrayList<LastBattleQuestion>();
+            this.numOfProwlers = 7;
             setUpGame();
         } catch (IOException e) {
             throw new RuntimeException("An Error Occurred: " + e.getMessage());

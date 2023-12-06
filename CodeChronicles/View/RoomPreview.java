@@ -27,7 +27,7 @@ public class RoomPreview {
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(this.gameView.stage);
-
+        dialog.setResizable(false);
         GridPane pane = new GridPane();
         pane.setBackground(new Background(new BackgroundFill(
                 Color.valueOf(gameView.colourScheme.backgroundColour),
@@ -41,9 +41,11 @@ public class RoomPreview {
         previewTitle.setFont(new Font("Helvetica", 25));
         previewTitle.setTextFill(Color.web(gameView.colourScheme.headingsFontColour));
         this.previewText = new Label(icon.getPreviewText());
-        this.previewText.wrapTextProperty().setValue(true);
+        this.previewText.setWrapText(true);
+        this.previewText.setMinHeight(100);
         this.previewText.setFont(new Font("Helvetica", gameView.fontSize));
         this.previewText.setTextFill(Color.web(gameView.colourScheme.regularFontColour));
+        this.previewText.setPadding(new Insets(10));
 
         VBox dialogVbox = new VBox();
         dialogVbox.setPadding(new Insets(20, 20, 20, 20));
@@ -54,33 +56,32 @@ public class RoomPreview {
         Button goButton = new Button("Go Here");
         goButton.setId("Go");
         goButton.setAlignment(Pos.CENTER);
-        goButton.setPrefSize(100, 50);
         goButton.setFont(new Font("Arial", this.gameView.fontSize));
         goButton.setStyle("-fx-background-color: " + this.gameView.colourScheme.buttonColour2 + "; -fx-text-fill: white;");
         makeButtonAccessible(goButton, "Go", "Go Here", "Click to go to the place previewed.");
         goButton.setOnAction(e -> {
-            this.gameView.game.getPlayer().setCurrentRoom(icon.getRoom());
-            try {
-                this.gameView.setRoomScene();
-                // first stop any NPC audio that could be playing
-                this.gameView.stopIntroductionAudio();
-                // only load room audio AFTER room scene has been set
-                this.gameView.articulateRoomDescription(); // try this rn
-                dialog.close();
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
+            if (gameView.game.getPlayer().getCodeBytes() < 1) {
+                this.previewText.setText("You don't have enough CodeBytes to unlock a new room.");
+            } else {
+                this.gameView.game.getPlayer().setCurrentRoom(icon.getRoom());
+                try {
+                    this.gameView.setRoomScene();
+                    dialog.close();
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
         // Adding Content to VBox
         VBox preview = new VBox();
         preview.getChildren().addAll(previewTitle, icon.getRoomImage(), this.previewText, goButton);
-        preview.setAlignment(Pos.BASELINE_CENTER);
+        preview.setAlignment(Pos.CENTER);
         preview.setSpacing(20);
         pane.add(preview, 0, 0);
 
         // Setting up Scene
-        Scene dialogScene = new Scene(pane, 400, 400);
+        Scene dialogScene = new Scene(pane, 600, 600);
         dialogScene.setFill(Color.valueOf(this.gameView.colourScheme.backgroundColour));
         dialog.setScene(dialogScene);
         dialog.show();

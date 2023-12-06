@@ -27,5 +27,5 @@ public class IgnoreCommand implements Command {
         }
         return "Sorry, you cannot ignore this NPC character, as you don't have enough " +
                 "codebytes. Look for school members in other rooms.";
-    };
+    }
 }

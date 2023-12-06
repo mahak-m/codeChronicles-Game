@@ -6,7 +6,7 @@ The front gate of Hackwards School of Codecraft towers above you, its wrought-ir
 Main Entrance
 1
 0
-[Description]
+You're standing across from the main entrance of Hackwards School of Codecraft, where the building lights up with radiant holographic symbols that flicker with the promise of arcane programming secrets.
 
 Administrations Office
 2

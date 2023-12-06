@@ -154,7 +154,6 @@ public class CodeChroniclesLoader {
             String answer = buff.readLine();
             String hint = buff.readLine();
             String separator = buff.readLine();
-            Prowler questProwler = null;
 
             if (separator != null && !separator.isEmpty())
                 System.out.println("Formatting Error!");

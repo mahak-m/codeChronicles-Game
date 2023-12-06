@@ -38,18 +38,17 @@ public class QuestView {
     private Button exitButton = new Button("Exit");
     private Quest quest;
     private Player player;
-    private Integer increaseFont;
+    private Integer increaseFont=0;
+    private boolean ifAudio=true;
+    private boolean ifMusic=true;
+    private String colorScheme="GameTheme";
     private MediaPlayer questMusicPlayer; // for the quest background music
 
-    boolean allAudioOn2;
 
-
-    public QuestView(CodeChroniclesGameView gameView, Quest quest, Player player, Integer fontIncrease) {
+    public QuestView(CodeChroniclesGameView gameView, Quest quest, Player player) {
         this.gameView = gameView;
         this.quest = quest;
         this.player = player;
-        this.increaseFont = fontIncrease;
-        intiUI();
 
         // test to see if the quest audio still plays if the no audio setting
         // is selected in the menu
@@ -69,12 +68,10 @@ public class QuestView {
         // call the method to play reduced background music until
         // the quest is over and this screen can finally be exited
 
-        /**
-        if (allAudioOn2) {
+
+        if (ifMusic) {
             this.playBackgroundMusic();
         }
-         */
-        this.playBackgroundMusic();
 
         // Set up the borderPane
         this.borderPane.setPadding(new Insets(10));
@@ -94,7 +91,9 @@ public class QuestView {
         this.continueButton.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(continueButton, "Continue", "Continue", "Continue to the next screen.");
         this.continueButton.setOnAction(e -> {
-            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            if (ifAudio) {
+                this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            }
             setInstructionScene();
         });
 
@@ -103,7 +102,7 @@ public class QuestView {
 
         // Set up borderPane
         try {
-            Image image = new Image(new FileInputStream("OtherFiles/prowlerImages/" + this.quest.prowler.getProwlerName() + ".png"));
+            Image image = new Image(new FileInputStream("OtherFiles/Images/" + this.colorScheme + "/prowlerImages/" + this.quest.prowler.getProwlerName() + ".png"));
             borderPane.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
@@ -124,7 +123,7 @@ public class QuestView {
         borderPane2.setPadding(new Insets(10));
 
         try {
-            Image image = new Image(new FileInputStream("OtherFiles/questScreens/instruction screen.png"));
+            Image image = new Image(new FileInputStream("OtherFiles/Images/" + this.colorScheme + "/questScreens/instruction screen.png"));
             borderPane2.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
@@ -137,6 +136,9 @@ public class QuestView {
         this.challengeButton.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(challengeButton, "Challenge", "Accept the challenge!", "Accept the challenge and see the question.");
         challengeButton.setOnAction(e -> {
+            if (ifAudio) {
+                this.gameView.playButtonClick();
+            }
             setQuestionScene(false);
         });
         borderPane2.setAlignment(challengeButton, Pos.BOTTOM_RIGHT);
@@ -166,13 +168,21 @@ public class QuestView {
         instructionsLabel.setWrapText(true);
         instructionsLabel.setFont(new Font("Georgia", 18 + increaseFont));
         instructionsLabel.setTextFill(Color.valueOf("black"));
-        instructionsLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#37a6a4"), CornerRadii.EMPTY, Insets.EMPTY)));
-        instructionsLabel.setOpacity(0.90);
-        instructionsLabel.setStyle("-fx-border-color: yellow;");
+        if (this.colorScheme.equals("GameTheme")) {
+            instructionsLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#37a6a4"), CornerRadii.EMPTY, Insets.EMPTY)));
+            instructionsLabel.setStyle("-fx-border-color: yellow;");
+            instructionsLabel.setOpacity(0.90);
+        }
+        else {
+            instructionsLabel.setStyle("-fx-border-color: black;");
+            instructionsLabel.setBackground(new Background(new BackgroundFill(Color.valueOf("#ffffff"), CornerRadii.EMPTY, Insets.EMPTY)));
+            instructionsLabel.setOpacity(0.40);
+        }
+
+
         instructionsLabel.setPadding(new Insets(10));
         borderPane2.setAlignment(instructionsLabel, Pos.CENTER_LEFT);
         borderPane2.setCenter(instructionsLabel);
-
         var questScene2 = new Scene(borderPane2, 730, 730);
         this.stage.setScene(questScene2);
         this.stage.setResizable(false);
@@ -185,7 +195,7 @@ public class QuestView {
         borderPane3.setPadding(new Insets(10));
 
         try {
-            Image image = new Image(new FileInputStream("OtherFiles/questScreens/question screen.png"));
+            Image image = new Image(new FileInputStream("OtherFiles/Images/" + this.colorScheme + "/questScreens/question screen.png"));
             borderPane3.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
@@ -228,7 +238,12 @@ public class QuestView {
                 radioButton.setMaxWidth(250);
             }
             radioButton.setFont(new Font("Georgia", 16 + increaseFont));
-            radioButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
+            if (this.colorScheme.equals("GameTheme")) {
+                radioButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
+            }
+            else {
+                radioButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white; -fx-border-color: black;");
+            }
             radioButton.setPadding(new Insets(10));
             radioButton.setOpacity(0.9);
             radioButton.setWrapText(true);
@@ -265,12 +280,25 @@ public class QuestView {
         borderPane3.setTop(questionLabel);
 
         this.submitButton.setOnAction(e -> {
-            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            if (ifAudio) {
+                this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            }
             RadioButton selectedRadioButton = (RadioButton) optionsGroup.getSelectedToggle();
             if (selectedRadioButton != null) {
                 if (selectedRadioButton.getText().equals(this.quest.getQuestAnswer())) {
                     setEndScene("won");
                     this.quest.setIfWon(true);
+                    this.gameView.game.numOfProwlers -= 1;
+                    this.quest.prowler.setDefeated(true);
+                    if (this.quest.isWithHint()) {
+                        this.player.updateCodeBytes(6);
+                    }
+                    else if (this.quest.isWithAnswer()) {
+                        this.player.updateCodeBytes(2);
+                    }
+                    else {
+                        this.player.updateCodeBytes(10);
+                    }
                 }
                 else if (! selectedRadioButton.getText().equals(this.quest.getQuestAnswer()) & ! doneTwoAttempts) {
                     setHintScene();
@@ -294,7 +322,7 @@ public class QuestView {
         borderPane4.setPadding(new Insets(10));
 
         try {
-            Image image = new Image(new FileInputStream("OtherFiles/questScreens/question screen.png"));
+            Image image = new Image(new FileInputStream("OtherFiles/Images/" + this.colorScheme + "/questScreens/question screen.png"));
             borderPane4.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
@@ -325,16 +353,16 @@ public class QuestView {
         this.exitButton.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(exitButton, "Exit", "Exit the quest", "Exit the quest and return to the room.");
         this.exitButton.setOnAction(e -> {
-            this.stage.close();
-
-            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
-
+            if (ifAudio) {
+                this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            }
             // stop the quest background music
             stopBackgroundMusic();
             // here, after clicking the button and returning, begin playing the background music again
-            this.gameView.playBackgroundMusic();
-
-
+            if (ifAudio) {
+                this.gameView.playBackgroundMusic();
+            }
+            this.stage.close();
         });
 
         borderPane4.setAlignment(this.exitButton, Pos.BOTTOM_RIGHT);
@@ -352,7 +380,7 @@ public class QuestView {
         borderPane5.setPadding(new Insets(10));
 
         try {
-            Image image = new Image(new FileInputStream("OtherFiles/questScreens/question screen.png"));
+            Image image = new Image(new FileInputStream("OtherFiles/Images/" + this.colorScheme + "/questScreens/question screen.png"));
             borderPane5.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(730, 730, true, true, true, false))));
         } catch (FileNotFoundException e) {
@@ -375,12 +403,19 @@ public class QuestView {
         makeButtonAccessible(hintButton, "Hint", "This is a hint to the question.", this.quest.getQuestHint());
         hintButton.setMinWidth(250);
         hintButton.setFont(new Font("Georgia", 18 + increaseFont));
-        hintButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
+        if (this.colorScheme.equals("GameTheme")) {
+            hintButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
+        }
+        else {
+            hintButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white; -fx-border-color: black;");
+        }
         hintButton.setPadding(new Insets(10));
         hintButton.setOpacity(0.9);
         hintButton.setWrapText(true);
         hintButton.setOnAction(e -> {
-            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            if (ifAudio) {
+                this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            }
             hintButton.setText(this.quest.getQuestHint());
             this.quest.usedHint();
         });
@@ -391,13 +426,22 @@ public class QuestView {
         makeButtonAccessible(revealAnswerButton, "Reveal Answer", "This is the answer to the question", "Please click on the button to see the answer");
         revealAnswerButton.setMinWidth(250);
         revealAnswerButton.setFont(new Font("Georgia", 18 + increaseFont));
-        revealAnswerButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
+
+        if (this.colorScheme.equals("GameTheme")) {
+            revealAnswerButton.setStyle("-fx-background-color: #7286b8; -fx-text-fill: white; -fx-border-color: black;");
+        }
+        else {
+            revealAnswerButton.setStyle("-fx-background-color: #000000; -fx-text-fill: white; -fx-border-color: black;");
+        }
+
         revealAnswerButton.setPadding(new Insets(10));
         revealAnswerButton.setOpacity(0.9);
         revealAnswerButton.setWrapText(true);
         hintButton.setWrapText(true);
         revealAnswerButton.setOnAction(e -> {
-            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            if (ifAudio) {
+                this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            }
             if (this.player.getPet() instanceof VirtualVulture) {
                 revealAnswerButton.setText(this.quest.getQuestAnswer());
                 this.quest.usedAnswer();
@@ -422,7 +466,9 @@ public class QuestView {
         back.setFont(new Font("Georgia", 16 + increaseFont));
         makeButtonAccessible(back, "Back", "Back to the question", "Go back to the question using this button.");
         back.setOnAction(e -> {
-            this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            if (ifAudio) {
+                this.gameView.playButtonClick(); // plays the button click sound effect when pressed
+            }
             if (this.quest.isWithHint() || this.quest.isWithAnswer()) {
                 setQuestionScene(true);
             }
@@ -455,6 +501,7 @@ public class QuestView {
         inputButton.setFocusTraversable(true);
     }
 
+
     // these methods are for the quest
     /**
      * playBackgroundMusic
@@ -483,6 +530,13 @@ public class QuestView {
             }
         }
     // }
+    public void adhereToMenuSettings(Integer fontIncrease, boolean audio, boolean music, String colorScheme) {
+        this.increaseFont = fontIncrease;
+        this.ifAudio = audio;
+        this.ifMusic = music;
+        this.colorScheme = colorScheme;
+        intiUI();
+    }
 
     /**
      * stopBackgroundMusic

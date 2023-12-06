@@ -11,5 +11,3 @@ It is up to you to unmask the prowlers one by one, paving the path to confrontat
 Remember: the very essence of code is at stake!
 
 You are now about to embark on a quest that transcends the realms of mere coding practice…
-
-(game loads)
