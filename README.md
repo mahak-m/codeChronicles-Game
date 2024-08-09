@@ -4,9 +4,9 @@
 
 This game was created by four people (Mahak, Hia, Dhvani, Kanupreet) working in a scrum team. 
 
-This is the design document, which outlines the user stories, acceptance criteria, design patterns, UML diagrams and implementation details: https://github.com/mahak-m/codeChronicles-Game/blob/main/DesignDocument.pdf
+This is the design document, which includes the user stories, acceptance criteria, design patterns, UML diagrams and implementation details involved in creating this game: https://github.com/mahak-m/codeChronicles-Game/blob/main/DesignDocument.pdf
 
-This is the project report, which outlines the 
+This is the project report, which outlines the project documentation and provides a detailed overview of sprints 1-4: https://github.com/mahak-m/codeChronicles-Game/blob/main/ProjectReport.pdf
 
 <h2>Project Screenshots:</h2>
 
